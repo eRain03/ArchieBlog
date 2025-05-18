@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	{{ partial "header.html" . }}
+	<body>
+		<div class="content">
+			{{ partial "head.html" . }}
+      <hr class="header-divider">
+
+			
+			<main class="list">
+				<div class="site-description">
+					{{- if isset .Site.Params "subtitle" -}}
+          <p style="font-size: 1.25rem;">{{ .Site.Params.Subtitle | .Page.RenderString }}</p>
+					{{- end -}}
+				</div>
+        <div>
+          <h2>最近文章</h2>
+        </div>
+				{{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+				{{ $paginator := .Paginate (where $pages "Params.hidden" "ne" true) }}
+        {{ range first 5 (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
+				<section class="list-item">
+          <li class="post-item">
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          </li>
+				</section>
+				{{ end }}
+          <div class="more-posts">
+            <a href="/posts/" class="readmore">查看更多文章 ⟶</a>
+          </div>
+
+			</main>
+		</div>
+		
+	</body>
+</html>

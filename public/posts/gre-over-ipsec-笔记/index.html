@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html><head lang="en"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>GRE Over IPSec 短记 - Archie</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="
+要求FW1 与 RT2 之间用 Internet 互联地址建立 GRE Over IPSec VPN,
+实现 Loopback4 之间的加密访问。RT2 的 ACL 名称为 ACL-VPN,
+transform-set 名称为 SET-1,crypto map 名称为 MAP-1。FW1 的
+isakmp proposal 名称为 P-1,isakmp peer 名称为 PEER-1,ipsec
+proposal 名称为 P-2,tunnel ipsec 名称为 IPSEC-1,tunnel gre 名
+称为 GRE-1。
+
+网络拓扑如下
+
+  
+      
+          Internet交换机
+          200.200.200.1；200.200.200.5
+      
+  
+  
+      
+          RT2
+          连接Internet交换机   IP 地址为200.200.200.2
+      
+      
+          FW2
+          连接Internet交换机   自身IP为200.200.200.6
+      
+  
+
+测试RT2是否能通过Internet Ping通 FW1
+Ping 200.200.200.6 -i 200.200.200.2
+RT2配置
+interface Tunnel4
+ip address 10.4.255.50 255.255.255.252
+tunnel source 200.200.200.6
+tunnel destination 200.200.200.2
+tunnel speed-up
+
+---
+
+crypto isakmp key 0 Key-1122 address 200.200.200.2 255.255.255.255
+crypto isakmp policy 1
+authentication pre-share
+encryption 3des
+group 2
+hash md5
+!
+crypto ipsec transform-set SET-1 esp-3des esp-md5-hmac
+!
+crypto map MAP-1 1 ipsec-isakmp
+match address ACL-VPN
+set peer 200.200.200.2
+set transform-set SET-1
+
+---
+
+ip access-list extended ACL-VPN
+permit gre 200.200.200.6 255.255.255.255 200.200.200.2 255.255.255.255
+不要忘记了设置静态路由" />
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content="http://localhost:1313/posts/gre-over-ipsec-%E7%AC%94%E8%AE%B0/">
+  <meta property="og:site_name" content="Archie">
+  <meta property="og:title" content="GRE Over IPSec 短记">
+  <meta property="og:description" content="要求FW1 与 RT2 之间用 Internet 互联地址建立 GRE Over IPSec VPN, 实现 Loopback4 之间的加密访问。RT2 的 ACL 名称为 ACL-VPN, transform-set 名称为 SET-1,crypto map 名称为 MAP-1。FW1 的 isakmp proposal 名称为 P-1,isakmp peer 名称为 PEER-1,ipsec proposal 名称为 P-2,tunnel ipsec 名称为 IPSEC-1,tunnel gre 名 称为 GRE-1。
+网络拓扑如下
+Internet交换机 200.200.200.1；200.200.200.5 RT2 连接Internet交换机 IP 地址为200.200.200.2 FW2 连接Internet交换机 自身IP为200.200.200.6 测试RT2是否能通过Internet Ping通 FW1 Ping 200.200.200.6 -i 200.200.200.2
+RT2配置
+interface Tunnel4 ip address 10.4.255.50 255.255.255.252 tunnel source 200.200.200.6 tunnel destination 200.200.200.2 tunnel speed-up --- crypto isakmp key 0 Key-1122 address 200.200.200.2 255.255.255.255 crypto isakmp policy 1 authentication pre-share encryption 3des group 2 hash md5 ! crypto ipsec transform-set SET-1 esp-3des esp-md5-hmac ! crypto map MAP-1 1 ipsec-isakmp match address ACL-VPN set peer 200.200.200.2 set transform-set SET-1 --- ip access-list extended ACL-VPN permit gre 200.200.200.6 255.255.255.255 200.200.200.2 255.255.255.255 不要忘记了设置静态路由">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-07T01:02:24+08:00">
+    <meta property="article:modified_time" content="2024-07-07T01:02:24+08:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="GRE Over IPSec 短记">
+  <meta name="twitter:description" content="要求FW1 与 RT2 之间用 Internet 互联地址建立 GRE Over IPSec VPN, 实现 Loopback4 之间的加密访问。RT2 的 ACL 名称为 ACL-VPN, transform-set 名称为 SET-1,crypto map 名称为 MAP-1。FW1 的 isakmp proposal 名称为 P-1,isakmp peer 名称为 PEER-1,ipsec proposal 名称为 P-2,tunnel ipsec 名称为 IPSEC-1,tunnel gre 名 称为 GRE-1。
+网络拓扑如下
+Internet交换机 200.200.200.1；200.200.200.5 RT2 连接Internet交换机 IP 地址为200.200.200.2 FW2 连接Internet交换机 自身IP为200.200.200.6 测试RT2是否能通过Internet Ping通 FW1 Ping 200.200.200.6 -i 200.200.200.2
+RT2配置
+interface Tunnel4 ip address 10.4.255.50 255.255.255.252 tunnel source 200.200.200.6 tunnel destination 200.200.200.2 tunnel speed-up --- crypto isakmp key 0 Key-1122 address 200.200.200.2 255.255.255.255 crypto isakmp policy 1 authentication pre-share encryption 3des group 2 hash md5 ! crypto ipsec transform-set SET-1 esp-3des esp-md5-hmac ! crypto map MAP-1 1 ipsec-isakmp match address ACL-VPN set peer 200.200.200.2 set transform-set SET-1 --- ip access-list extended ACL-VPN permit gre 200.200.200.6 255.255.255.255 200.200.200.2 255.255.255.255 不要忘记了设置静态路由">
+
+        <link href="http://localhost:1313/css/fonts.fc4f5a86e8e498b54fe94f415531b7bee28ca405d2160b9e55715b497c716193.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:1313/css/main.33535ad1c7d1e61eae52b59547ac79afb3639df98fc2cc22dc2ae9f5a063c72c.css" /><script type="text/javascript"
+		src="http://localhost:1313/js/MathJax.js"></script>
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script><link rel="stylesheet" href="http://localhost:1313/katex/katex.min.css ">
+		<script defer src="http://localhost:1313/katex/katex.min.js"></script>
+		<script defer src="http://localhost:1313/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+		</script>
+		
+		
+		<link rel="stylesheet" type="text/css" href="http://localhost:1313/css/first.354eb93defa843f69983dc6df53d6af8dc2bf3d3cd5c8970c6c4f1ca724da3ef.css">
+		
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="http://localhost:1313/">Archie</a>
+	</div>
+	<nav>
+		
+		<a href="/">Tools</a>
+		
+		<a href="/posts">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		
+	</nav>
+
+</header>
+
+<main>
+  <article>
+    <div class="post-container">
+      
+      <div class="post-content">
+        <div class="title">
+          <h1 class="title">GRE Over IPSec 短记</h1>
+          <div class="meta">Posted on Jul 7, 2024</div>
+        </div>
+        
+        <section class="body">
+          <blockquote>
+<p>要求FW1 与 RT2 之间用 Internet 互联地址建立 GRE Over IPSec VPN,
+实现 Loopback4 之间的加密访问。RT2 的 ACL 名称为 ACL-VPN,
+transform-set 名称为 SET-1,crypto map 名称为 MAP-1。FW1 的
+isakmp proposal 名称为 P-1,isakmp peer 名称为 PEER-1,ipsec
+proposal 名称为 P-2,tunnel ipsec 名称为 IPSEC-1,tunnel gre 名
+称为 GRE-1。</p>
+</blockquote>
+<p>网络拓扑如下</p>
+<table>
+  <thead>
+      <tr>
+          <th>Internet交换机</th>
+          <th>200.200.200.1；200.200.200.5</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>RT2</td>
+          <td>连接Internet交换机   IP 地址为200.200.200.2</td>
+      </tr>
+      <tr>
+          <td>FW2</td>
+          <td>连接Internet交换机   自身IP为200.200.200.6</td>
+      </tr>
+  </tbody>
+</table>
+<p>测试RT2是否能通过Internet Ping通 FW1
+<code>Ping 200.200.200.6 -i 200.200.200.2</code></p>
+<p>RT2配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>interface Tunnel4
+</span></span><span style="display:flex;"><span>ip address 10.4.255.50 255.255.255.252
+</span></span><span style="display:flex;"><span>tunnel source 200.200.200.6
+</span></span><span style="display:flex;"><span>tunnel destination 200.200.200.2
+</span></span><span style="display:flex;"><span>tunnel speed-up
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>crypto isakmp key 0 Key-1122 address 200.200.200.2 255.255.255.255
+</span></span><span style="display:flex;"><span>crypto isakmp policy 1
+</span></span><span style="display:flex;"><span>authentication pre-share
+</span></span><span style="display:flex;"><span>encryption 3des
+</span></span><span style="display:flex;"><span>group 2
+</span></span><span style="display:flex;"><span>hash md5
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>crypto ipsec transform-set SET-1 esp-3des esp-md5-hmac
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>crypto map MAP-1 1 ipsec-isakmp
+</span></span><span style="display:flex;"><span>match address ACL-VPN
+</span></span><span style="display:flex;"><span>set peer 200.200.200.2
+</span></span><span style="display:flex;"><span>set transform-set SET-1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ip access-list extended ACL-VPN
+</span></span><span style="display:flex;"><span>permit gre 200.200.200.6 255.255.255.255 200.200.200.2 255.255.255.255
+</span></span></code></pre></div><p>不要忘记了设置静态路由</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>ip route default 200.200.200.5
+</span></span><span style="display:flex;"><span>ip route 10.4.7.4 255.255.255.255 Tunnel4
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>###还有 G0/2口要设置crypto map
+</span></span><span style="display:flex;"><span>crypto map MAP-1
+</span></span></code></pre></div><p>FW2配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>tunnel gre &#34;GRE-1&#34;
+</span></span><span style="display:flex;"><span>source 200.200.200.2
+</span></span><span style="display:flex;"><span>destination 200.200.200.6
+</span></span><span style="display:flex;"><span>interface ethernet0/3
+</span></span><span style="display:flex;"><span>next-tunnel ipsec IPSEC-1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>interface tunnel4
+</span></span><span style="display:flex;"><span>zone &#34;VPNHub&#34;
+</span></span><span style="display:flex;"><span>ip address 10.4.255.49 255.255.255.252
+</span></span><span style="display:flex;"><span>manage ping
+</span></span><span style="display:flex;"><span>tunnel gre &#34;GRE-1&#34;
+</span></span></code></pre></div><p>Web端部分:
+策略设置 Any - Any</p>
+<p>设置IPSEC VPN</p>
+<p><img src="https://s2.loli.net/2024/07/08/kvQBbA42cIwtryO.png" alt="Pt1.png"></p>
+<p>配置对端  共享秘钥设置与RT2一致
+<img src="https://s2.loli.net/2024/07/08/E3ghSr6YKuJAvOV.png" alt="pt2.png"></p>
+<p>配置P1</p>
+<p><img src="https://s2.loli.net/2024/07/08/XOtwTY17DZ5k2Mq.png" alt="p1.png"></p>
+<p>配置P2</p>
+<p><img src="https://s2.loli.net/2024/07/08/xUQE4ruT2m5BWOo.png" alt="p2.png"></p>
+<blockquote>
+<p>全部配置完后在高级设置中选择 自动连接 点击开启
+查看IPSECVPN监控,状态为Active
+测试路由和防火墙Loopback4是否正常互相访问</p>
+</blockquote>
+<p><img src="https://s2.loli.net/2024/07/08/oJkL4WugHIVTfQA.png" alt="bg.png"></p>
+
+        </section>
+        <div class="post-tags">
+          
+          
+          
+        </div>
+      </div>
+
+      
+      
+    </div>
+
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    (function () {
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        var disqus_shortname = '未淼';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+        Disqus.</a></noscript>
+</article>
+</main>
+<footer>
+</footer>
+
+</div>
+    </body>
+</html>

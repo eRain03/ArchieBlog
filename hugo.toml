@@ -1,0 +1,45 @@
+baseURL = "https://erain.fun"
+languageCode = "en-us"
+title = "未淼 "
+theme="archie"
+copyright = " r3eck1ng"
+# Code Highlight
+pygmentsstyle = "monokai"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
+
+disqusShortname = "未淼"
+[pagination]
+  paginate=3 # articles per page
+
+[params]
+	mode="light" # color-mode → light,dark,toggle or auto
+	useCDN=false # don't use CDNs for fonts and icons, instead serve them locally.
+	subtitle = "“意识只是借宿在身体里的客人，偶尔叩响命运的门”"
+	mathjax = true # enable MathJax support
+	katex = true # enable KaTeX support
+  customcss = ["css/first.css"]
+# Social Tags
+
+
+# Main menu Items
+
+[[menu.main]]
+name = "Tools"
+url = "/"
+weight = 1
+
+[[menu.main]]
+name = "Posts"
+url = "/posts"
+weight = 2
+
+
+[[menu.main]]
+name = "Tags"
+url = "/tags"
+weight = 4
+
+[permalinks]
+  posts = "/posts/:year/:month/:day/:slug/"
+

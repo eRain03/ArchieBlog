@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html><head lang="en"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>网络设备题目 - Archie</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="交换机部分
+1、生成树spanning-tree
+SW1、SW2、SW3启用MSTP，实现网络二层负载均衡和冗余备份，创建实例Instance10和Instance20，名称为SKILLS，修订版本为1，其中Instance10关联vlan60和vlan70，Instance20关联vlan80和vlan90。SW1为Instance0和Instance10的根交换机，为Instance20备份根交换机；SW2为Instance20根交换机，为Instance0和Instance10的备份根交换机；根交换机STP优先级为0，备份根交换机STP优先级为4096。关闭交换机之间三层互联接口的STP。
+
+SW1配置步骤：
+
+
+进入全局配置模式：enable
+
+
+配置Instance0为根交换机：
+conf t spanning-tree mst 0 priority 0
+
+
+配置Instance10为根交换机：
+spanning-tree mst 10 priority 0
+
+
+配置Instance20为备份根交换机：
+spanning-tree mst 20 priority 4096
+
+
+禁用Ethernet1/0/22和Ethernet1/0/26上的STP：
+interface Ethernet1/0/22 no spanning-tree interface Ethernet1/0/26 no spanning-tree`
+
+
+SW2配置步骤：
+
+
+进入全局配置模式：enable
+
+
+配置Instance0为备份根交换机：
+conf t spanning-tree mst 0 priority 4096
+
+
+配置Instance10为备份根交换机：
+spanning-tree mst 10 priority 4096
+
+
+配置Instance20为根交换机：
+spanning-tree mst 20 priority 0
+
+
+禁用Ethernet1/0/22和Ethernet1/0/26上的STP：
+interface Ethernet1/0/22 no spanning-tree  interface Ethernet1/0/26 no spanning-tree`
+
+
+SW3配置步骤：
+
+
+进入全局配置模式：enable
+
+
+禁用Ethernet1/0/21和Ethernet1/0/22上的STP：
+conf t interface Ethernet1/0/21 no spanning-tree  interface Ethernet1/0/22 no spanning-tree" />
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content="http://localhost:1313/posts/%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A2%98%E7%9B%AE%E7%AD%94%E6%A1%88/">
+  <meta property="og:site_name" content="Archie">
+  <meta property="og:title" content="网络设备题目">
+  <meta property="og:description" content="交换机部分 1、生成树spanning-tree SW1、SW2、SW3启用MSTP，实现网络二层负载均衡和冗余备份，创建实例Instance10和Instance20，名称为SKILLS，修订版本为1，其中Instance10关联vlan60和vlan70，Instance20关联vlan80和vlan90。SW1为Instance0和Instance10的根交换机，为Instance20备份根交换机；SW2为Instance20根交换机，为Instance0和Instance10的备份根交换机；根交换机STP优先级为0，备份根交换机STP优先级为4096。关闭交换机之间三层互联接口的STP。 SW1配置步骤： 进入全局配置模式：enable
+配置Instance0为根交换机：
+conf t spanning-tree mst 0 priority 0
+配置Instance10为根交换机：
+spanning-tree mst 10 priority 0
+配置Instance20为备份根交换机：
+spanning-tree mst 20 priority 4096
+禁用Ethernet1/0/22和Ethernet1/0/26上的STP：
+interface Ethernet1/0/22 no spanning-tree interface Ethernet1/0/26 no spanning-tree`
+SW2配置步骤： 进入全局配置模式：enable
+配置Instance0为备份根交换机：
+conf t spanning-tree mst 0 priority 4096
+配置Instance10为备份根交换机：
+spanning-tree mst 10 priority 4096
+配置Instance20为根交换机： spanning-tree mst 20 priority 0
+禁用Ethernet1/0/22和Ethernet1/0/26上的STP： interface Ethernet1/0/22 no spanning-tree interface Ethernet1/0/26 no spanning-tree`
+SW3配置步骤： 进入全局配置模式：enable
+禁用Ethernet1/0/21和Ethernet1/0/22上的STP：
+conf t interface Ethernet1/0/21 no spanning-tree interface Ethernet1/0/22 no spanning-tree">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-02-18T01:02:24+08:00">
+    <meta property="article:modified_time" content="2024-02-18T01:02:24+08:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="网络设备题目">
+  <meta name="twitter:description" content="交换机部分 1、生成树spanning-tree SW1、SW2、SW3启用MSTP，实现网络二层负载均衡和冗余备份，创建实例Instance10和Instance20，名称为SKILLS，修订版本为1，其中Instance10关联vlan60和vlan70，Instance20关联vlan80和vlan90。SW1为Instance0和Instance10的根交换机，为Instance20备份根交换机；SW2为Instance20根交换机，为Instance0和Instance10的备份根交换机；根交换机STP优先级为0，备份根交换机STP优先级为4096。关闭交换机之间三层互联接口的STP。 SW1配置步骤： 进入全局配置模式：enable
+配置Instance0为根交换机：
+conf t spanning-tree mst 0 priority 0
+配置Instance10为根交换机：
+spanning-tree mst 10 priority 0
+配置Instance20为备份根交换机：
+spanning-tree mst 20 priority 4096
+禁用Ethernet1/0/22和Ethernet1/0/26上的STP：
+interface Ethernet1/0/22 no spanning-tree interface Ethernet1/0/26 no spanning-tree`
+SW2配置步骤： 进入全局配置模式：enable
+配置Instance0为备份根交换机：
+conf t spanning-tree mst 0 priority 4096
+配置Instance10为备份根交换机：
+spanning-tree mst 10 priority 4096
+配置Instance20为根交换机： spanning-tree mst 20 priority 0
+禁用Ethernet1/0/22和Ethernet1/0/26上的STP： interface Ethernet1/0/22 no spanning-tree interface Ethernet1/0/26 no spanning-tree`
+SW3配置步骤： 进入全局配置模式：enable
+禁用Ethernet1/0/21和Ethernet1/0/22上的STP：
+conf t interface Ethernet1/0/21 no spanning-tree interface Ethernet1/0/22 no spanning-tree">
+
+        <link href="http://localhost:1313/css/fonts.fc4f5a86e8e498b54fe94f415531b7bee28ca405d2160b9e55715b497c716193.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:1313/css/main.33535ad1c7d1e61eae52b59547ac79afb3639df98fc2cc22dc2ae9f5a063c72c.css" /><script type="text/javascript"
+		src="http://localhost:1313/js/MathJax.js"></script>
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script><link rel="stylesheet" href="http://localhost:1313/katex/katex.min.css ">
+		<script defer src="http://localhost:1313/katex/katex.min.js"></script>
+		<script defer src="http://localhost:1313/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+		</script>
+		
+		
+		<link rel="stylesheet" type="text/css" href="http://localhost:1313/css/first.354eb93defa843f69983dc6df53d6af8dc2bf3d3cd5c8970c6c4f1ca724da3ef.css">
+		
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="http://localhost:1313/">Archie</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">Posts</a>
+		
+		<a href="/about">About</a>
+		
+		<a href="/tags">Tags</a>
+		
+		
+	</nav>
+
+</header>
+
+<main>
+  <article>
+    <div class="post-container">
+      
+      <div class="post-content">
+        <div class="title">
+          <h1 class="title">网络设备题目</h1>
+          <div class="meta">Posted on Feb 18, 2024</div>
+        </div>
+        
+        <section class="body">
+          <h2 id="交换机部分">交换机部分</h2>
+<h3 id="1生成树spanning-tree">1、生成树spanning-tree</h3>
+<pre><code>SW1、SW2、SW3启用MSTP，实现网络二层负载均衡和冗余备份，创建实例Instance10和Instance20，名称为SKILLS，修订版本为1，其中Instance10关联vlan60和vlan70，Instance20关联vlan80和vlan90。SW1为Instance0和Instance10的根交换机，为Instance20备份根交换机；SW2为Instance20根交换机，为Instance0和Instance10的备份根交换机；根交换机STP优先级为0，备份根交换机STP优先级为4096。关闭交换机之间三层互联接口的STP。
+</code></pre>
+<h4 id="sw1配置步骤">SW1配置步骤：</h4>
+<ol>
+<li>
+<p>进入全局配置模式：<code>enable</code></p>
+</li>
+<li>
+<p>配置Instance0为根交换机：</p>
+<p><code>conf t spanning-tree mst 0 priority 0</code></p>
+</li>
+<li>
+<p>配置Instance10为根交换机：</p>
+<p><code>spanning-tree mst 10 priority 0</code></p>
+</li>
+<li>
+<p>配置Instance20为备份根交换机：</p>
+<p><code>spanning-tree mst 20 priority 4096</code></p>
+</li>
+<li>
+<p>禁用Ethernet1/0/22和Ethernet1/0/26上的STP：</p>
+<p><code>interface Ethernet1/0/22 no spanning-tree </code>interface Ethernet1/0/26 no spanning-tree`</p>
+</li>
+</ol>
+<h4 id="sw2配置步骤">SW2配置步骤：</h4>
+<ol>
+<li>
+<p>进入全局配置模式：<code>enable</code></p>
+</li>
+<li>
+<p>配置Instance0为备份根交换机：</p>
+<p><code>conf t spanning-tree mst 0 priority 4096</code></p>
+</li>
+<li>
+<p>配置Instance10为备份根交换机：</p>
+<p><code>spanning-tree mst 10 priority 4096</code></p>
+</li>
+<li>
+<p>配置Instance20为根交换机：
+<code>spanning-tree mst 20 priority 0</code></p>
+</li>
+<li>
+<p>禁用Ethernet1/0/22和Ethernet1/0/26上的STP：
+<code>interface Ethernet1/0/22 no spanning-tree  </code>interface Ethernet1/0/26 no spanning-tree`</p>
+</li>
+</ol>
+<h4 id="sw3配置步骤">SW3配置步骤：</h4>
+<ol>
+<li>
+<p>进入全局配置模式：<code>enable</code></p>
+</li>
+<li>
+<p>禁用Ethernet1/0/21和Ethernet1/0/22上的STP：</p>
+<p><code>conf t interface Ethernet1/0/21 no spanning-tree  interface Ethernet1/0/22 no spanning-tree</code></p>
+</li>
+</ol>
+<p>完成以上配置后，网络中的生成树协议将按照所配置的优先级和备份关系进行运行，实现二层负载均衡和冗余备份的目标。</p>
+<h3 id="2链路聚合lacp">2、链路聚合（LACP）：</h3>
+<pre><code>SW1 和 SW2 之间利用三条裸光缆实现互通，其中一条裸光缆承载三层 IP业务、一条裸光缆承载 VPN 业务、一条裸光缆承载二层业务。用相关技术分别实现财务 1 段、财务 2 段业务路由表与其它业务路由表隔离，财务业务 VPN 实例名称为 CW。
+</code></pre>
+<h4 id="sw1配置">SW1配置：</h4>
+<ol>
+<li>
+<p>进入全局配置模式：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1&gt; enable
+</span></span><span style="display:flex;"><span>SW1# configure terminal
+</span></span></code></pre></div></li>
+<li>
+<p>创建端口组并配置为主动模式：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)# port-channel 1
+</span></span><span style="display:flex;"><span>SW1(config)# interface range Ethernet1/0/25 - 28
+</span></span><span style="display:flex;"><span>SW1(config-if-range)# channel-group 1 mode active
+</span></span></code></pre></div></li>
+<li>
+<p>配置流量负载均衡模式为源和目的 IP 地址：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span>SW1(config)<span style="color:#75715e"># port-channel load-balance dst-src-ip</span>
+</span></span></code></pre></div></li>
+</ol>
+<h4 id="sw2配置">SW2配置：</h4>
+<ol>
+<li>
+<p>进入全局配置模式：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2&gt; enable
+</span></span><span style="display:flex;"><span>SW2# configure terminal
+</span></span></code></pre></div></li>
+<li>
+<p>创建端口组并配置为主动模式：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2(config)# port-channel 1
+</span></span><span style="display:flex;"><span>SW2(config)# interface range Ethernet1/0/25 - 28
+</span></span><span style="display:flex;"><span>SW2(config-if-range)# channel-group 1 mode active
+</span></span></code></pre></div></li>
+<li>
+<p>配置流量负载均衡模式为源和目的 IP 地址：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span>SW2(config)<span style="color:#75715e"># port-channel load-balance dst-src-ip</span>
+</span></span></code></pre></div></li>
+</ol>
+<h4 id="配置结果验证">配置结果验证：</h4>
+<p>你可以使用以下命令来验证链路聚合的配置是否成功：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>配置结果：
+</span></span><span style="display:flex;"><span>SW1#sho port-group 1 detail 
+</span></span><span style="display:flex;"><span>Flags:  A -- LACP_Activity, B -- LACP_timeout, C -- Aggregation,
+</span></span><span style="display:flex;"><span>        D -- Synchronization, E -- Collecting, F -- Distributing,
+</span></span><span style="display:flex;"><span>        G -- Defaulted, H -- Expired
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Port-group number: 1,  Mode: active,   Load-balance: dst-src-ip
+</span></span><span style="display:flex;"><span> Port-group detail information:
+</span></span><span style="display:flex;"><span> System ID: 0x8000,00-03-0f-e0-f9-b3
+</span></span><span style="display:flex;"><span> Local:
+</span></span><span style="display:flex;"><span>  Port             Status      Priority  Oper-Key Flag      
+</span></span><span style="display:flex;"><span>  -----------------------------------------------------------
+</span></span><span style="display:flex;"><span>  Ethernet1/0/25   Unselected  32768     1        {ACG}
+</span></span><span style="display:flex;"><span>  Ethernet1/0/28   Selected    32768     1        {ACDEF}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Remote:
+</span></span><span style="display:flex;"><span>  Actor           Partner  Priority  Oper-Key SystemID                    Flag      
+</span></span><span style="display:flex;"><span>  --------------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>  Ethernet1/0/28  28       32768     1        0x8000,00-03-0f-e0-f9-b6    {ACDEF}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW2----------------------------------------------=---------=-=-=-=-=-=
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW2#sho port-group 1 detail 
+</span></span><span style="display:flex;"><span>Flags:  A -- LACP_Activity, B -- LACP_timeout, C -- Aggregation,
+</span></span><span style="display:flex;"><span>        D -- Synchronization, E -- Collecting, F -- Distributing,
+</span></span><span style="display:flex;"><span>        G -- Defaulted, H -- Expired
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Port-group number: 1,  Mode: active,   Load-balance: dst-src-ip
+</span></span><span style="display:flex;"><span> Port-group detail information:
+</span></span><span style="display:flex;"><span> System ID: 0x8000,00-03-0f-e0-f9-b6
+</span></span><span style="display:flex;"><span> Local:
+</span></span><span style="display:flex;"><span>  Port             Status      Priority  Oper-Key Flag      
+</span></span><span style="display:flex;"><span>  -----------------------------------------------------------
+</span></span><span style="display:flex;"><span>  Ethernet1/0/25   Unselected  32768     1        {ACG}
+</span></span><span style="display:flex;"><span>  Ethernet1/0/28   Selected    32768     1        {ACDEF}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> Remote:
+</span></span><span style="display:flex;"><span>  Actor           Partner  Priority  Oper-Key SystemID                    Flag      
+</span></span><span style="display:flex;"><span>  --------------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>  Ethernet1/0/28  28       32768     1        0x8000,00-03-0f-e0-f9-b3    {ACDEF}
+</span></span></code></pre></div><h3 id="3路由表隔离vpn">3、路由表隔离VPN</h3>
+<pre><code>将 SW3 模拟为 Internet 交换机，实现与集团其它业务路由表隔离，Internet 路由表 VPN 实例名称为 Internet。将 SW3 模拟办事处交换机，实现与集团其它业务路由表隔离，办事处路由表 VPN 实例名称为 Guangdong。
+</code></pre>
+<h4 id="sw3配置">SW3配置：</h4>
+<ol>
+<li>
+<p>创建VPN实例并分配VRF：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># ip vrf Guangdong</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># ip vrf Internet</span>
+</span></span></code></pre></div></li>
+<li>
+<p>配置Loopback接口并分配给相应的VRF：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Loopback2</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip vrf forwarding Guangdong</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip address 10.10.3.2 255.255.255.255</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Loopback3</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip vrf forwarding Internet</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip address 200.200.3.3 255.255.255.255</span>
+</span></span></code></pre></div></li>
+<li>
+<p>配置VLAN接口并分配给相应的VRF：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Vlan110</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip vrf forwarding Guangdong</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip address 10.16.110.1 255.255.255.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Vlan120</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip vrf forwarding Guangdong</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip address 10.16.120.1 255.255.255.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Vlan1015</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip vrf forwarding Guangdong</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip address 10.10.255.46 255.255.255.252</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Vlan1017</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip vrf forwarding Internet</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip address 200.200.200.1 255.255.255.252</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Vlan1018</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip vrf forwarding Internet</span>
+</span></span><span style="display:flex;"><span>SW3<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># ip address 200.200.200.5 255.255.255.252</span>
+</span></span></code></pre></div></li>
+</ol>
+<h4 id="配置结果验证-1">配置结果验证：</h4>
+<p>您可以使用以下命令来验证VRF配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW3#sho ip vrf 
+</span></span><span style="display:flex;"><span>VRF Guangdong, FIB ID <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>Router ID: 10.10.3.2 <span style="color:#f92672">(</span>loopback<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Interfaces:
+</span></span><span style="display:flex;"><span>  Vlan110
+</span></span><span style="display:flex;"><span>  Vlan120
+</span></span><span style="display:flex;"><span>  Vlan1015
+</span></span><span style="display:flex;"><span>  Loopback2
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>VRF Internet, FIB ID <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>Router ID: 200.200.3.3 <span style="color:#f92672">(</span>loopback<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Interfaces:
+</span></span><span style="display:flex;"><span>  Vlan1017
+</span></span><span style="display:flex;"><span>  Vlan1018
+</span></span><span style="display:flex;"><span>  Loopback3
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>VRF Guangdong; <span style="color:#f92672">(</span>id<span style="color:#f92672">=</span>1<span style="color:#f92672">)</span>; RIP is not enabled
+</span></span><span style="display:flex;"><span>VRF Internet; <span style="color:#f92672">(</span>id<span style="color:#f92672">=</span>2<span style="color:#f92672">)</span>; RIP is not enabled
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Name             Interfaces
+</span></span><span style="display:flex;"><span>Guangdong        Vlan110 Vlan120 Vlan1015 Loopback2 
+</span></span><span style="display:flex;"><span>Internet         Vlan1017 Vlan1018 Loopback3 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Name                    Default RD           Interfaces
+</span></span><span style="display:flex;"><span>Guangdong                                    Vlan110
+</span></span><span style="display:flex;"><span>                                             Vlan120
+</span></span><span style="display:flex;"><span>                                             Vlan1015
+</span></span><span style="display:flex;"><span>                                             Loopback2
+</span></span><span style="display:flex;"><span>Internet                                     Vlan1017
+</span></span><span style="display:flex;"><span>                                             Vlan1018
+</span></span><span style="display:flex;"><span>                                             Loopback3
+</span></span></code></pre></div><h3 id="4端口安全">4、端口安全</h3>
+<pre><code>SW1 法务物理接口限制收发数据占用的带宽均为 1000Mbps，限制所有报文最大收包速率为 1000packets/s，如果超过了配置交换机端口的报文最大收包速率则关闭此端口，1 分钟后恢复此端口；启用端口安全功能，最大安全 MAC 地址数为 20，当超过设定 MAC 地址数量的最大值，不学习新的 MAC、丢弃数据包、发nmp trap、同时在 syslog 日志中记录，端口的老化定时器到期后，在老化周期中没有流量的部分表项老化，有流量的部分依旧保留，恢复时间为 10 分钟；禁止采用访控制列表，只允许 IP 主机位为 20-50 的数据包进行转发；禁止配置访问控制列表，实现端口间二层流量无法互通，组名称 FW。
+</code></pre>
+<h4 id="sw1配置-1">SW1配置：</h4>
+<ol>
+<li>
+<p>配置端口带宽限制和报文最大收包速率：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Ethernet1/0/3</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># bandwidth control 1000000 both</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># rate-violation all 1000</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># rate-violation control shutdown recovery 60</span>
+</span></span></code></pre></div></li>
+<li>
+<p>启用端口安全功能并设置最大安全MAC地址数：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># switchport port-security</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># switchport port-security maximum 20</span>
+</span></span></code></pre></div></li>
+<li>
+<p>配置违规处理策略：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># switchport port-security violation restrict recovery 600</span>
+</span></span></code></pre></div></li>
+<li>
+<p>配置MAC地址学习控制和老化定时器类型：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># mac-address-learning cpu-control</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Ethernet1/0/3</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># switchport port-security aging type inactivity</span>
+</span></span></code></pre></div></li>
+<li>
+<p>启用AM功能并配置IP池：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># am enable</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># interface Ethernet1/0/3</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># am port</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if<span style="color:#f92672">)</span><span style="color:#75715e"># am ip-pool 10.10.120.20 31</span>
+</span></span></code></pre></div></li>
+<li>
+<p>禁止端口间二层流量互通，并应用组名称为FW：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># isolate-port group FW switchport interface Ethernet1/0/3</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># isolate-port apply l2</span>
+</span></span></code></pre></div></li>
+</ol>
+<h4 id="配置结果验证-2">配置结果验证：</h4>
+<p>您可以使用以下命令来验证端口安全配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1# show running-config interface Ethernet1/0/3
+</span></span><span style="display:flex;"><span>SW1# show isolate-port group FW
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if-ethernet1/0/3<span style="color:#f92672">)</span><span style="color:#75715e">#sho run c</span>
+</span></span><span style="display:flex;"><span> bandwidth control <span style="color:#ae81ff">1000000</span> both
+</span></span><span style="display:flex;"><span> rate-violation all <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span> rate-violation control shutdown recovery <span style="color:#ae81ff">60</span>
+</span></span><span style="display:flex;"><span> switchport access vlan <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span> switchport port-security
+</span></span><span style="display:flex;"><span> switchport port-security maximum <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span> switchport port-security violation restrict recovery <span style="color:#ae81ff">600</span>
+</span></span><span style="display:flex;"><span> switchport port-security aging type inactivity
+</span></span><span style="display:flex;"><span> am port
+</span></span><span style="display:flex;"><span> am ip-pool 10.10.120.20 <span style="color:#ae81ff">31</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>SW1#sho isolate-port group FW 
+</span></span><span style="display:flex;"><span> Isolate-port group FW
+</span></span><span style="display:flex;"><span>    The isolate-port Ethernet1/0/3
+</span></span></code></pre></div><h3 id="5开启日志记录保护功能">5、开启日志记录&amp;保护功能：</h3>
+<pre><code>开启 SW1日志记录功能和保护功能，采样周期5s一次，恢复周期为100s，从而保障 CPU 稳定运行。
+</code></pre>
+<h4 id="sw1配置-2">SW1配置：</h4>
+<ol>
+<li>
+<p>开启日志记录功能：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># cpu-protect log enable</span>
+</span></span></code></pre></div></li>
+<li>
+<p>开启保护功能并设置采样周期和恢复周期：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># cpu-protect enable</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># cpu-protect interval 5</span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e"># cpu-protect recovery-time 100</span>
+</span></span></code></pre></div></li>
+</ol>
+<h4 id="配置结果验证-3">配置结果验证：</h4>
+<p>您可以使用以下命令来验证CPU保护的运行配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1# show cpu-protect running-config
+</span></span><span style="display:flex;"><span>SW1#sho cpu-protect running-config 
+</span></span><span style="display:flex;"><span>Cpu-Protect Globle:          enable 
+</span></span><span style="display:flex;"><span>Cpu-Protect trap :           disable 
+</span></span><span style="display:flex;"><span>Cpu-Protect Log:             enable 
+</span></span><span style="display:flex;"><span>Cpu-Protect Interval:        <span style="color:#ae81ff">5</span> 
+</span></span><span style="display:flex;"><span>Cpu-Protect Recovery-Time:   <span style="color:#ae81ff">100</span> 
+</span></span><span style="display:flex;"><span>Cap-Num   Ip-Num   Mac-Num   Protocal-Num 
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">0</span>          <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>  
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Stream         Threshould     Limit-Speed    Action
+</span></span><span style="display:flex;"><span>IP             <span style="color:#ae81ff">300</span>            <span style="color:#ae81ff">150</span>            Speed-Limit
+</span></span><span style="display:flex;"><span>DHCP           <span style="color:#ae81ff">150</span>            <span style="color:#ae81ff">80</span>             Speed-Limit
+</span></span><span style="display:flex;"><span>IGMP           <span style="color:#ae81ff">150</span>            <span style="color:#ae81ff">80</span>             Speed-Limit
+</span></span><span style="display:flex;"><span>ARP            <span style="color:#ae81ff">300</span>            <span style="color:#ae81ff">150</span>            Speed-Limit
+</span></span><span style="display:flex;"><span>ICMP           <span style="color:#ae81ff">80</span>             <span style="color:#ae81ff">50</span>             Speed-Limit
+</span></span><span style="display:flex;"><span>PER-IP         <span style="color:#ae81ff">400</span>            <span style="color:#ae81ff">200</span>            Speed-Limit
+</span></span><span style="display:flex;"><span>PER-MAC        <span style="color:#ae81ff">400</span>            <span style="color:#ae81ff">200</span>            Speed-Limit
+</span></span></code></pre></div><h3 id="6snmp配置">6、SNMP配置：</h3>
+<pre><code>SW1 配置 SNMP，引擎 id 分别为 1；创建组 GROUP2022，采用最高安全级别，配置组的读、写视图分别为：SKILLS_R、SKILLS_W；创建认证用户为SER2022，采用 aes 算法进行加密，密钥为 Pass-1234，哈希算法为 sha，密钥为 Pass-1234；当设备有异常时，需要用本地的环回地址 loopback1 发送 v3 Trap 消息至集团网管服务器 10.10.11.99、2001:10:10:11::99，采用最高安全级别；
+</code></pre>
+<h4 id="sw1配置-3">SW1配置：</h4>
+<ol>
+<li>
+<p>启用SNMP功能：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>snmp-server enable
+</span></span></code></pre></div></li>
+<li>
+<p>配置允许接收SNMP消息的安全IP地址：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>snmp-server securityip 10.1.15.120
+</span></span><span style="display:flex;"><span>snmp-server securityip 2001:10:1:15::120
+</span></span></code></pre></div></li>
+<li>
+<p>配置Trap消息的源IP地址：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>snmp-server trap-source 10.1.1.1
+</span></span><span style="display:flex;"><span>snmp-server trap-source 2001:10:1:1::1
+</span></span></code></pre></div></li>
+<li>
+<p>配置SNMP引擎ID：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>snmp-server engineid <span style="color:#ae81ff">1000</span>
+</span></span></code></pre></div></li>
+<li>
+<p>创建SNMP认证用户和组：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>snmp-server user UserSkills GroupSkills authPriv aes Key-1122 auth sha Key-1122
+</span></span><span style="display:flex;"><span>snmp-server group GroupSkills authpriv read Skills_R write Skills_W
+</span></span></code></pre></div></li>
+<li>
+<p>配置发送Trap消息的目标主机：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>snmp-server host 10.1.1.1 v3 authpriv UserSkills
+</span></span><span style="display:flex;"><span>snmp-server host 2001:10:1:1::1 v3 authpriv UserSkills
+</span></span></code></pre></div></li>
+<li>
+<p>启用SNMP Trap：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>snmp-server enable traps
+</span></span></code></pre></div></li>
+</ol>
+<h4 id="配置结果验证-4">配置结果验证：</h4>
+<p>您可以使用以下命令验证SNMP配置的结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>SW1# show snmp engineid 
+</span></span><span style="display:flex;"><span>SW1# show snmp group   
+</span></span><span style="display:flex;"><span>SW1# show snmp status 
+</span></span><span style="display:flex;"><span>SW1# show snmp user
+</span></span><span style="display:flex;"><span>SW1# show running-config interface Ethernet1/0/3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e">#sho snmp engineid </span>
+</span></span><span style="display:flex;"><span>SNMP engineID:1
+</span></span><span style="display:flex;"><span>        Engine Boots is:1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e">#sho snmp group   </span>
+</span></span><span style="display:flex;"><span>Group Name:GROUP2022
+</span></span><span style="display:flex;"><span>            Security Level:AuthPriv
+</span></span><span style="display:flex;"><span>Read View:SKILLS_R
+</span></span><span style="display:flex;"><span>Write View:SKILLS_W
+</span></span><span style="display:flex;"><span>Notify View:&lt;no notifyview specified&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e">#sho snmp status </span>
+</span></span><span style="display:flex;"><span>System Name : DC YunKe Networks Co.,Ltd.
+</span></span><span style="display:flex;"><span>System Contact : 400-810-9119
+</span></span><span style="display:flex;"><span>System Location : China
+</span></span><span style="display:flex;"><span>Trap enable
+</span></span><span style="display:flex;"><span>RMON enable
+</span></span><span style="display:flex;"><span>Community Information:
+</span></span><span style="display:flex;"><span>V1/V2c Trap Host Information:
+</span></span><span style="display:flex;"><span>V3 Trap Host Information:
+</span></span><span style="display:flex;"><span>        Trap-rec-address: 2001:10:10:11::99
+</span></span><span style="display:flex;"><span>        User-name :USER2022
+</span></span><span style="display:flex;"><span>        Security Level:AuthPriv
+</span></span><span style="display:flex;"><span>        Trap-rec-address: 10.10.11.99
+</span></span><span style="display:flex;"><span>        User-name :USER2022
+</span></span><span style="display:flex;"><span>        Security Level:AuthPriv
+</span></span><span style="display:flex;"><span>Security IP is Enabled. 
+</span></span><span style="display:flex;"><span>        Security IP: 10.10.11.99
+</span></span><span style="display:flex;"><span>        Security IP: 2001:10:10:11::99
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config<span style="color:#f92672">)</span><span style="color:#75715e">#sho snmp user  </span>
+</span></span><span style="display:flex;"><span>User name: USER2022
+</span></span><span style="display:flex;"><span>Engine ID: 0x31
+</span></span><span style="display:flex;"><span>Auth Protocol:SHA    Priv Protocol:AES-CFB-128
+</span></span><span style="display:flex;"><span>Row status:active
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>当法务部门对应的用户接口发生 UP DOWN 事件时，禁止发送 trap 消息至上述集团网管服务器。
+</span></span><span style="display:flex;"><span>SW1<span style="color:#f92672">(</span>config-if-ethernet1/0/3<span style="color:#f92672">)</span><span style="color:#75715e">#sho run c </span>
+</span></span><span style="display:flex;"><span> no switchport updown notification enable
+</span></span><span style="display:flex;"><span> 
+</span></span></code></pre></div><h3 id="7互联流量镜像">7、互联流量镜像</h3>
+<p>将 W1 与 FW1 互连流量镜像到 SW1 E1/0/1，会话列表为 1。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>monitor session 1 source interface Ethernet1/0/21 tx
+</span></span><span style="display:flex;"><span>monitor session 1 source interface Ethernet1/0/21 rx
+</span></span><span style="display:flex;"><span>monitor session 1 destination interface Ethernet1/0/1
+</span></span></code></pre></div><p>配置结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)#sho monitor 
+</span></span><span style="display:flex;"><span>monitor session 1:
+</span></span><span style="display:flex;"><span>Destination Ethernet1/0/1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Card: slot 1
+</span></span><span style="display:flex;"><span>source ports:
+</span></span><span style="display:flex;"><span>  RX port: 21 
+</span></span><span style="display:flex;"><span>  TX port: 21 
+</span></span><span style="display:flex;"><span>--------------------------------------------------------
+</span></span><span style="display:flex;"><span>No monitor in session 2
+</span></span><span style="display:flex;"><span>--------------------------------------------------------
+</span></span><span style="display:flex;"><span>No monitor in session 3
+</span></span><span style="display:flex;"><span>--------------------------------------------------------
+</span></span><span style="display:flex;"><span>No monitor in session 4
+</span></span><span style="display:flex;"><span>--------------------------------------------------------
+</span></span><span style="display:flex;"><span>No monitor in session 5
+</span></span><span style="display:flex;"><span>--------------------------------------------------------
+</span></span><span style="display:flex;"><span>No monitor in session 6
+</span></span><span style="display:flex;"><span>--------------------------------------------------------
+</span></span><span style="display:flex;"><span>No monitor in session 7
+</span></span><span style="display:flex;"><span>--------------------------------------------------------
+</span></span></code></pre></div><h3 id="8uldp">8、ULDP：</h3>
+<p>SW1 和 SW2 E1/0/21-28 启用单向链路故障检测，当发生该故障时，端口标记为 errdisable 状态，自动关闭端口，经过 1 分钟后，端口自动重启；发送 Hello 报文时间间隔为 15s。</p>
+<h4 id="sw1配置-4">SW1配置：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)# uldp enable
+</span></span><span style="display:flex;"><span>SW1(config)# uldp aggressive-mode
+</span></span><span style="display:flex;"><span>SW1(config)# interface range Ethernet1/0/21-28
+</span></span><span style="display:flex;"><span>SW1(config-if-range)# uldp enable
+</span></span><span style="display:flex;"><span>SW1(config-if-range)# uldp aggressive-mode
+</span></span><span style="display:flex;"><span>SW1(config)# uldp recovery-time 60
+</span></span><span style="display:flex;"><span>SW1(config)# uldp hello-interval 15
+</span></span></code></pre></div><h4 id="sw2配置-1">SW2配置：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2(config)# uldp enable
+</span></span><span style="display:flex;"><span>SW2(config)# uldp aggressive-mode
+</span></span><span style="display:flex;"><span>SW2(config)# interface range Ethernet1/0/21-28
+</span></span><span style="display:flex;"><span>SW2(config-if-range)# uldp enable
+</span></span><span style="display:flex;"><span>SW2(config-if-range)# uldp aggressive-mode
+</span></span><span style="display:flex;"><span>SW2(config)# uldp recovery-time 60
+</span></span><span style="display:flex;"><span>SW2(config)# uldp hello-interval 15
+</span></span></code></pre></div><h4 id="配置结果">配置结果：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)# sho uldp 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>uldp enable
+</span></span><span style="display:flex;"><span>uldp hello interval is              15
+</span></span><span style="display:flex;"><span>uldp recovery time is               60
+</span></span><span style="display:flex;"><span>uldp shut down mode is              AUTO
+</span></span><span style="display:flex;"><span>uldp global work mode is            AGGRESSIVE
+</span></span><span style="display:flex;"><span>the total number of the port is     8 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>   PortName     PhyLink   LineProto   WorkMode      PortState  NeighborNum
+</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span> Ethernet1/0/21    UP         UP        AGGRESSIVE    BIDIRECTION    0
+</span></span><span style="display:flex;"><span> Ethernet1/0/22    UP         UP        AGGRESSIVE    BIDIRECTION    0
+</span></span><span style="display:flex;"><span> Ethernet1/0/23    UP         UP        AGGRESSIVE    BIDIRECTION    0
+</span></span><span style="display:flex;"><span> Ethernet1/0/24    UP         DOWN      AGGRESSIVE    INACTIVE       0
+</span></span><span style="display:flex;"><span> Ethernet1/0/25    UP         DOWN      AGGRESSIVE    INACTIVE       0
+</span></span><span style="display:flex;"><span> Ethernet1/0/26    UP         UP        AGGRESSIVE    BIDIRECTION    1
+</span></span><span style="display:flex;"><span> Ethernet1/0/27    UP         UP        AGGRESSIVE    BIDIRECTION    1
+</span></span><span style="display:flex;"><span> Ethernet1/0/28    UP         UP        AGGRESSIVE    BIDIRECTION    1
+</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW2(config)# sho uldp 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>uldp enable
+</span></span><span style="display:flex;"><span>uldp hello interval is              15
+</span></span><span style="display:flex;"><span>uldp recovery time is               60
+</span></span><span style="display:flex;"><span>uldp shut down mode is              AUTO
+</span></span><span style="display:flex;"><span>uldp global work mode is            AGGRESSIVE
+</span></span><span style="display:flex;"><span>the total number of the port is     8 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span>   PortName     PhyLink   LineProto   WorkMode      PortState  NeighborNum
+</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------
+</span></span><span style="display:flex;"><span> Ethernet1/0/21    UP         UP        AGGRESSIVE    BIDIRECTION    0
+</span></span><span style="display:flex;"><span> Ethernet1/0/22    UP         UP        AGGRESSIVE    BIDIRECTION    0
+</span></span><span style="display:flex;"><span> Ethernet1/0/23    UP         UP        AGGRESSIVE    BIDIRECTION    0
+</span></span><span style="display:flex;"><span> Ethernet1/0/24    UP         DOWN      AGGRESSIVE    INACTIVE       0
+</span></span><span style="display:flex;"><span> Ethernet1/0/25    UP         DOWN      AGGRESSIVE    INACTIVE       0
+</span></span><span style="display:flex;"><span> Ethernet1/0/26    UP         UP        AGGRESSIVE    BIDIRECTION    1
+</span></span><span style="display:flex;"><span> Ethernet1/0/27    UP         UP        AGGRESSIVE    BIDIRECTION    1
+</span></span><span style="display:flex;"><span> Ethernet1/0/28    UP         UP        AGGRESSIVE    BIDIRECTION    1
+</span></span><span style="display:flex;"><span>---------------------------------------------------------------------------
+</span></span></code></pre></div><h3 id="9lldp">9、LLDP：</h3>
+<p>SW1和SW2所有端口启用链路层发现协议，更新报文发送时间间隔为20s，老化时间乘法器值为 5，Trap 报文发送间隔为 10s，配置三条裸光缆端口使能Trap 功能。</p>
+<h4 id="sw1配置-5">SW1配置：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)# lldp enable
+</span></span><span style="display:flex;"><span>SW1(config)# lldp msgTxHold 5
+</span></span><span style="display:flex;"><span>SW1(config)# lldp tx-interval 10
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/26
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/27
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/28
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span></code></pre></div><h4 id="sw2配置-2">SW2配置：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2(config)# lldp enable
+</span></span><span style="display:flex;"><span>SW2(config)# lldp msgTxHold 5
+</span></span><span style="display:flex;"><span>SW2(config)# lldp tx-interval 10
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/26
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/27
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/28
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span></code></pre></div><h4 id="配置结果-1">配置结果：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1# sho lldp 
+</span></span><span style="display:flex;"><span>-----LLDP GLOBAL INFORMATIONS-----
+</span></span><span style="display:flex;"><span>LLDP has been enabled globally.
+</span></span><span style="display:flex;"><span>LLDP enabled port : Ethernet1/0/21 Ethernet1/0/22 Ethernet1/0/23 Ethernet1/0/26 Ethernet1/0/27 Ethernet1/0/28
+</span></span><span style="display:flex;"><span>LLDP interval :10
+</span></span><span style="display:flex;"><span>LLDP txTTL :50
+</span></span><span style="display:flex;"><span>LLDP NotificationInterval :5
+</span></span><span style="display:flex;"><span>LLDP txDelay :2
+</span></span><span style="display:flex;"><span>LLDP-MED FastStart Repeat Count :4
+</span></span><span style="display:flex;"><span>-------------END------------------
+</span></span><span style="display:flex;"><span>SW1(config)# interface range Ethernet1/0/26-28
+</span></span><span style="display:flex;"><span>SW1(config-if-range)# sho run c 
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/26
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/27
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/28
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Sw2!!!!!!!!!!!!
+</span></span><span style="display:flex;"><span>SW2# sho lldp 
+</span></span><span style="display:flex;"><span>-----LLDP GLOBAL INFORMATIONS-----
+</span></span><span style="display:flex;"><span>LLDP has been enabled globally.
+</span></span><span style="display:flex;"><span>LLDP enabled port : Ethernet1/0/21 Ethernet1/0/22 Ethernet1/0/23 Ethernet1/0/26 Ethernet1/0/27 Ethernet1/0/28
+</span></span><span style="display:flex;"><span>LLDP interval :10
+</span></span><span style="display:flex;"><span>LLDP txTTL :50
+</span></span><span style="display:flex;"><span>LLDP NotificationInterval :5
+</span></span><span style="display:flex;"><span>LLDP txDelay :2
+</span></span><span style="display:flex;"><span>LLDP-MED FastStart Repeat Count :4
+</span></span><span style="display:flex;"><span>-------------END------------------
+</span></span><span style="display:flex;"><span>SW2(config)# interface range Ethernet1/0/26-28
+</span></span><span style="display:flex;"><span>SW2(config-if-range)# sho run c 
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/26
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/27
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>Interface Ethernet1/0/28
+</span></span><span style="display:flex;"><span> lldp trap enable
+</span></span></code></pre></div><h2 id="路由器部分">路由器部分</h2>
+<h3 id="1ssh服务">1、SSH服务</h3>
+<p>启用所有设备的 ssh 服务，防火墙用户名 admin，明文密码 Pass-1234，其余设备用户名和明文密码均为 admin</p>
+<h4 id="交换机ac">交换机&amp;AC：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW(config)#ssh-server enable 
+</span></span><span style="display:flex;"><span>SW(config)#username admin password 0 admin 
+</span></span></code></pre></div><h4 id="路由器">路由器：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT1_config#username admin password 0 admin 
+</span></span><span style="display:flex;"><span>RT1_config#aaa authentication login default local
+</span></span><span style="display:flex;"><span>RT1_config#aaa authentication enable default none
+</span></span><span style="display:flex;"><span>RT1_config#ip sshd enable
+</span></span></code></pre></div><h4 id="防火墙">防火墙：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>需要在web页面上开启
+</span></span><span style="display:flex;"><span>&lt;你一定能找到的=-=&gt;
+</span></span></code></pre></div><h3 id="2配置时区">2、配置时区</h3>
+<p>配置所有设备的时区为 GMT+08:00，调整 SW1 时间为实际时间，SW1 配置为 ntp server，其他设备用 SW1 loopback1 ipv4 地址作为 ntp server 地址，ntp client 请求报文时间间隔 1 分钟。</p>
+<h4 id="sw1配置-6">SW1配置：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1#clock set 14:41:30 2023.4.24
+</span></span><span style="display:flex;"><span>SW1#config
+</span></span><span style="display:flex;"><span>SW1(config)#clock timezone GMT add 8 0
+</span></span><span style="display:flex;"><span>SW1(config)#ntp enable
+</span></span><span style="display:flex;"><span>SW1(config)#ntp-service refclock-master 1  
+</span></span><span style="display:flex;"><span>SW1(config)#ntp server 10.10.1.1
+</span></span><span style="display:flex;"><span>SW1(config)#ntp syn-interval 60 
+</span></span></code></pre></div><h4 id="sw2sw3ac配置">SW2、SW3、AC配置：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>clock timezone GMT add 8 0
+</span></span><span style="display:flex;"><span>ntp enable
+</span></span><span style="display:flex;"><span>ntp syn-interval 60
+</span></span><span style="display:flex;"><span>ntp server 10.10.1.1
+</span></span></code></pre></div><h4 id="路由器配置">路由器配置：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>time-zone GMT 8 0
+</span></span><span style="display:flex;"><span>ntp query-interval 60
+</span></span><span style="display:flex;"><span>ntp server 10.10.1.1
+</span></span></code></pre></div><h4 id="防火墙配置">防火墙配置：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>FW1(config)# clock zone GMT 8 0
+</span></span><span style="display:flex;"><span>FW1(config)# ntp enable 
+</span></span><span style="display:flex;"><span>FW1(config)# ntp server 10.10.1.1
+</span></span><span style="display:flex;"><span>FW1(config)# ntp query-interval 1
+</span></span></code></pre></div><h4 id="配置结果-2">配置结果：</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)#sho clock 
+</span></span><span style="display:flex;"><span>Current time is Mon Apr 24 15:13:30 2023 [GMT+08:00]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1(config)#sho ntp status
+</span></span><span style="display:flex;"><span>ntp clock status: synchronized
+</span></span><span style="display:flex;"><span>Clock stratum:4
+</span></span><span style="display:flex;"><span>Reference clock server:10.10.1.1
+</span></span><span style="display:flex;"><span>Clock offset:0.0   s
+</span></span><span style="display:flex;"><span>Root delay:0.000 ms
+</span></span><span style="display:flex;"><span>Root dispersion:0.000 ms
+</span></span><span style="display:flex;"><span>Reference time:Mon Apr 24 07:06:3.203 2023
+</span></span><span style="display:flex;"><span>Syn-interval:60s  
+</span></span></code></pre></div><h3 id="3vrrp">3、VRRP</h3>
+<p>利用 vrrpv2 和 vrrpv3 技术实现 vlan60、vlan70、vlan80、vlan90 网关冗余备份，vrrp id 与 vlan id 相同。vrrpv2 vip 为 10.10.vlanid.9（如 vlan60的 vrrpv2 vip 为 10.10.60.9），vrrpv3 vip 为 FE80:vlanid::9（如 vlan60 的vrrpv3 vip 为 FE80:60::9）。配置 SW1 为 vlan60、vlan70 的 Master，SW2 为vlan80、vlan90 的 aster。要求 vrrp 组中高优先级为 120，低优先级为默认值，抢占模式为默认值，vrrpv2 和 vrrpv3 发送通告报文时间间隔为默认值。当 SW1或 SW2 上联链路发生故障，Master 优先级降低 50。</p>
+<h4 id="vrrpv2-配置">VRRPv2 配置：</h4>
+<h5 id="sw1配置-7">SW1配置：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)# interface Vlan60
+</span></span><span style="display:flex;"><span>SW1(config-if)# ip address 10.10.60.1 255.255.255.0
+</span></span><span style="display:flex;"><span>SW1(config-if)# exit
+</span></span><span style="display:flex;"><span>SW1(config)# interface Vlan70
+</span></span><span style="display:flex;"><span>SW1(config-if)# ip address 10.10.70.1 255.255.255.0
+</span></span><span style="display:flex;"><span>SW1(config-if)# exit
+</span></span><span style="display:flex;"><span>SW1(config)# router vrrp 60
+</span></span><span style="display:flex;"><span>SW1(config-router)# virtual-ip 10.10.60.9
+</span></span><span style="display:flex;"><span>SW1(config-router)# priority 120
+</span></span><span style="display:flex;"><span>SW1(config-router)# circuit-failover Vlan1021 50
+</span></span><span style="display:flex;"><span>SW1(config-router)# enable
+</span></span><span style="display:flex;"><span>SW1(config-router)# exit
+</span></span><span style="display:flex;"><span>SW1(config)# router vrrp 70
+</span></span><span style="display:flex;"><span>SW1(config-router)# virtual-ip 10.10.70.9
+</span></span><span style="display:flex;"><span>SW1(config-router)# priority 120
+</span></span><span style="display:flex;"><span>SW1(config-router)# circuit-failover Vlan1021 50
+</span></span><span style="display:flex;"><span>SW1(config-router)# enable
+</span></span><span style="display:flex;"><span>SW1(config-router)# exit
+</span></span></code></pre></div><h5 id="sw2配置-3">SW2配置：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2(config)# interface Vlan80
+</span></span><span style="display:flex;"><span>SW2(config-if)# ip address 10.10.80.1 255.255.255.0
+</span></span><span style="display:flex;"><span>SW2(config-if)# exit
+</span></span><span style="display:flex;"><span>SW2(config)# interface Vlan90
+</span></span><span style="display:flex;"><span>SW2(config-if)# ip address 10.10.90.1 255.255.255.0
+</span></span><span style="display:flex;"><span>SW2(config-if)# exit
+</span></span><span style="display:flex;"><span>SW2(config)# router vrrp 80
+</span></span><span style="display:flex;"><span>SW2(config-router)# virtual-ip 10.10.80.9
+</span></span><span style="display:flex;"><span>SW2(config-router)# priority 120
+</span></span><span style="display:flex;"><span>SW2(config-router)# circuit-failover Vlan1021 50
+</span></span><span style="display:flex;"><span>SW2(config-router)# enable
+</span></span><span style="display:flex;"><span>SW2(config-router)# exit
+</span></span><span style="display:flex;"><span>SW2(config)# router vrrp 90
+</span></span><span style="display:flex;"><span>SW2(config-router)# virtual-ip 10.10.90.9
+</span></span><span style="display:flex;"><span>SW2(config-router)# priority 120
+</span></span><span style="display:flex;"><span>SW2(config-router)# circuit-failover Vlan1021 50
+</span></span><span style="display:flex;"><span>SW2(config-router)# enable
+</span></span><span style="display:flex;"><span>SW2(config-router)# exit
+</span></span></code></pre></div><h4 id="vrrpv3-配置">VRRPv3 配置：</h4>
+<h5 id="sw1配置-8">SW1配置：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)# ipv6 unicast-routing
+</span></span><span style="display:flex;"><span>SW1(config)# interface Vlan60
+</span></span><span style="display:flex;"><span>SW1(config-if)# ipv6 address FE80::1 link-local
+</span></span><span style="display:flex;"><span>SW1(config-if)# ipv6 address 2001:DB8:0:60::1/64
+</span></span><span style="display:flex;"><span>SW1(config-if)# exit
+</span></span><span style="display:flex;"><span>SW1(config)# interface Vlan70
+</span></span><span style="display:flex;"><span>SW1(config-if)# ipv6 address FE80::1 link-local
+</span></span><span style="display:flex;"><span>SW1(config-if)# ipv6 address 2001:DB8:0:70::1/64
+</span></span><span style="display:flex;"><span>SW1(config-if)# exit
+</span></span><span style="display:flex;"><span>SW1(config)# router ipv6 vrrp 60
+</span></span><span style="display:flex;"><span>SW1(config-router)# virtual-ipv6 FE80:60::9 interface Vlan60
+</span></span><span style="display:flex;"><span>SW1(config-router)# priority 120
+</span></span><span style="display:flex;"><span>SW1(config-router)# circuit-failover Vlan1021 50
+</span></span><span style="display:flex;"><span>SW1(config-router)# enable
+</span></span><span style="display:flex;"><span>SW1(config-router)# exit
+</span></span><span style="display:flex;"><span>SW1(config)# router ipv6 vrrp 70
+</span></span><span style="display:flex;"><span>SW1(config-router)# virtual-ipv6 FE80:70::9 interface Vlan70
+</span></span><span style="display:flex;"><span>SW1(config-router)# priority 120
+</span></span><span style="display:flex;"><span>SW1(config-router)# circuit-failover Vlan1021 50
+</span></span><span style="display:flex;"><span>SW1(config-router)# enable
+</span></span><span style="display:flex;"><span>SW1(config-router)# exit
+</span></span></code></pre></div><h5 id="sw2配置-4">SW2配置：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2(config)# ipv6 unicast-routing
+</span></span><span style="display:flex;"><span>SW2(config)# interface Vlan80
+</span></span><span style="display:flex;"><span>SW2(config-if)# ipv6 address FE80::1 link-local
+</span></span><span style="display:flex;"><span>SW2(config-if)# ipv6 address 2001:DB8:0:80::1/64
+</span></span><span style="display:flex;"><span>SW2(config-if)# exit
+</span></span><span style="display:flex;"><span>SW2(config)# interface Vlan90
+</span></span><span style="display:flex;"><span>SW2(config-if)# ipv6 address FE80::1 link-local
+</span></span><span style="display:flex;"><span>SW2(config-if)# ipv6 address 2001:DB8:0:90::1/64
+</span></span><span style="display:flex;"><span>SW2(config-if)# exit
+</span></span><span style="display:flex;"><span>SW2(config)# router ipv6 vrrp 80
+</span></span><span style="display:flex;"><span>SW2(config-router)# virtual-ipv6 FE80:80::9 interface Vlan80
+</span></span><span style="display:flex;"><span>SW2(config-router)# priority 120
+</span></span><span style="display:flex;"><span>SW2(config-router)# circuit-failover Vlan1021 50
+</span></span><span style="display:flex;"><span>SW2(config-router)# enable
+</span></span><span style="display:flex;"><span>SW2(config-router)# exit
+</span></span><span style="display:flex;"><span>SW2(config)# router ipv6 vrrp 90
+</span></span><span style="display:flex;"><span>SW2(config-router)# virtual-ipv6 FE80:90::9 interface Vlan90
+</span></span><span style="display:flex;"><span>SW2(config-router)# priority 120
+</span></span><span style="display:flex;"><span>SW2(config-router)# circuit-failover Vlan1021 50
+</span></span><span style="display:flex;"><span>SW2(config-router)# enable
+</span></span><span style="display:flex;"><span>SW2(config-router)# exit
+</span></span></code></pre></div><h3 id="4dhcp-服务">4、DHCP 服务：</h3>
+<p>在 AC1 上配置了 DHCPv4 服务，为 SW1 的产品1段 VLAN10 和分公司 VLAN100、VLAN110、VLAN120 分配地址池。IPv4 地址池名称分别为 POOLv4-10、POOLv4-100、POOLv4-110、POOLv4-120。</p>
+<h4 id="配置-dhcp-服务和-dhcp-snooping">配置 DHCP 服务和 DHCP Snooping</h4>
+<p>在 AC1 上配置 DHCPv4 和 DHCPv6 服务，为 SW1 和分公司的 VLAN 分配地址，并在 SW1 上启用 DHCP Snooping。</p>
+<p>启用 DHCPv4 和 DHCPv6 服务。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>AC1(config)#service dhcp
+</span></span><span style="display:flex;"><span>AC1(config)#service dhcpv6
+</span></span></code></pre></div><p>为 VLAN10、VLAN100、VLAN110 和 VLAN120 配置 DHCPv4 地址池，并分配地址、设置默认网关和 DNS 服务器</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>AC1(config)#ip dhcp pool POOLv4-10
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#network 10.10.11.0 255.255.255.0
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#default-router 10.10.11.1
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#dns-server 114.114.114.114
+</span></span><span style="display:flex;"><span>AC1(config)#ip dhcp pool POOLv4-100
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#network 10.17.100.0 255.255.255.0
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#default-router 10.17.100.1
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#dns-server 114.114.114.114
+</span></span><span style="display:flex;"><span>AC1(config)#ip dhcp pool POOLv4-110
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#network 10.17.110.0 255.255.255.0
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#default-router 10.17.110.1
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#dns-server 114.114.114.114
+</span></span><span style="display:flex;"><span>AC1(config)#ip dhcp pool POOLv4-120
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#network 10.17.120.0 255.255.255.0
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#default-router 10.17.120.1
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#dns-server 114.114.114.114
+</span></span></code></pre></div><p>为 VLAN10、VLAN100、VLAN110 和 VLAN120 配置 DHCPv6 地址池，并分配 IPv6 地址。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>AC1(config)#ipv6 dhcp pool POOLv6-10
+</span></span><span style="display:flex;"><span>AC1(config-dhcpv6)#address prefix 2001:10:10:11::/64
+</span></span><span style="display:flex;"><span>AC1(config)#ipv6 dhcp pool POOLv6-100
+</span></span><span style="display:flex;"><span>AC1(config-dhcpv6)#address prefix 2001:10:17:100::/64
+</span></span><span style="display:flex;"><span>AC1(config)#ipv6 dhcp pool POOLv6-110
+</span></span><span style="display:flex;"><span>AC1(config-dhcpv6)#address prefix 2001:10:17:110::/64
+</span></span><span style="display:flex;"><span>AC1(config)#ipv6 dhcp pool POOLv6-120
+</span></span><span style="display:flex;"><span>AC1(config-dhcpv6)#address prefix 2001:10:17:120::/64
+</span></span></code></pre></div><p>排除网关地址以外的地址池范围内的地址。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>AC1(config)#ip dhcp excluded-address 10.10.11.1
+</span></span><span style="display:flex;"><span>AC1(config)#ip dhcp excluded-address 10.17.100.1
+</span></span><span style="display:flex;"><span>AC1(config)#ip dhcp excluded-address 10.17.110.1
+</span></span><span style="display:flex;"><span>AC1(config)#ip dhcp excluded-address 10.17.120.1
+</span></span><span style="display:flex;"><span>AC1(config)#ipv6 dhcp pool POOLv6-120
+</span></span><span style="display:flex;"><span>AC1(config-dhcpv6)#excluded-address 2001:10:17:120::1
+</span></span><span style="display:flex;"><span>AC1(config)#ipv6 dhcp pool POOLv6-110
+</span></span><span style="display:flex;"><span>AC1(config-dhcpv6)#excluded-address 2001:10:17:110::1
+</span></span><span style="display:flex;"><span>AC1(config)#ipv6 dhcp pool POOLv6-100
+</span></span><span style="display:flex;"><span>AC1(config-dhcpv6)#excluded-address 2001:10:17:100::1
+</span></span><span style="display:flex;"><span>AC1(config)#ipv6 dhcp pool POOLv6-10
+</span></span><span style="display:flex;"><span>AC1(config-dhcpv6)#dns-server 2400:3200::1
+</span></span><span style="display:flex;"><span>AC1(config-dhcpv6)#excluded-address 2001:10:10:11::1
+</span></span></code></pre></div><p>为设备保留地址。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>AC1(config)#ip dhcp pool AP1
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#host 10.17.100.9 255.255.255.0
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#hardware-address 00-03-0F-8A-F8-B0
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#default-router 10.17.100.1
+</span></span><span style="display:flex;"><span>AC1(config)#ip dhcp pool PC1
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#host 10.10.11.9 255.255.255.0
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#hardware-address 8C-16-45-78-8D-98
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#default-router 10.10.11.1
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#dns-server 114.114.114.114
+</span></span><span style="display:flex;"><span>AC1(config)#ip dhcp pool PC2
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#host 10.17.110.9 255.255.255.0
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#hardware-address 24-69-8E-1E-B9-5E
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#default-router 10.17.110.1
+</span></span><span style="display:flex;"><span>AC1(dhcp-config)#dns-server 114.114.114.114
+</span></span></code></pre></div><p>在 AC1 上配置 DHCP 服务，并为 VLAN1000、VLAN110 和 VLAN120 启用 DHCPv6 服务器。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>AC1(config)#interface Vlan1000
+</span></span><span style="display:flex;"><span>AC1(config-if)#ipv6 dhcp server POOLv6-100
+</span></span><span style="display:flex;"><span>AC1(config)#interface Vlan110
+</span></span><span style="display:flex;"><span>AC1(config-if)#ipv6 dhcp server POOLv6-110
+</span></span><span style="display:flex;"><span>AC1(config)#interface Vlan120
+</span></span><span style="display:flex;"><span>AC1(config-if)#ipv6 dhcp server POOLv6-120
+</span></span></code></pre></div><p>在 SW1 上启用 DHCP Snooping，并将 E1/0/1 端口配置为受信任的端口，以允许 DHCP 流量通过。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)#ip dhcp snooping
+</span></span><span style="display:flex;"><span>SW1(config)#ip dhcp snooping vlan 10,100-110
+</span></span><span style="display:flex;"><span>SW1(config)#interface Ethernet1/0/1
+</span></span><span style="display:flex;"><span>SW1(config-if)#ip dhcp snooping trust
+</span></span></code></pre></div><p>配置 DHCPv6 中继，将 DHCPv6 请求转发到 AC1 上的 DHCPv6 服务器。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)#ipv6 dhcp relay destination 2001:10:10:8::1 Vlan10-Vlan110
+</span></span></code></pre></div><h3 id="5ospf">5、OSPF</h3>
+<p>SW1、SW2、SW3、RT1 以太链路、RT2 以太链路、FW1、FW2、AC1 之间运行OSPFv2 和 OSPFv3 协议（路由模式发布网络用接口地址，- BGP 协议除外）。</p>
+<h4 id="ospfv2">OSPFv2</h4>
+<p>(1) SW1、SW2、SW3、RT1、RT2、FW1 之间 OSPFv2 ，进程 1，区域 0，分别发布 loopback1 地址路由和产品路由，FW1 通告 type2 默认路由。</p>
+<h5 id="1配置sw1">1、配置SW1:</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)# router ospf 1
+</span></span><span style="display:flex;"><span>SW1(config-router)# ospf router-id 10.10.1.1
+</span></span><span style="display:flex;"><span>SW1(config-router)# network 10.10.1.1/32 area 0
+</span></span><span style="display:flex;"><span>SW1(config-router)# network 10.10.11.1/32 area 0
+</span></span><span style="display:flex;"><span>SW1(config-router)# network 10.10.255.1/32 area 0
+</span></span><span style="display:flex;"><span>SW1(config-router)# network 10.10.255.5/32 area 0
+</span></span><span style="display:flex;"><span>SW1(config-router)# network 10.10.255.14/32 area 0
+</span></span></code></pre></div><h5 id="2-配置sw2">2、 配置SW2:</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2(config)# router ospf 1
+</span></span><span style="display:flex;"><span>SW2(config-router)# ospf router-id 10.10.2.1
+</span></span><span style="display:flex;"><span>SW2(config-router)# network 10.10.2.1/32 area 0
+</span></span><span style="display:flex;"><span>SW2(config-router)# network 10.10.21.1/32 area 0
+</span></span><span style="display:flex;"><span>SW2(config-router)# network 10.10.255.2/32 area 0
+</span></span><span style="display:flex;"><span>SW2(config-router)# network 10.10.255.9/32 area 0
+</span></span><span style="display:flex;"><span>SW2(config-router)# network 10.10.255.22/32 area 0
+</span></span></code></pre></div><h5 id="3-配置sw3">3、 配置SW3:</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3(config)# router ospf 1
+</span></span><span style="display:flex;"><span>SW3(config-router)# ospf router-id 10.10.3.1
+</span></span><span style="display:flex;"><span>SW3(config-router)# network 10.10.3.1/32 area 0
+</span></span><span style="display:flex;"><span>SW3(config-router)# network 10.10.31.1/32 area 0
+</span></span><span style="display:flex;"><span>SW3(config-router)# network 10.10.255.6/32 area 0
+</span></span><span style="display:flex;"><span>SW3(config-router)# network 10.10.255.10/32 area 0
+</span></span></code></pre></div><h5 id="4配置rt1">4、配置RT1:</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT1(config)# router ospf 1
+</span></span><span style="display:flex;"><span>RT1(config-router)# router-id 10.10.4.1
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.4.1 255.255.255.255 area 0
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.255.29 255.255.255.255 area 0
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.255.21 255.255.255.255 area 0
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.255.18 255.255.255.255 area 0
+</span></span></code></pre></div><h5 id="5-配置rt2">5、 配置RT2</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT2(config)# router ospf 1
+</span></span><span style="display:flex;"><span>RT2(config-router)# router-id 10.10.5.1
+</span></span><span style="display:flex;"><span>RT2(config-router)# network 10.10.5.1 255.255.255.255 area 0
+</span></span><span style="display:flex;"><span>RT2(config-router)# network 10.10.255.30 255.255.255.255 area 0
+</span></span></code></pre></div><h5 id="6-配置fw1">6、 配置FW1</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>FW1(config)# ip vrouter &#34;trust-vr&#34;
+</span></span><span style="display:flex;"><span>FW1(config-vrouter)# ip route 0.0.0.0/0 200.200.200.1
+</span></span><span style="display:flex;"><span>FW1(config-vrouter)# router ospf 1
+</span></span><span style="display:flex;"><span>FW1(config-router)# router-id 10.10.6.1
+</span></span><span style="display:flex;"><span>FW1(config-router)# default-information originate
+</span></span><span style="display:flex;"><span>FW1(config-router)# network 10.10.6.1/32 area 0
+</span></span><span style="display:flex;"><span>FW1(config-router)# network 10.10.255.13/32 area 0
+</span></span><span style="display:flex;"><span>FW1(config-router)# network 10.10.255.17/32 area 0
+</span></span></code></pre></div><h5 id="7-配置rt2与ac1之间的ospfv2协议">7、 配置RT2与AC1之间的OSPFv2协议</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT2(config)# router ospf 1
+</span></span><span style="display:flex;"><span>RT2(config-router)# network 10.10.255.41 255.255.255.255 area 1
+</span></span><span style="display:flex;"><span>RT2(config-router)# area 1 nssa no-summary
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>AC1(config)# router ospf 1
+</span></span><span style="display:flex;"><span>AC1(config-router)# ospf router-id 10.10.8.1
+</span></span><span style="display:flex;"><span>AC1(config-router)# area 1 nssa no-summary
+</span></span><span style="display:flex;"><span>AC1(config-router)# network 10.10.8.1/32 area 1
+</span></span><span style="display:flex;"><span>AC1(config-router)# network 10.10.255.42/32 area 1
+</span></span><span style="display:flex;"><span>AC1(config-router)# network 10.17.110.1/32 area 1
+</span></span><span style="display:flex;"><span>AC1(config-router)# network 10.17.120.1/32 area 1
+</span></span><span style="display:flex;"><span>AC1(config-router)# redistribute connected route-map L3
+</span></span><span style="display:flex;"><span>AC1(config-router)# ip prefix-list L3 seq 5 permit 10.10.8.3/32
+</span></span><span style="display:flex;"><span>AC1(config-router)# route-map L3 permit 10
+</span></span><span style="display:flex;"><span>AC1(config-router)# match ip address prefix-list L3
+</span></span></code></pre></div><h5 id="8-配置sw3模拟办事处与fw2之间的ospfv2协议">8、 配置SW3模拟办事处与FW2之间的OSPFv2协议</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW3(config)# interface Ethernet1/0/11
+</span></span><span style="display:flex;"><span>SW3(config-if)# loopback
+</span></span><span style="display:flex;"><span>SW3(config-if)# switchport access vlan 110
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3(config)# interface Ethernet1/0/12
+</span></span><span style="display:flex;"><span>SW3(config-if)# loopback
+</span></span><span style="display:flex;"><span>SW3(config-if)# switchport access vlan 120
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3(config)# router ospf 2
+</span></span><span style="display:flex;"><span>SW3(config-router)# ospf router-id 10.10.3.2
+</span></span><span style="display:flex;"><span>SW3(config-router)# network 10.10.3.2/32 area 2
+</span></span><span style="display:flex;"><span>SW3(config-router)# network 10.10.255.46/32 area 2
+</span></span><span style="display:flex;"><span>SW3(config-router)# network 10.16.110.1/32 area 2
+</span></span><span style="display:flex;"><span>SW3(config-router)# network 10.16.120.1/32 area 2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW2(config)# ip vrouter &#34;trust-vr&#34;
+</span></span><span style="display:flex;"><span>FW2(config-vrouter)# router ospf 2
+</span></span><span style="display:flex;"><span>FW2(config-router)# router-id 10.10.7.1
+</span></span><span style="display:flex;"><span>FW2(config-router)# network 10.10.255.45/32 area 2
+</span></span><span style="display:flex;"><span>FW2(config-router)# network 10.10.255.26/32 area 2
+</span></span><span style="display:flex;"><span>FW2(config-router)# network 10.10.7.1/32 area 2
+</span></span></code></pre></div><h5 id="9配置rt1与fw2之间的ospfv2协议和重发布路由">9、配置RT1与FW2之间的OSPFv2协议和重发布路由</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT1(config)# router ospf 2
+</span></span><span style="display:flex;"><span>RT1(config-router)# router-id 10.10.4.4
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.4.4 255.255.255.255 area 2
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.255.25 255.255.255.255 area 2
+</span></span><span style="display:flex;"><span>RT1(config-router)# default-information originate always metric-type 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW2(config)# ip vrouter &#34;trust-vr&#34;
+</span></span><span style="display:flex;"><span>FW2(config-vrouter)# router ospf 2
+</span></span><span style="display:flex;"><span>FW2(config-router)# router-id 10.10.7.1
+</span></span><span style="display:flex;"><span>FW2(config-router)# network 10.10.255.45/32 area 2
+</span></span><span style="display:flex;"><span>FW2(config-router)# network 10.10.255.26/32 area 2
+</span></span><span style="display:flex;"><span>FW2(config-router)# network 10.10.7.1/32 area 2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config)# router ospf 1
+</span></span><span style="display:flex;"><span>RT1(config-router)# router-id 10.10.4.1
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.4.1 255.255.255.255 area 0
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.255.29 255.255.255.255 area 0
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.255.21 255.255.255.255 area 0
+</span></span><span style="display:flex;"><span>RT1(config-router)# network 10.10.255.18 255.255.255.255 area 0
+</span></span><span style="display:flex;"><span>RT1(config-router)# redistribute ospf 2 route-map BSC
+</span></span><span style="display:flex;"><span>RT1(config-router)# redistribute connect route-map ZL
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config)# route-map BSC 10 permit
+</span></span><span style="display:flex;"><span>RT1(config-route-map)# match ip address prefix-list BSC
+</span></span><span style="display:flex;"><span>RT1(config)# ip prefix-list BSC seq 5 permit 10.10.7.1/32
+</span></span><span style="display:flex;"><span>RT1(config)# ip prefix-list BSC seq 10 permit 10.10.3.2/32
+</span></span><span style="display:flex;"><span>	RT1(config)# ip prefix-list BSC seq 15 permit 10.16.110.0/24
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config)# route-map ZL 10 permit
+</span></span><span style="display:flex;"><span>RT1(config-route-map)# match ip address prefix-list ZL
+</span></span><span style="display:flex;"><span>RT1(config)# ip prefix-list ZL seq 5 permit 10.10.255.24/30
+</span></span></code></pre></div><h4 id="路由表对照">路由表对照：</h4>
+<p>SW1:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)#sho ip route ospf 
+</span></span><span style="display:flex;"><span>O*E2    0.0.0.0/0 [110/10] via 10.10.255.13, Vlan1021, 12:37:46  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.2.1/32 [110/2] via 10.10.255.2, Vlan1026, 15:51:53  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.3.1/32 [110/2] via 10.10.255.6, Vlan1022, 15:46:35  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.3.2/32 [110/100] via 10.10.255.13, Vlan1021, 11:56:19  tag:0
+</span></span><span style="display:flex;"><span>                     [110/100] via 10.10.255.2, Vlan1026, 11:56:19  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.4.1/32 [110/3] via 10.10.255.13, Vlan1021, 14:40:59  tag:0
+</span></span><span style="display:flex;"><span>                     [110/3] via 10.10.255.2, Vlan1026, 14:40:59  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.5.1/32 [110/4] via 10.10.255.13, Vlan1021, 14:40:59  tag:0
+</span></span><span style="display:flex;"><span>                     [110/4] via 10.10.255.2, Vlan1026, 14:40:59  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.6.1/32 [110/2] via 10.10.255.13, Vlan1021, 14:42:20  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.7.1/32 [110/100] via 10.10.255.13, Vlan1021, 12:02:08  tag:0
+</span></span><span style="display:flex;"><span>                     [110/100] via 10.10.255.2, Vlan1026, 12:02:08  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.10.8.1/32 [110/5] via 10.10.255.13, Vlan1021, 13:59:39  tag:0
+</span></span><span style="display:flex;"><span>                     [110/5] via 10.10.255.2, Vlan1026, 13:59:39  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.8.3/32 [110/20] via 10.10.255.13, Vlan1021, 12:32:00  tag:0
+</span></span><span style="display:flex;"><span>                     [110/20] via 10.10.255.2, Vlan1026, 12:32:00  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.21.0/24 [110/2] via 10.10.255.2, Vlan1026, 15:51:53  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.31.0/24 [110/2] via 10.10.255.6, Vlan1022, 15:46:35  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.8/30 [110/2] via 10.10.255.6, Vlan1022, 15:46:35  tag:0
+</span></span><span style="display:flex;"><span>                       [110/2] via 10.10.255.2, Vlan1026, 15:46:35  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.16/30 [110/2] via 10.10.255.13, Vlan1021, 14:41:09  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.20/30 [110/2] via 10.10.255.2, Vlan1026, 15:51:53  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.255.24/30 [110/100] via 10.10.255.13, Vlan1021, 11:52:58  tag:0
+</span></span><span style="display:flex;"><span>                        [110/100] via 10.10.255.2, Vlan1026, 11:52:58  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.28/30 [110/3] via 10.10.255.13, Vlan1021, 14:40:59  tag:0
+</span></span><span style="display:flex;"><span>                        [110/3] via 10.10.255.2, Vlan1026, 14:40:59  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.10.255.40/30 [110/4] via 10.10.255.13, Vlan1021, 13:59:30  tag:0
+</span></span><span style="display:flex;"><span>                        [110/4] via 10.10.255.2, Vlan1026, 13:59:30  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.16.110.0/24 [110/100] via 10.10.255.13, Vlan1021, 11:55:52  tag:0
+</span></span><span style="display:flex;"><span>                       [110/100] via 10.10.255.2, Vlan1026, 11:55:52  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.17.110.0/24 [110/5] via 10.10.255.13, Vlan1021, 13:59:39  tag:0
+</span></span><span style="display:flex;"><span>                       [110/5] via 10.10.255.2, Vlan1026, 13:59:39  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.17.120.0/24 [110/5] via 10.10.255.13, Vlan1021, 13:59:39  tag:0
+</span></span><span style="display:flex;"><span>                       [110/5] via 10.10.255.2, Vlan1026, 13:59:39  tag:0
+</span></span><span style="display:flex;"><span>Total routes are : 34 item(s)
+</span></span></code></pre></div><p>SW2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2(config)#sho ip rout ospf 
+</span></span><span style="display:flex;"><span>O*E2    0.0.0.0/0 [110/10] via 10.10.255.1, Vlan1026, 12:38:26  tag:0
+</span></span><span style="display:flex;"><span>                  [110/10] via 10.10.255.21, Vlan1021, 12:38:26  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.1.1/32 [110/2] via 10.10.255.1, Vlan1026, 15:52:34  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.3.1/32 [110/2] via 10.10.255.10, Vlan1022, 15:47:42  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.3.2/32 [110/100] via 10.10.255.21, Vlan1021, 11:57:00  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.4.1/32 [110/2] via 10.10.255.21, Vlan1021, 15:18:41  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.5.1/32 [110/3] via 10.10.255.21, Vlan1021, 15:03:50  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.6.1/32 [110/3] via 10.10.255.1, Vlan1026, 14:41:39  tag:0
+</span></span><span style="display:flex;"><span>                     [110/3] via 10.10.255.21, Vlan1021, 14:41:39  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.7.1/32 [110/100] via 10.10.255.21, Vlan1021, 12:02:49  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.10.8.1/32 [110/4] via 10.10.255.21, Vlan1021, 14:00:19  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.8.3/32 [110/20] via 10.10.255.21, Vlan1021, 12:32:40  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.11.0/24 [110/2] via 10.10.255.1, Vlan1026, 15:52:34  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.31.0/24 [110/2] via 10.10.255.10, Vlan1022, 15:47:42  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.4/30 [110/2] via 10.10.255.1, Vlan1026, 15:47:42  tag:0
+</span></span><span style="display:flex;"><span>                       [110/2] via 10.10.255.10, Vlan1022, 15:47:42  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.12/30 [110/2] via 10.10.255.1, Vlan1026, 15:52:34  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.16/30 [110/2] via 10.10.255.21, Vlan1021, 15:18:41  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.255.24/30 [110/100] via 10.10.255.21, Vlan1021, 11:53:38  tag:0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>O       10.10.255.28/30 [110/2] via 10.10.255.21, Vlan1021, 15:08:47  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.10.255.40/30 [110/3] via 10.10.255.21, Vlan1021, 14:00:11  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.16.110.0/24 [110/100] via 10.10.255.21, Vlan1021, 11:56:32  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.17.110.0/24 [110/4] via 10.10.255.21, Vlan1021, 14:00:19  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.17.120.0/24 [110/4] via 10.10.255.21, Vlan1021, 14:00:19  tag:0
+</span></span><span style="display:flex;"><span>Total routes are : 24 item(s)
+</span></span></code></pre></div><p>SW3:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW3(config)#sho ip route ospf 
+</span></span><span style="display:flex;"><span>O*E2    0.0.0.0/0 [110/10] via 10.10.255.5, Vlan1021, 12:38:54  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.1.1/32 [110/2] via 10.10.255.5, Vlan1021, 15:47:43  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.2.1/32 [110/2] via 10.10.255.9, Vlan1022, 15:48:13  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.3.2/32 [110/100] via 10.10.255.9, Vlan1022, 11:57:27  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.4.1/32 [110/3] via 10.10.255.9, Vlan1022, 15:19:09  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.5.1/32 [110/4] via 10.10.255.9, Vlan1022, 15:04:17  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.6.1/32 [110/3] via 10.10.255.5, Vlan1021, 14:43:28  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.7.1/32 [110/100] via 10.10.255.9, Vlan1022, 12:03:16  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.10.8.1/32 [110/5] via 10.10.255.9, Vlan1022, 14:00:47  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.8.3/32 [110/20] via 10.10.255.9, Vlan1022, 12:33:08  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.11.0/24 [110/2] via 10.10.255.5, Vlan1021, 15:47:43  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.21.0/24 [110/2] via 10.10.255.9, Vlan1022, 15:48:13  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.0/30 [110/2] via 10.10.255.5, Vlan1021, 15:47:43  tag:0
+</span></span><span style="display:flex;"><span>                       [110/2] via 10.10.255.9, Vlan1022, 15:47:43  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.12/30 [110/2] via 10.10.255.5, Vlan1021, 15:47:43  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.16/30 [110/3] via 10.10.255.5, Vlan1021, 14:42:17  tag:0
+</span></span><span style="display:flex;"><span>                        [110/3] via 10.10.255.9, Vlan1022, 14:42:17  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.20/30 [110/2] via 10.10.255.9, Vlan1022, 15:48:13  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.10.255.24/30 [110/100] via 10.10.255.9, Vlan1022, 11:54:06  tag:0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>O       10.10.255.28/30 [110/3] via 10.10.255.9, Vlan1022, 15:09:14  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.10.255.40/30 [110/4] via 10.10.255.9, Vlan1022, 14:00:39  tag:0
+</span></span><span style="display:flex;"><span>O E2    10.16.110.0/24 [110/100] via 10.10.255.9, Vlan1022, 11:57:00  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.17.110.0/24 [110/5] via 10.10.255.9, Vlan1022, 14:00:47  tag:0
+</span></span><span style="display:flex;"><span>O IA    10.17.120.0/24 [110/5] via 10.10.255.9, Vlan1022, 14:00:47  tag:0
+</span></span><span style="display:flex;"><span>Total routes are : 24 item(s)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW3(config)#sho ip route vrf Guangdong ospf 
+</span></span><span style="display:flex;"><span>O*E1    0.0.0.0/0 [110/102] via 10.10.255.45, Vlan1015, 12:10:12  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.4.4/32 [110/3] via 10.10.255.45, Vlan1015, 12:10:13  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.7.1/32 [110/2] via 10.10.255.45, Vlan1015, 12:19:31  tag:0
+</span></span><span style="display:flex;"><span>O       10.10.255.24/30 [110/2] via 10.10.255.45, Vlan1015, 12:10:33  tag:0
+</span></span><span style="display:flex;"><span>Total routes are : 4 item(s)
+</span></span></code></pre></div><p>RT1:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT1_config#sho ip route ospf 
+</span></span><span style="display:flex;"><span>VRF ID: 0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>O E2   0.0.0.0/0            [150,10] via 10.10.255.17(on GigaEthernet0/2)
+</span></span><span style="display:flex;"><span>O      10.10.1.1/32         [110,3] via 10.10.255.17(on GigaEthernet0/2)
+</span></span><span style="display:flex;"><span>                            [110,3] via 10.10.255.22(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.2.1/32         [110,2] via 10.10.255.22(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.3.1/32         [110,3] via 10.10.255.22(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.3.2/32         [110,3] via 10.10.255.26(on GigaEthernet0/3)
+</span></span><span style="display:flex;"><span>O      10.10.5.1/32         [110,2] via 10.10.255.30(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.6.1/32         [110,2] via 10.10.255.17(on GigaEthernet0/2)
+</span></span><span style="display:flex;"><span>O      10.10.7.1/32         [110,2] via 10.10.255.26(on GigaEthernet0/3)
+</span></span><span style="display:flex;"><span>O IA   10.10.8.1/32         [110,3] via 10.10.255.30(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O E2   10.10.8.3/32         [150,20] via 10.10.255.30(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.11.0/24        [110,3] via 10.10.255.17(on GigaEthernet0/2)
+</span></span><span style="display:flex;"><span>                            [110,3] via 10.10.255.22(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.21.0/24        [110,2] via 10.10.255.22(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.31.0/24        [110,3] via 10.10.255.22(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.255.0/30       [110,2] via 10.10.255.22(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.255.4/30       [110,3] via 10.10.255.17(on GigaEthernet0/2)
+</span></span><span style="display:flex;"><span>                            [110,3] via 10.10.255.22(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.255.8/30       [110,2] via 10.10.255.22(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.255.12/30      [110,2] via 10.10.255.17(on GigaEthernet0/2)
+</span></span><span style="display:flex;"><span>O IA   10.10.255.40/30      [110,2] via 10.10.255.30(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.255.44/30      [110,2] via 10.10.255.26(on GigaEthernet0/3)
+</span></span><span style="display:flex;"><span>O      10.16.110.0/24       [110,3] via 10.10.255.26(on GigaEthernet0/3)
+</span></span><span style="display:flex;"><span>O      10.16.120.0/24       [110,3] via 10.10.255.26(on GigaEthernet0/3)
+</span></span><span style="display:flex;"><span>O IA   10.17.110.0/24       [110,3] via 10.10.255.30(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O IA   10.17.120.0/24       [110,3] via 10.10.255.30(on GigaEthernet0/0)
+</span></span></code></pre></div><p>RT2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT2_config#sho ip route ospf 
+</span></span><span style="display:flex;"><span>VRF ID: 0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>O E2   0.0.0.0/0            [150,10] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.1.1/32         [110,4] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.2.1/32         [110,3] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.3.1/32         [110,4] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O E2   10.10.3.2/32         [150,100] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.4.1/32         [110,2] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.6.1/32         [110,3] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O E2   10.10.7.1/32         [150,100] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.8.1/32         [110,2] via 10.10.255.42(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O N2   10.10.8.3/32         [150,20] via 10.10.255.42(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.10.11.0/24        [110,4] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.21.0/24        [110,3] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.31.0/24        [110,4] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.255.0/30       [110,3] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.255.4/30       [110,4] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.255.8/30       [110,3] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.255.12/30      [110,3] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.255.16/30      [110,2] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.10.255.20/30      [110,2] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O E2   10.10.255.24/30      [150,100] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O E2   10.16.110.0/24       [150,100] via 10.10.255.29(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      10.17.110.0/24       [110,2] via 10.10.255.42(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      10.17.120.0/24       [110,2] via 10.10.255.42(on GigaEthernet0/1)
+</span></span></code></pre></div><p>AC1:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>AC1(config)#sho ip route os 
+</span></span><span style="display:flex;"><span>O*IA    0.0.0.0/0 [110/101] via 10.10.255.41, Vlan1001, 14:02:54  tag:0
+</span></span><span style="display:flex;"><span>Total routes are : 1 item(s)
+</span></span></code></pre></div><p>FW1:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>FW1(config)# sho ip route ospf 
+</span></span><span style="display:flex;"><span>Codes: K - kernel route, C - connected, S - static, Z - ISP, R - RIP, O - OSPF,
+</span></span><span style="display:flex;"><span>       B - BGP, D - DHCP, P - PPPoE, W - wireless, H - HOST, G - SCVPN, V - VPN, M - IMPORT,
+</span></span><span style="display:flex;"><span>       I - ISIS, Y - SYNC, L - llb outbound, &gt; - selected first nexthop, * - FIB route, b - BFD enable
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;trust-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.1.1/32 [110/2/1] via 10.10.255.14, ethernet0/1, 14:46:08
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.2.1/32 [110/3/1] via 10.10.255.14, ethernet0/1, 14:44:57
+</span></span><span style="display:flex;"><span>  *              [110/3/1] via 10.10.255.18, ethernet0/2, 14:44:57
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.3.1/32 [110/3/1] via 10.10.255.14, ethernet0/1, 14:46:08
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.3.2/32 [110/100/1] via 10.10.255.18, ethernet0/2, 12:00:17
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.4.1/32 [110/2/1] via 10.10.255.18, ethernet0/2, 14:44:57
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.5.1/32 [110/3/1] via 10.10.255.18, ethernet0/2, 14:44:57
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.7.1/32 [110/100/1] via 10.10.255.18, ethernet0/2, 12:06:06
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.8.1/32 [110/4/1] via 10.10.255.18, ethernet0/2, 14:03:32
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.8.3/32 [110/20/1] via 10.10.255.18, ethernet0/2, 12:35:58
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.11.0/24 [110/2/1] via 10.10.255.14, ethernet0/1, 14:46:08
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.21.0/24 [110/3/1] via 10.10.255.14, ethernet0/1, 14:44:57
+</span></span><span style="display:flex;"><span>  *               [110/3/1] via 10.10.255.18, ethernet0/2, 14:44:57
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.31.0/24 [110/3/1] via 10.10.255.14, ethernet0/1, 14:46:08
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.255.0/30 [110/2/1] via 10.10.255.14, ethernet0/1, 14:46:08
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.255.4/30 [110/2/1] via 10.10.255.14, ethernet0/1, 14:46:08
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.255.8/30 [110/3/1] via 10.10.255.14, ethernet0/1, 14:44:57
+</span></span><span style="display:flex;"><span>  *                [110/3/1] via 10.10.255.18, ethernet0/2, 14:44:57
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.255.20/30 [110/2/1] via 10.10.255.18, ethernet0/2, 14:44:59
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.255.24/30 [110/100/1] via 10.10.255.18, ethernet0/2, 11:56:58
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.255.28/30 [110/2/1] via 10.10.255.18, ethernet0/2, 14:44:59
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.255.40/30 [110/3/1] via 10.10.255.18, ethernet0/2, 14:03:24
+</span></span><span style="display:flex;"><span>O&gt;* 10.16.110.0/24 [110/100/1] via 10.10.255.18, ethernet0/2, 11:59:52
+</span></span><span style="display:flex;"><span>O&gt;* 10.17.110.0/24 [110/4/1] via 10.10.255.18, ethernet0/2, 14:03:34
+</span></span><span style="display:flex;"><span>O&gt;* 10.17.120.0/24 [110/4/1] via 10.10.255.18, ethernet0/2, 14:03:34
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;mgt-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span></code></pre></div><p>FW2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>FW2(config)# sho ip route os 
+</span></span><span style="display:flex;"><span>  &lt;cr&gt;              
+</span></span><span style="display:flex;"><span>  |                 Output modifiers
+</span></span><span style="display:flex;"><span>  vrouter           Virtual router
+</span></span><span style="display:flex;"><span>FW2(config)# sho ip route os 
+</span></span><span style="display:flex;"><span>Codes: K - kernel route, C - connected, S - static, Z - ISP, R - RIP, O - OSPF,
+</span></span><span style="display:flex;"><span>       B - BGP, D - DHCP, P - PPPoE, W - wireless, H - HOST, G - SCVPN, V - VPN, M - IMPORT,
+</span></span><span style="display:flex;"><span>       I - ISIS, Y - SYNC, L - llb outbound, &gt; - selected first nexthop, * - FIB route, b - BFD enable
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;trust-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>O&gt;* 0.0.0.0/0 [110/101/1] via 10.10.255.25, ethernet0/2, 12:12:31
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.3.2/32 [110/2/1] via 10.10.255.46, ethernet0/1, 12:23:29
+</span></span><span style="display:flex;"><span>O&gt;* 10.10.4.4/32 [110/2/1] via 10.10.255.25, ethernet0/2, 12:12:32
+</span></span><span style="display:flex;"><span>O&gt;* 10.16.110.0/24 [110/2/1] via 10.10.255.46, ethernet0/1, 12:23:29
+</span></span><span style="display:flex;"><span>O&gt;* 10.16.120.0/24 [110/2/1] via 10.10.255.46, ethernet0/1, 12:23:29
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;mgt-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span></code></pre></div><h4 id="ospfv3">OSPFv3</h4>
+<p>(1) SW1、SW2、SW3、RT1、RT2、FW1 之间 OSPFv3 ，进程 1，区域 0，分别发布 loopback1 地址路由和产品路由，FW1 通告 type2 默认路由。</p>
+<h5 id="sw1配置-9">SW1配置：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)# router ipv6 ospf 1
+</span></span><span style="display:flex;"><span>SW1(config-router)# router-id 10.10.1.1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1(config-router)# interface Loopback1
+</span></span><span style="display:flex;"><span>SW1(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1(config-router)# interface Vlan10
+</span></span><span style="display:flex;"><span>SW1(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1(config-router)# interface Vlan1021
+</span></span><span style="display:flex;"><span>SW1(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1(config-router)# interface Vlan1022
+</span></span><span style="display:flex;"><span>SW1(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW1(config-router)# interface Vlan1026
+</span></span><span style="display:flex;"><span>SW1(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span></code></pre></div><h5 id="配置sw2">配置SW2：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2(config)# router ipv6 ospf 1
+</span></span><span style="display:flex;"><span>SW2(config-router)# router-id 10.10.2.1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW2(config-router)# interface Loopback1
+</span></span><span style="display:flex;"><span>SW2(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW2(config-router)# interface Vlan10
+</span></span><span style="display:flex;"><span>SW2(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW2(config-router)# interface Vlan1021
+</span></span><span style="display:flex;"><span>SW2(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW2(config-router)# interface Vlan1022
+</span></span><span style="display:flex;"><span>SW2(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW2(config-router)# interface Vlan1026
+</span></span><span style="display:flex;"><span>SW2(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span></code></pre></div><h5 id="配置sw3">配置SW3：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW3(config)# router ipv6 ospf 1
+</span></span><span style="display:flex;"><span>SW3(config-router)# router-id 10.10.3.1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3(config-router)# interface Loopback1
+</span></span><span style="display:flex;"><span>SW3(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3(config-router)# interface Vlan10
+</span></span><span style="display:flex;"><span>SW3(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3(config-router)# interface Vlan1021
+</span></span><span style="display:flex;"><span>SW3(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SW3(config-router)# interface Vlan1022
+</span></span><span style="display:flex;"><span>SW3(config-if)# ipv6 router ospf 1 area 0 tag 1
+</span></span></code></pre></div><h5 id="配置rt1">配置RT1：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT1(config)# router ospfv3 1
+</span></span><span style="display:flex;"><span>RT1(config-router)# router-id 10.10.4.1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config-router)# interface Loopback1
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 ospf 1 area 0 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config-router)# interface GigaEthernet0/0
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 ospf 1 area 0 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config-router)# interface GigaEthernet0/1
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 ospf 1 area 0 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config-router)# interface GigaEthernet0/2
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 ospf 1 area 0 
+</span></span></code></pre></div><h5 id="配置rt2">配置RT2：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT2(config)# router ospfv3 1
+</span></span><span style="display:flex;"><span>RT2(config-router)# router-id 10.10.5.1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT2(config-router)# interface Loopback1
+</span></span><span style="display:flex;"><span>RT2(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>RT2(config-if)# ipv6 ospf 1 area 0 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT2(config-router)# interface GigaEthernet0/0
+</span></span><span style="display:flex;"><span>RT2(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>RT2(config-if)# ipv6 ospf 1 area 0 
+</span></span></code></pre></div><h5 id="配置fw1">配置FW1：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>FW1(config)# ipv6 route ::/0 &#34;ethernet0/3&#34; FE80::203:FFF:FEE0:F9B8
+</span></span><span style="display:flex;"><span>FW1(config)# ipv6 router ospf 1
+</span></span><span style="display:flex;"><span>FW1(config-router)# router-id 10.10.6.1
+</span></span><span style="display:flex;"><span>FW1(config-router)# default-information originate
+</span></span><span style="display:flex;"><span>FW1(config-router)# exit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW1(config)# interface loopback1
+</span></span><span style="display:flex;"><span>FW1(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>FW1(config-if)# ipv6 ospf 1 area 0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW1(config)# interface ethernet0/1
+</span></span><span style="display:flex;"><span>FW1(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>FW1(config-if)# ipv6 ospf 1 area 0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW1(config)# interface ethernet0/2
+</span></span><span style="display:flex;"><span>FW1(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>FW1(config-if)# ipv6 ospf 1 area 0
+</span></span></code></pre></div><h5 id="配置rt2与ac1之间的ospfv3">配置RT2与AC1之间的OSPFv3：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT2(config)# router ospfv3 1
+</span></span><span style="display:flex;"><span>RT2(config-router)# router-id 10.10.5.1
+</span></span><span style="display:flex;"><span>RT2(config-router)# area 1 stub no-summary
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT2(config-router)# interface GigaEthernet0/1
+</span></span><span style="display:flex;"><span>RT2(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>RT2(config-if)# ipv6 ospf 1 area 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>AC1(config)# router ipv6 ospf 1
+</span></span><span style="display:flex;"><span>AC1(config-router)# router-id 10.10.8.1
+</span></span><span style="display:flex;"><span>AC1(config-router)# area 1 stub no-summary
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>AC1(config-router)# interface Loopback1
+</span></span><span style="display:flex;"><span>AC1(config-if)# ipv6 router ospf area 1 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>AC1(config-router)# interface Vlan110
+</span></span><span style="display:flex;"><span>AC1(config-if)# ipv6 router ospf area 1 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>AC1(config-router)# interface Vlan120
+</span></span><span style="display:flex;"><span>AC1(config-if)# ipv6 router ospf area 1 tag 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>AC1(config-router)# interface Vlan1001
+</span></span><span style="display:flex;"><span>AC1(config-if)# ipv6 router ospf area 1 tag 1
+</span></span></code></pre></div><h5 id="配置sw3和fw2的ipv6路由">配置SW3和FW2的IPv6路由：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW3(config)# ipv6 route vrf Guangdong ::/0 fe80::203:fff:fea6:8341 Vlan1015
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW2(config)# ip vrouter &#34;trust-vr&#34;
+</span></span><span style="display:flex;"><span>FW2(config-vrouter)# ipv6 route 2001:10:10:3::1/128 &#34;ethernet0/1&#34; FE80::203:FFF:FEE0:F9B8
+</span></span><span style="display:flex;"><span>FW2(config-vrouter)# ipv6 route 2001:10:16:110::/64 &#34;ethernet0/1&#34; FE80::203:FFF:FEE0:F9B8
+</span></span><span style="display:flex;"><span>FW2(config-vrouter)# ipv6 route 2001:10:16:120::/64 &#34;ethernet0/1&#34; FE80::203:FFF:FEE0:F9B8
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW2(config-vrouter)# ipv6 router ospf 2
+</span></span><span style="display:flex;"><span>FW2(config-router)# router-id 10.10.7.1
+</span></span><span style="display:flex;"><span>FW2(config-router)# redistribute static
+</span></span></code></pre></div><h5 id="配置rt1与fw2之间的ospfv3">配置RT1与FW2之间的OSPFv3：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT1(config)# router ospfv3 2
+</span></span><span style="display:flex;"><span>RT1(config-router)# router-id 10.10.4.4
+</span></span><span style="display:flex;"><span>RT1(config-router)# default-information originate always metric-type 1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config-router)# interface Loopback4
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 ospf 2 area 2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW2(config)# interface loopback1
+</span></span><span style="display:flex;"><span>FW2(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>FW2(config-if)# ipv6 ospf 2 area 2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW2(config)# interface ethernet0/1
+</span></span><span style="display:flex;"><span>FW2(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>FW2(config-if)# ipv6 ospf 2 area 2
+</span></span><span style="display:flex;"><span>FW2(config-if)# exit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW2(config)# interface ethernet0/2
+</span></span><span style="display:flex;"><span>FW2(config-if)# ipv6 enable
+</span></span><span style="display:flex;"><span>FW2(config-if)# ipv6 ospf 2 area 2
+</span></span><span style="display:flex;"><span>FW2(config-if)# exit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config)# router ospfv3 1
+</span></span><span style="display:flex;"><span>RT1(config-router)# router-id 10.10.4.1
+</span></span><span style="display:flex;"><span>RT1(config-router)# redistribute ospf 2 route-map BSCV6
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config)# route-map BSCV6 10 permit
+</span></span><span style="display:flex;"><span>RT1(config-route-map)# match ipv6 address prefix-list BSCV6
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config)# ipv6 prefix-list BSCV6 seq 5 permit 2001:10:10:3::2/128
+</span></span><span style="display:flex;"><span>RT1(config)# ipv6 prefix-list BSCV6 seq 10 permit 2001:10:16:110::/64
+</span></span></code></pre></div><h5 id="修改ospf-cost为100">修改ospf cost为100：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>FW1(config)# interface ethernet0/2
+</span></span><span style="display:flex;"><span>FW1(config-if)# ip ospf cost 100
+</span></span><span style="display:flex;"><span>FW1(config-if)# ipv6 ospf cost 100
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1(config)# interface GigaEthernet0/2
+</span></span><span style="display:flex;"><span>RT1(config-if)# ip ospf cost 100
+</span></span><span style="display:flex;"><span>RT1(config-if)# ipv6 ospf cost 100
+</span></span></code></pre></div><p>验证部分：</p>
+<p>SW1：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW1(config)#sho ipv route nsm ospf 
+</span></span><span style="display:flex;"><span>IPv6 Routing Table
+</span></span><span style="display:flex;"><span>Codes: K - kernel route, C - connected, S - static, R - RIP, O - OSPF,
+</span></span><span style="display:flex;"><span>       I - IS-IS, B - BGP
+</span></span><span style="display:flex;"><span>Timers: Uptime
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>O   ::/0 [110/21] via fe80::203:fff:fea6:72c1, Vlan1021, 12:00:39  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:2::1/128 [110/1] via fe80::203:fff:fee0:f9b5, Vlan1026, 12:24:12  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:3::1/128 [110/1] via fe80::203:fff:fee0:f9b8, Vlan1022, 12:16:43  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:3::2/128 [110/150] via fe80::203:fff:fee0:f9b5, Vlan1026, 11:30:20  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:4::1/128 [110/2] via fe80::203:fff:fee0:f9b5, Vlan1026, 11:30:21  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:5::1/128 [110/3] via fe80::203:fff:fee0:f9b5, Vlan1026, 11:30:21  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:6::1/128 [110/2] via fe80::203:fff:fea6:72c1, Vlan1021, 12:05:24  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:8::1/128 [110/4] via fe80::203:fff:fee0:f9b5, Vlan1026, 11:30:21  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:21::/64 [110/2] via fe80::203:fff:fee0:f9b5, Vlan1026, 12:24:12  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:31::/64 [110/2] via fe80::203:fff:fee0:f9b8, Vlan1022, 12:16:43  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:16:110::/64 [110/150] via fe80::203:fff:fee0:f9b5, Vlan1026, 11:30:20  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:17:110::/64 [110/5] via fe80::203:fff:fee0:f9b5, Vlan1026, 11:30:21  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:17:120::/64 [110/5] via fe80::203:fff:fee0:f9b5, Vlan1026, 11:30:21  tag:0
+</span></span></code></pre></div><p>Sw2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW2(config)#sho ipv route nsm ospf 
+</span></span><span style="display:flex;"><span>IPv6 Routing Table
+</span></span><span style="display:flex;"><span>Codes: K - kernel route, C - connected, S - static, R - RIP, O - OSPF,
+</span></span><span style="display:flex;"><span>       I - IS-IS, B - BGP
+</span></span><span style="display:flex;"><span>Timers: Uptime
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>O   ::/0 [110/22] via fe80::203:fff:fee0:f9b2, Vlan1026, 11:31:37  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:1::1/128 [110/1] via fe80::203:fff:fee0:f9b2, Vlan1026, 12:24:52  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:3::1/128 [110/1] via fe80::203:fff:fee0:f9b8, Vlan1022, 12:17:33  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:3::2/128 [110/150] via fe80::203:fff:fedc:c392, Vlan1021, 11:36:13  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:4::1/128 [110/1] via fe80::203:fff:fedc:c392, Vlan1021, 12:14:02  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:5::1/128 [110/2] via fe80::203:fff:fedc:c392, Vlan1021, 12:11:48  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:6::1/128 [110/3] via fe80::203:fff:fee0:f9b2, Vlan1026, 11:31:38  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:8::1/128 [110/3] via fe80::203:fff:fedc:c392, Vlan1021, 11:59:02  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:11::/64 [110/2] via fe80::203:fff:fee0:f9b2, Vlan1026, 12:24:52  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:31::/64 [110/2] via fe80::203:fff:fee0:f9b8, Vlan1022, 12:17:33  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:16:110::/64 [110/150] via fe80::203:fff:fedc:c392, Vlan1021, 11:36:13  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:17:110::/64 [110/4] via fe80::203:fff:fedc:c392, Vlan1021, 11:59:02  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:17:120::/64 [110/4] via fe80::203:fff:fedc:c392, Vlan1021, 11:59:02  tag:0
+</span></span></code></pre></div><p>SW3:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>SW3#sho ipv route nsm ospf 
+</span></span><span style="display:flex;"><span>IPv6 Routing Table
+</span></span><span style="display:flex;"><span>Codes: K - kernel route, C - connected, S - static, R - RIP, O - OSPF,
+</span></span><span style="display:flex;"><span>       I - IS-IS, B - BGP
+</span></span><span style="display:flex;"><span>Timers: Uptime
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>O   ::/0 [110/22] via fe80::203:fff:fee0:f9b2, Vlan1021, 12:01:49  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:1::1/128 [110/1] via fe80::203:fff:fee0:f9b2, Vlan1021, 12:17:56  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:2::1/128 [110/1] via fe80::203:fff:fee0:f9b5, Vlan1022, 12:17:56  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:3::2/128 [110/150] via fe80::203:fff:fee0:f9b5, Vlan1022, 11:36:44  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:4::1/128 [110/2] via fe80::203:fff:fee0:f9b5, Vlan1022, 12:14:33  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:5::1/128 [110/3] via fe80::203:fff:fee0:f9b5, Vlan1022, 12:12:19  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:6::1/128 [110/3] via fe80::203:fff:fee0:f9b2, Vlan1021, 12:06:35  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:8::1/128 [110/4] via fe80::203:fff:fee0:f9b5, Vlan1022, 11:59:33  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:11::/64 [110/2] via fe80::203:fff:fee0:f9b2, Vlan1021, 12:17:56  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:10:21::/64 [110/2] via fe80::203:fff:fee0:f9b5, Vlan1022, 12:17:56  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:16:110::/64 [110/150] via fe80::203:fff:fee0:f9b5, Vlan1022, 11:36:44  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:17:110::/64 [110/5] via fe80::203:fff:fee0:f9b5, Vlan1022, 11:59:33  tag:0
+</span></span><span style="display:flex;"><span>O   2001:10:17:120::/64 [110/5] via fe80::203:fff:fee0:f9b5, Vlan1022, 11:59:33  tag:0
+</span></span></code></pre></div><p>RT1:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT1_config#sho ipv route ospf 
+</span></span><span style="display:flex;"><span>OE1    ::/0[1]
+</span></span><span style="display:flex;"><span>        [110,23] via fe80::203:fff:fee0:f9b5(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      2001:10:10:1::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,2] via fe80::203:fff:fee0:f9b5(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      2001:10:10:2::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,1] via fe80::203:fff:fee0:f9b5(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      2001:10:10:3::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,2] via fe80::203:fff:fee0:f9b5(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>OE2    2001:10:10:3::2/128[1]
+</span></span><span style="display:flex;"><span>        [110,20] via fe80::203:fff:fea6:8342(on GigaEthernet0/3)
+</span></span><span style="display:flex;"><span>O      2001:10:10:5::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,1] via fe80::203:fff:fedc:c389(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:6::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,4] via fe80::203:fff:fee0:f9b5(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      2001:10:10:7::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,2] via fe80::203:fff:fea6:8342(on GigaEthernet0/3)
+</span></span><span style="display:flex;"><span>OIA    2001:10:10:8::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,2] via fe80::203:fff:fedc:c389(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:11::/64[1]
+</span></span><span style="display:flex;"><span>        [110,3] via fe80::203:fff:fee0:f9b5(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      2001:10:10:21::/64[1]
+</span></span><span style="display:flex;"><span>        [110,2] via fe80::203:fff:fee0:f9b5(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      2001:10:10:31::/64[1]
+</span></span><span style="display:flex;"><span>        [110,3] via fe80::203:fff:fee0:f9b5(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>OE2    2001:10:16:110::/64[1]
+</span></span><span style="display:flex;"><span>        [110,20] via fe80::203:fff:fea6:8342(on GigaEthernet0/3)
+</span></span><span style="display:flex;"><span>OE2    2001:10:16:120::/64[1]
+</span></span><span style="display:flex;"><span>        [110,20] via fe80::203:fff:fea6:8342(on GigaEthernet0/3)
+</span></span><span style="display:flex;"><span>OIA    2001:10:17:110::/64[1]
+</span></span><span style="display:flex;"><span>        [110,3] via fe80::203:fff:fedc:c389(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>OIA    2001:10:17:120::/64[1]
+</span></span><span style="display:flex;"><span>        [110,3] via fe80::203:fff:fedc:c389(on GigaEthernet0/0)
+</span></span></code></pre></div><p>RT2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT2_config#sho ipv route ospf 
+</span></span><span style="display:flex;"><span>OE1    ::/0[1]
+</span></span><span style="display:flex;"><span>        [110,24] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:1::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,3] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:2::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,2] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:3::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,3] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>OE2    2001:10:10:3::2/128[1]
+</span></span><span style="display:flex;"><span>        [110,150] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:4::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,1] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:6::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,5] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:8::1/128[1]
+</span></span><span style="display:flex;"><span>        [110,1] via fe80::203:fff:fed4:28b2(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      2001:10:10:11::/64[1]
+</span></span><span style="display:flex;"><span>        [110,4] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:21::/64[1]
+</span></span><span style="display:flex;"><span>        [110,3] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:10:31::/64[1]
+</span></span><span style="display:flex;"><span>        [110,4] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>OE2    2001:10:16:110::/64[1]
+</span></span><span style="display:flex;"><span>        [110,150] via fe80::203:fff:fedc:c391(on GigaEthernet0/0)
+</span></span><span style="display:flex;"><span>O      2001:10:17:110::/64[1]
+</span></span><span style="display:flex;"><span>        [110,2] via fe80::203:fff:fed4:28b2(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>O      2001:10:17:120::/64[1]
+</span></span><span style="display:flex;"><span>        [110,2] via fe80::203:fff:fed4:28b2(on GigaEthernet0/1)
+</span></span></code></pre></div><p>AC1:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>AC1(config)#sho ipv route nsm ospf 
+</span></span><span style="display:flex;"><span>IPv6 Routing Table
+</span></span><span style="display:flex;"><span>Codes: K - kernel route, C - connected, S - static, R - RIP, O - OSPF,
+</span></span><span style="display:flex;"><span>       I - IS-IS, B - BGP
+</span></span><span style="display:flex;"><span>Timers: Uptime
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>O   ::/0 [110/2] via fe80::203:fff:fedc:c38a, Vlan1001, 12:01:37  tag:0
+</span></span></code></pre></div><p>FW1:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>FW1(config)# sho ipv route ospf ?
+</span></span><span style="display:flex;"><span>  &lt;cr&gt;              
+</span></span><span style="display:flex;"><span>  |                 Output modifiers
+</span></span><span style="display:flex;"><span>  vrouter           Virtual router
+</span></span><span style="display:flex;"><span>FW1(config)# sho ipv route ospf 
+</span></span><span style="display:flex;"><span>Codes: K - kernel route, C - connected, S - static, R - RIPng, O - OSPFv3, 
+</span></span><span style="display:flex;"><span>       B - BGP, I - ISIS, A - AUTOCONF, H - HOST, &gt; - selected route,
+</span></span><span style="display:flex;"><span>       * - FIB route,
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;trust-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:1::1/128
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/1/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:2::1/128
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/2/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:3::1/128
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/2/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:3::2/128
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/150/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:4::1/128
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/3/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:5::1/128
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/4/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:8::1/128
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/5/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:11::/64
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/2/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:21::/64
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/3/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:31::/64
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/3/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:16:110::/64
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/150/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:17:110::/64
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/6/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:17:120::/64
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEE0:F9B2, ethernet0/1 [110/6/1]
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;mgt-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span></code></pre></div><p>FW2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>FW2(config)# sho ipv route ospf 
+</span></span><span style="display:flex;"><span>Codes: K - kernel route, C - connected, S - static, R - RIPng, O - OSPFv3, 
+</span></span><span style="display:flex;"><span>       B - BGP, I - ISIS, A - AUTOCONF, H - HOST, &gt; - selected route,
+</span></span><span style="display:flex;"><span>       * - FIB route,
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;trust-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>O&gt;  ::/0
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEDC:C394, ethernet0/2 [110/151/1]
+</span></span><span style="display:flex;"><span>O&gt;  2001:10:10:4::4/128
+</span></span><span style="display:flex;"><span>  * via FE80::203:FFF:FEDC:C394, ethernet0/2 [110/1/1]
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;mgt-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span></code></pre></div><h3 id="6rip">6、RIP</h3>
+<p>RT1串行链路、RT2串行链路、FW1、AC1之间分别运行RIP和RIPng协议， FW1、RT1、RT2的RIP和RIPng发布loopback2地址路由，AC1 RIP发布loopback2 地址路由，AC1 RIPng采用route-map匹配prefix-list重发布loopback2地址路由。</p>
+<h4 id="ipv4">IPV4:</h4>
+<h5 id="fw1">FW1:</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FW1&gt; enable
+</span></span><span style="display:flex;"><span>FW1# configure terminal
+</span></span><span style="display:flex;"><span>FW1(config)# router rip
+</span></span><span style="display:flex;"><span>FW1(config-router)# network 10.10.6.2/32
+</span></span><span style="display:flex;"><span>FW1(config-router)# network 10.10.255.16/30
+</span></span></code></pre></div><h5 id="rt1">RT1:</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT1&gt; enable
+</span></span><span style="display:flex;"><span>RT1# configure terminal
+</span></span><span style="display:flex;"><span>RT1(config)# router rip 1 
+</span></span><span style="display:flex;"><span>RT1(config-router)# version 2
+</span></span><span style="display:flex;"><span>RT1(config-router)# no auto-summary
+</span></span><span style="display:flex;"><span>RT1(config-router)# interface Loopback2
+</span></span><span style="display:flex;"><span>RT1(config-if)# ip rip 1 enable
+</span></span><span style="display:flex;"><span>RT1(config-if)# interface Serial1/0
+</span></span><span style="display:flex;"><span>RT1(config-if)# ip rip 1 enable
+</span></span><span style="display:flex;"><span>RT1(config-if)# interface Serial1/1
+</span></span><span style="display:flex;"><span>RT1(config-if)# ip rip 1 enable
+</span></span><span style="display:flex;"><span>RT1(config-if)# interface GigaEthernet0/2
+</span></span><span style="display:flex;"><span>RT1(config-if)# ip rip 1 enable
+</span></span></code></pre></div><p>RT2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>RT2&gt; enable
+</span></span><span style="display:flex;"><span>RT2# configure terminal
+</span></span><span style="display:flex;"><span>RT2(config)# router rip 1 
+</span></span><span style="display:flex;"><span>RT2(config-router)# version 2
+</span></span><span style="display:flex;"><span>RT2(config-router)# no auto-summary
+</span></span><span style="display:flex;"><span>RT2(config-router)# interface Loopback2
+</span></span><span style="display:flex;"><span>RT2(config-if)# ip rip 1 enable
+</span></span><span style="display:flex;"><span>RT2(config-if)# interface Serial1/0
+</span></span><span style="display:flex;"><span>RT2(config-if)# ip rip 1 enable
+</span></span><span style="display:flex;"><span>RT2(config-if)# interface Serial1/1
+</span></span><span style="display:flex;"><span>RT2(config-if)# ip rip 1 enable
+</span></span><span style="display:flex;"><span>RT2(config-if)# interface GigaEthernet0/1
+</span></span><span style="display:flex;"><span>RT2(config-if)# ip rip 1 enable
+</span></span></code></pre></div><p>AC1:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>AC1&gt; enable
+</span></span><span style="display:flex;"><span>AC1# configure terminal
+</span></span><span style="display:flex;"><span>AC1(config)# router rip
+</span></span><span style="display:flex;"><span>AC1(config-router)# network Loopback2
+</span></span><span style="display:flex;"><span>AC1(config-router)# network Vlan1001
+</span></span></code></pre></div><h5 id="rt1-1">RT1:</h5>
+<p>配置 RT1 路由策略：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1&gt; enable
+</span></span><span style="display:flex;"><span>RT1# configure terminal
+</span></span><span style="display:flex;"><span>RT1(config)# router rip 1 
+</span></span><span style="display:flex;"><span>RT1(config-router)# version 2
+</span></span><span style="display:flex;"><span>RT1(config-router)# no auto-summary
+</span></span><span style="display:flex;"><span>RT1(config-router)# offset Serial1/1 in AclRIP 3 
+</span></span><span style="display:flex;"><span>RT1(config-router)# offset Serial1/1 out AclRIP 3 
+</span></span><span style="display:flex;"><span>RT1(config-router)# ip access-list standard AclRIP
+</span></span><span style="display:flex;"><span>RT1(config-access-list)# permit any sequence 10
+</span></span></code></pre></div><h4 id="双向认证">双向认证</h4>
+<p>RT1的S1/0与RT2的S1/1之间采用chap双向认证，用户名为对端设备名称，密码为Pass-1234。</p>
+<h5 id="rt1-2">RT1:</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>aaa authentication ppp default local
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>username RT2 password 0 Pass-1234
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>interface Serial1/0
+</span></span><span style="display:flex;"><span> ppp authentication chap 
+</span></span><span style="display:flex;"><span> ppp chap hostname RT1
+</span></span><span style="display:flex;"><span> ppp chap password 0 Pass-1234
+</span></span></code></pre></div><h5 id="rt2">RT2:</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>aaa authentication ppp default local
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>username RT1 password 0 Pass-1234
+</span></span><span style="display:flex;"><span>!
+</span></span><span style="display:flex;"><span>interface Serial1/1
+</span></span><span style="display:flex;"><span> ppp authentication chap 
+</span></span><span style="display:flex;"><span> ppp chap hostname RT2
+</span></span><span style="display:flex;"><span> ppp chap password 0 Pass-1234
+</span></span></code></pre></div><h5 id="验证">验证：</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>FW1(config)# sho ip route rip  
+</span></span><span style="display:flex;"><span>Codes: K - kernel route, C - connected, S - static, Z - ISP, R - RIP, O - OSPF,
+</span></span><span style="display:flex;"><span>       B - BGP, D - DHCP, P - PPPoE, W - wireless, H - HOST, G - SCVPN, V - VPN, M - IMPORT,
+</span></span><span style="display:flex;"><span>       I - ISIS, Y - SYNC, L - llb outbound, &gt; - selected first nexthop, * - FIB route, b - BFD enable
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;trust-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>R&gt;* 10.10.4.2/32 [120/2/1] via 10.10.255.18, ethernet0/2, 09:01:13
+</span></span><span style="display:flex;"><span>R&gt;* 10.10.5.2/32 [120/3/1] via 10.10.255.18, ethernet0/2, 07:44:32
+</span></span><span style="display:flex;"><span>R&gt;* 10.10.8.2/32 [120/4/1] via 10.10.255.18, ethernet0/2, 07:44:32
+</span></span><span style="display:flex;"><span>R&gt;* 10.10.255.32/30 [120/2/1] via 10.10.255.18, ethernet0/2, 07:44:43
+</span></span><span style="display:flex;"><span>R&gt;* 10.10.255.36/30 [120/2/1] via 10.10.255.18, ethernet0/2, 07:44:43
+</span></span><span style="display:flex;"><span>R   10.10.255.40/30 [120/3/1] via 10.10.255.18, ethernet0/2, 07:44:32
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Routing Table for Virtual Router &lt;mgt-vr&gt;
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>==============================================================================
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT1_config#sho ip route rip  
+</span></span><span style="display:flex;"><span>VRF ID: 0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>R      10.10.5.2/32         [120,1] via 10.10.255.34(on Serial1/0)
+</span></span><span style="display:flex;"><span>R      10.10.6.2/32         [120,1] via 10.10.255.17(on GigaEthernet0/2)
+</span></span><span style="display:flex;"><span>R      10.10.8.2/32         [120,2] via 10.10.255.34(on Serial1/0)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RT2_config#sho ip route rip 
+</span></span><span style="display:flex;"><span>VRF ID: 0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>R      10.10.4.2/32         [120,1] via 10.10.255.33(on Serial1/1)
+</span></span><span style="display:flex;"><span>R      10.10.6.2/32         [120,2] via 10.10.255.33(on Serial1/1)
+</span></span><span style="display:flex;"><span>R      10.10.8.2/32         [120,1] via 10.10.255.42(on GigaEthernet0/1)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>AC1(config)#sho ip route rip 
+</span></span><span style="display:flex;"><span>R       10.10.4.2/32 [120/3] via 10.10.255.41, Vlan1001, 00:00:25  tag:1
+</span></span><span style="display:flex;"><span>R       10.10.5.2/32 [120/2] via 10.10.255.41, Vlan1001, 00:00:25  tag:1
+</span></span><span style="display:flex;"><span>R       10.10.6.2/32 [120/4] via 10.10.255.41, Vlan1001, 07:47:32  tag:0
+</span></span><span style="display:flex;"><span>R       10.10.255.16/30 [120/3] via 10.10.255.41, Vlan1001, 00:00:25  tag:1
+</span></span><span style="display:flex;"><span>R       10.10.255.32/30 [120/2] via 10.10.255.41, Vlan1001, 00:00:25  tag:1
+</span></span><span style="display:flex;"><span>R       10.10.255.36/30 [120/2] via 10.10.255.41, Vlan1001, 00:00:25  tag:1
+</span></span><span style="display:flex;"><span>Total routes are : 6 item(s)
+</span></span></code></pre></div>
+        </section>
+        <div class="post-tags">
+          
+          
+          
+        </div>
+      </div>
+
+      
+      
+    </div>
+
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+    (function () {
+        
+        
+        if (window.location.hostname == "localhost")
+            return;
+
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        var disqus_shortname = '未淼';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+        Disqus.</a></noscript>
+</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+</footer>
+
+</div>
+    </body>
+</html>

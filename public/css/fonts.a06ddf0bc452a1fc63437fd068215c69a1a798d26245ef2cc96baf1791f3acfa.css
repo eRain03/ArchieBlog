@@ -1,0 +1,19 @@
+/* fira-sans-regular - latin */
+body {
+  font-family: 'LXGW WenKai Lite';
+  line-height: 2.4;
+  word-break: break-word;
+  background: var(--theme); /* 如果没有定义 --theme，可以暂时去掉 */
+}
+
+div {
+  font-family: 'LXGW WenKai Lite';
+  font-size: 20px;
+  line-height: 2.4;
+  word-break: break-word;
+
+
+
+
+}
+
