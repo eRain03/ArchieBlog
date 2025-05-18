@@ -1,0 +1,9 @@
+/* fira-sans-regular - latin */
+body {
+  font-family: 'PT Serif', 'LXGW WenKai Lite', 'Noto Serif SC', serif;
+  font-size: 18px;
+  line-height: 2.4;
+  word-break: break-word;
+  background: var(--theme); /* 如果没有定义 --theme，可以暂时去掉 */
+}
+

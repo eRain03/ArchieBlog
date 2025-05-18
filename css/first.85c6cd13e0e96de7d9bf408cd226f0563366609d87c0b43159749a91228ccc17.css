@@ -1,0 +1,56 @@
+header {
+  padding-top: 1.5rem; /* 或 30px、40px，按需要调 */
+}
+
+
+a {
+  position: relative;
+  color: inherit;
+  text-decoration: none; /* ← 移除默认下划线 */
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2.2px; /* ← 设置更细的线条 */
+  background-color: var(--maincolor); /* 或你喜欢的颜色 */
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+  bottom: -3px;
+}
+
+a:hover::after {
+  transform: scaleX(0); /* 悬停时收起线条 */
+}
+
+hr {
+  border: 0;
+  border-top: 1px dotted #999;  /* 灰色小点点 */
+  margin: 1.5em 0;
+}
+
+body {
+  background-color: #F5F5F5;
+}
+
+
+.post-content {
+  font-family: 'LXGW WenKai Lite', sans-serif !important;
+}
+
+h2 {
+  color: #666;               /* 灰色字体 */
+  border-bottom: 1px solid #666;  /* 底部细实线下划线 */
+  padding-bottom: 0.3em;     /* 下划线和文字之间有点距离 */
+  font-weight: normal;       /* 如果想要更普通的字体粗细 */
+}
+
+/* 去掉之前 Markdown 风格的前缀 */
+h2::before {
+  content: none !important;
+}
+

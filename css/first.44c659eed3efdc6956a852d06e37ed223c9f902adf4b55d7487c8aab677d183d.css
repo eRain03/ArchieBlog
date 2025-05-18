@@ -1,0 +1,17 @@
+header {
+  padding-top: 1.5rem; /* 或 30px、40px，按需要调 */
+}
+a:hover {
+  border-bottom: none;        /* 这行才是“隐藏下划线”的关键 */
+  background-color: transparent;
+  color: inherit;
+}
+a::after {
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+a:hover::after {
+  transform: scaleX(1);
+}
+

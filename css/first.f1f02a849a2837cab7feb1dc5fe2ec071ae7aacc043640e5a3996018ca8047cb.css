@@ -1,0 +1,59 @@
+header {
+  padding-top: 1.5rem; /* 或 30px、40px，按需要调 */
+}
+
+
+a {
+  position: relative;
+  color: inherit;
+  text-decoration: none; /* ← 移除默认下划线 */
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2.2px; /* ← 设置更细的线条 */
+  background-color: var(--maincolor); /* 或你喜欢的颜色 */
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+  bottom: -3px;
+}
+
+a:hover::after {
+  transform: scaleX(0); /* 悬停时收起线条 */
+}
+
+hr {
+  border: 0;
+  border-top: 1px dotted #999;  /* 灰色小点点 */
+  margin: 1.5em 0;
+}
+
+body {
+  background-color: #F5F5F5;
+}
+
+
+.post-content {
+  font-family: 'LXGW WenKai Lite', sans-serif !important;
+}
+
+
+h2 {
+  color: #000000;
+  font-weight: normal;
+  border: none; /* 清除之前的底部边框 */
+  text-decoration: underline; /* 文字下划线 */
+  text-decoration-color: #ccc; /* 下划线颜色 */
+  text-decoration-thickness: 3px; /* 下划线粗细 */
+  text-underline-offset: 5px; /* 下划线距离文字稍远一点 */
+}
+
+h2::before {
+  content: none !important;
+}
+

@@ -1,0 +1,16 @@
+pre code {
+  background-color: #f9f9f9;  /* 浅灰白色背景 */
+  color: #333;                /* 深灰文字，便于阅读 */
+  display: block;
+  padding: 1em;
+  border-radius: 8px;
+  font-family: Consolas, monospace;
+  line-height: 3;
+  overflow-x: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.highlight pre code {
+  background-color: #f9f9f9 !important;
+  color: #333 !important;
+}
+

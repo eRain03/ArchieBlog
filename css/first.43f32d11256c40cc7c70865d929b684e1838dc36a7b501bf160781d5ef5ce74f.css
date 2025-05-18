@@ -1,0 +1,9 @@
+pre code {
+  background-color: #fff;  /* 浅灰白色背景 */
+  color: #333;                /* 深灰文字，便于阅读 */
+  display: block;
+  border-radius: 8px;
+  font-family: Consolas, monospace;
+  line-height: 1.2;
+  overflow-x: auto;
+}

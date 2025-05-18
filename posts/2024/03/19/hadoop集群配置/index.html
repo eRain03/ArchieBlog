@@ -1,0 +1,198 @@
+<!doctype html><html><head lang=en><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>Hadoop集群配置 - 未淼 </title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="先前条件 Node1 Node2 Node3 192.168.1.39 192.168.1.9 192.168.1.40 关闭防火墙 停止防火墙进程 systemctl stop firewalld.service 禁用防火墙开机启动 systemctl disable firewalld.service 对三个节点分别修改主机名 hostnamectl set-hostname Node{1,2,3} 安装必要软件环境 yum install -y java-1.8.0-openjdk vim #安装jdk8和vim等必备软件 修改Hosts文件定向主机IP vim /etc/hosts node1 192.168.1.39 node2 192.168.1.9 node3 192.168.1.40 ping node1 ping node2 ping node3 测试连通性 给Node123添加hadoop用户并赋予sudo权限 Node123全部要做 [root@node2 ~]# useradd hadoop [root@node2 ~]# # 设置密码需要手动输入两次密码，笔者这里也暂时设定密码为hadoop [root@node2 ~]# passwd hadoop 更改用户 hadoop 的密码 。 新的 密码： 重新输入新的 密码： passwd：所有的身份验证令牌已经成功更新。 [root@node2 ~]# mkdir -p /data/hadoop [root@node2 ~]# chown hadoop:hadoop /data/hadoop chmod u+w /etc/sudoers vim /etc/sudoers # 在sudoers文件的root用户一行后面添加下面内容并且保存 hadoop ALL=(ALL) NOPASSWD:ALL chmod u-w /etc/sudoers sudo chmod -R a+w /data/hadoop 生成RSA密钥SSH免密登录 Node123全部要做 su hadoop ssh-keygen -t rsa ##按几次回车 cd /home/hadoop/."><meta property="og:image" content><meta property="og:title" content="Hadoop集群配置"><meta property="og:description" content="先前条件 Node1 Node2 Node3 192.168.1.39 192.168.1.9 192.168.1.40 关闭防火墙 停止防火墙进程 systemctl stop firewalld.service 禁用防火墙开机启动 systemctl disable firewalld.service 对三个节点分别修改主机名 hostnamectl set-hostname Node{1,2,3} 安装必要软件环境 yum install -y java-1.8.0-openjdk vim #安装jdk8和vim等必备软件 修改Hosts文件定向主机IP vim /etc/hosts node1 192.168.1.39 node2 192.168.1.9 node3 192.168.1.40 ping node1 ping node2 ping node3 测试连通性 给Node123添加hadoop用户并赋予sudo权限 Node123全部要做 [root@node2 ~]# useradd hadoop [root@node2 ~]# # 设置密码需要手动输入两次密码，笔者这里也暂时设定密码为hadoop [root@node2 ~]# passwd hadoop 更改用户 hadoop 的密码 。 新的 密码： 重新输入新的 密码： passwd：所有的身份验证令牌已经成功更新。 [root@node2 ~]# mkdir -p /data/hadoop [root@node2 ~]# chown hadoop:hadoop /data/hadoop chmod u+w /etc/sudoers vim /etc/sudoers # 在sudoers文件的root用户一行后面添加下面内容并且保存 hadoop ALL=(ALL) NOPASSWD:ALL chmod u-w /etc/sudoers sudo chmod -R a+w /data/hadoop 生成RSA密钥SSH免密登录 Node123全部要做 su hadoop ssh-keygen -t rsa ##按几次回车 cd /home/hadoop/."><meta property="og:type" content="article"><meta property="og:url" content="https://erain.fun/posts/2024/03/19/hadoop%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-03-19T08:45:15+08:00"><meta property="article:modified_time" content="2024-03-19T08:45:15+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Hadoop集群配置"><meta name=twitter:description content="先前条件 Node1 Node2 Node3 192.168.1.39 192.168.1.9 192.168.1.40 关闭防火墙 停止防火墙进程 systemctl stop firewalld.service 禁用防火墙开机启动 systemctl disable firewalld.service 对三个节点分别修改主机名 hostnamectl set-hostname Node{1,2,3} 安装必要软件环境 yum install -y java-1.8.0-openjdk vim #安装jdk8和vim等必备软件 修改Hosts文件定向主机IP vim /etc/hosts node1 192.168.1.39 node2 192.168.1.9 node3 192.168.1.40 ping node1 ping node2 ping node3 测试连通性 给Node123添加hadoop用户并赋予sudo权限 Node123全部要做 [root@node2 ~]# useradd hadoop [root@node2 ~]# # 设置密码需要手动输入两次密码，笔者这里也暂时设定密码为hadoop [root@node2 ~]# passwd hadoop 更改用户 hadoop 的密码 。 新的 密码： 重新输入新的 密码： passwd：所有的身份验证令牌已经成功更新。 [root@node2 ~]# mkdir -p /data/hadoop [root@node2 ~]# chown hadoop:hadoop /data/hadoop chmod u+w /etc/sudoers vim /etc/sudoers # 在sudoers文件的root用户一行后面添加下面内容并且保存 hadoop ALL=(ALL) NOPASSWD:ALL chmod u-w /etc/sudoers sudo chmod -R a+w /data/hadoop 生成RSA密钥SSH免密登录 Node123全部要做 su hadoop ssh-keygen -t rsa ##按几次回车 cd /home/hadoop/."><link href=https://erain.fun/css/fonts.fc4f5a86e8e498b54fe94f415531b7bee28ca405d2160b9e55715b497c716193.css rel=stylesheet><link rel=stylesheet type=text/css media=screen href=https://erain.fun/css/main.33535ad1c7d1e61eae52b59547ac79afb3639df98fc2cc22dc2ae9f5a063c72c.css><script type=text/javascript src=https://erain.fun/js/MathJax.js></script><script type=text/x-mathjax-config>
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script><link rel=stylesheet href=https://erain.fun/katex/katex.min.css><script defer src=https://erain.fun/katex/katex.min.js></script><script defer src=https://erain.fun/katex/auto-render.min.js onload=renderMathInElement(document.body)></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script><link rel=stylesheet type=text/css href=https://erain.fun/css/first.354eb93defa843f69983dc6df53d6af8dc2bf3d3cd5c8970c6c4f1ca724da3ef.css></head><body><div class=content><header><div class=main><a href=https://erain.fun/>未淼</a></div><nav><a href=/>Tools</a>
+<a href=/posts>Posts</a>
+<a href=/tags>Tags</a></nav></header><main><article><div class=post-container><div class=post-content><div class=title><h1 class=title>Hadoop集群配置</h1><div class=meta>Posted on Mar 19, 2024</div></div><section class=body><h1 id=先前条件>先前条件</h1><table><thead><tr><th>Node1</th><th>Node2</th><th>Node3</th></tr></thead><tbody><tr><td>192.168.1.39</td><td>192.168.1.9</td><td>192.168.1.40</td></tr></tbody></table><h2 id=关闭防火墙>关闭防火墙</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>
+</span></span><span style=display:flex><span> 停止防火墙进程
+</span></span><span style=display:flex><span>systemctl stop firewalld.service
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>禁用防火墙开机启动
+</span></span><span style=display:flex><span>systemctl disable firewalld.service
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>对三个节点分别修改主机名
+</span></span><span style=display:flex><span>hostnamectl set-hostname Node{1,2,3}
+</span></span></code></pre></div><h2 id=安装必要软件环境>安装必要软件环境</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>yum install -y java-1.8.0-openjdk vim 
+</span></span><span style=display:flex><span>#安装jdk8和vim等必备软件
+</span></span></code></pre></div><h2 id=修改hosts文件定向主机ip>修改Hosts文件定向主机IP</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>vim /etc/hosts
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>node1 192.168.1.39
+</span></span><span style=display:flex><span>node2 192.168.1.9
+</span></span><span style=display:flex><span>node3 192.168.1.40
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ping node1
+</span></span><span style=display:flex><span>ping node2
+</span></span><span style=display:flex><span>ping node3
+</span></span><span style=display:flex><span>测试连通性
+</span></span></code></pre></div><h2 id=给node123添加hadoop用户并赋予sudo权限>给Node123添加hadoop用户并赋予sudo权限</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>Node123全部要做
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[root@node2 ~]# useradd hadoop
+</span></span><span style=display:flex><span>[root@node2 ~]# # 设置密码需要手动输入两次密码，笔者这里也暂时设定密码为hadoop
+</span></span><span style=display:flex><span>[root@node2 ~]# passwd hadoop
+</span></span><span style=display:flex><span>更改用户 hadoop 的密码 。
+</span></span><span style=display:flex><span>新的 密码：
+</span></span><span style=display:flex><span>重新输入新的 密码：
+</span></span><span style=display:flex><span>passwd：所有的身份验证令牌已经成功更新。
+</span></span><span style=display:flex><span>[root@node2 ~]# mkdir -p /data/hadoop
+</span></span><span style=display:flex><span>[root@node2 ~]# chown hadoop:hadoop /data/hadoop
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>chmod u+w /etc/sudoers
+</span></span><span style=display:flex><span>vim /etc/sudoers
+</span></span><span style=display:flex><span># 在sudoers文件的root用户一行后面添加下面内容并且保存
+</span></span><span style=display:flex><span>hadoop ALL=(ALL) NOPASSWD:ALL 
+</span></span><span style=display:flex><span>chmod u-w /etc/sudoers
+</span></span><span style=display:flex><span>sudo chmod -R a+w /data/hadoop
+</span></span></code></pre></div><h2 id=生成rsa密钥ssh免密登录>生成RSA密钥SSH免密登录</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>Node123全部要做
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>su hadoop
+</span></span><span style=display:flex><span>ssh-keygen -t rsa
+</span></span><span style=display:flex><span>##按几次回车
+</span></span><span style=display:flex><span>cd /home/hadoop/.ssh/
+</span></span><span style=display:flex><span>cat id_rsa.pub &gt;&gt; authorized_keys
+</span></span><span style=display:flex><span>vim authorized_keys
+</span></span><span style=display:flex><span>##把其他主机的添加进去
+</span></span><span style=display:flex><span>最后每个节点的authorized_keys内容都应该是这样的：
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTwzdM+cmFy1lO4bNpD1T5+EO0FNvBBymf3B/Pdd92/Dq3Z3cTr+XHL9HWrIZPxDoWCm7OQY9Ek3oCJgjhlnxowQbtHp8GUKmmJma19NStBNHrO8T3wpbypOgUB7xJQZclpPpxrkkiMbGEU5MV3wJxFPEA2Sd3b7sdYx2YW/hMU94UabbzV4aJjtsG9GHHx4yq9e9/P31jnidhf013F7t9lIBdCPlgHj7+feliVhjSM1jbUt3CFDsskkFXMKuzVHP6B/ipviFtLt6SA3AgDIvFFD3CYV2KgiCd7JKqR/a+8765ML9auSubf7JegDUBvVXDt+fPOVc1Lm37nCyhGLjX hadoop@node1
+</span></span><span style=display:flex><span>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3arpeN86cemzQPdz86oQV+gKk3A9MTpNAvFNl8QLfiYft8Hscsp3oQkdyWd+vnu/VxUa7URx6iOAfaTluYOlyY18A41wnAkE9xP3861Mak8SmvPPxsj8wsC8KugBk2uGVeOHjHyMQW0Qcd/Qe/2jnqsbDJsuK7ZyxOzEHbMaIb3IRIo6x1WVUv6x4oX9mJkgZw066Wzu0nNAanDDKDmP+Ncz1OcnGoYd+B+YUqeXtPJ7acQtBoNO/2Hp35G5CK5j5VH0Yj5HKUyy1t3jv+PuSc2HVMlHLidx+CxuDYWZd2O/4GRqjnT7xLo88aBE8fAVSr876FyfJDBdYLSC66nyZ hadoop@node2
+</span></span><span style=display:flex><span>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7I19R6/js2tvicWcATaNzXlY+BVELMqDx2vhqfnlJAdlfOtyAgsaCduu8hu4El6WZymTckjX1YumeIHr8oGdajNtYugAcOcELijCFCnGUc4xcuVqVWw/Xf4TlT9wg3S9L33+Zj1EYvXp3lq04dyWO2VvZN2Iqq+bhk4tPZdGLttYqo24oXTr+kvyzYy7zeBTQmovVWaDT43ZpYSSzq5M8chjOvR0kPt/ygb/cuV2ZnTAXfNpTF/SHZIWeWqbAIexcdEnczATR/0f5Z/wFrAiG+Awppi1zNVLn1oRoC5sVQ61jqAuvZxAEp5AdgzRdTp3DFtynxVWqsgDmMFTOKNkX hadoop@node3
+</span></span></code></pre></div><p>全部完事了记着赋予目录权限
+<code>chmod 700 /home/hadoop/.ssh/ && chmod 700 /home/hadoop/ && chmod 600 /home/hadoop/.ssh/authorized_keys</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>ssh hadoop@192.168.1.9
+</span></span><span style=display:flex><span>应该是免密码的
+</span></span></code></pre></div><h1 id=开始安装hadoop>开始安装hadoop</h1><h2 id=下载并解压>下载并解压</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>cd /data/hadoop
+</span></span><span style=display:flex><span>把hadoop安装包复制到各个节点
+</span></span><span style=display:flex><span>[hadoop@node1 hadoop]$ scp hadoop-3.3.5.tar.gz hadoop@node2:/data/hadoop/ 
+</span></span><span style=display:flex><span>hadoop-3.3.5.tar.gz                                                                                                  100%  674MB  61.2MB/s   00:11    
+</span></span><span style=display:flex><span>[hadoop@node1 hadoop]$ scp hadoop-3.3.5.tar.gz hadoop@node3:/data/hadoop/ 
+</span></span><span style=display:flex><span>The authenticity of host &#39;node3 (192.168.1.40)&#39; can&#39;t be established.
+</span></span><span style=display:flex><span>ECDSA key fingerprint is SHA256:tVUngomohqjvUulSZAx83tsqN6qn+8cMap1QbYjsFZc.
+</span></span><span style=display:flex><span>ECDSA key fingerprint is MD5:33:0e:00:28:c6:55:e7:97:85:a9:10:bc:ad:19:6c:b9.
+</span></span><span style=display:flex><span>Are you sure you want to continue connecting (yes/no)? yes
+</span></span><span style=display:flex><span>Warning: Permanently added &#39;node3,192.168.1.40&#39; (ECDSA) to the list of known hosts.
+</span></span><span style=display:flex><span>hadoop-3.3.5.tar.gz                                                                                                  100%  674MB  61.2MB/s   00:11    
+</span></span><span style=display:flex><span>[hadoop@node1 hadoop]$ 
+</span></span><span style=display:flex><span>解压
+</span></span><span style=display:flex><span>tar -zxvf hadoop-3.3.5.tar.gz
+</span></span><span style=display:flex><span>使用mv命令重命名为app方便记录
+</span></span><span style=display:flex><span>mv hadoop-3.3.5 app
+</span></span></code></pre></div><h2 id=配置环境变量>配置环境变量</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>vim <span style=color:#f92672>~/.</span>bashrc
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>写入</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> JAVA_HOME<span style=color:#f92672>=/</span>usr<span style=color:#f92672>/</span>lib<span style=color:#f92672>/</span>jvm<span style=color:#f92672>/</span>java<span style=color:#f92672>-</span><span style=color:#ae81ff>1.8</span><span style=color:#f92672>.</span><span style=color:#ae81ff>0</span><span style=color:#f92672>-</span>openjdk<span style=color:#f92672>-</span><span style=color:#ae81ff>1.8</span><span style=color:#f92672>.</span><span style=color:#ae81ff>0.402</span><span style=color:#f92672>.</span>b06<span style=color:#f92672>-</span><span style=color:#ae81ff>1.</span>el7_9<span style=color:#f92672>.</span>x86_64<span style=color:#f92672>/</span>jre
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> PATH<span style=color:#f92672>=$</span>JAVA_HOME<span style=color:#f92672>/</span>bin:<span style=color:#f92672>$</span>PATH
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> HADOOP_HOME<span style=color:#f92672>=/</span>data<span style=color:#f92672>/</span>hadoop<span style=color:#f92672>/</span>app
+</span></span><span style=display:flex><span><span style=color:#66d9ef>export</span> PATH<span style=color:#f92672>=$</span>HADOOP_HOME<span style=color:#f92672>/</span>bin:<span style=color:#f92672>$</span>HADOOP_HOME<span style=color:#f92672>/</span>sbin:<span style=color:#f92672>$</span>PATH
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>保存</span>
+</span></span><span style=display:flex><span>source <span style=color:#f92672>~/.</span>bashrc
+</span></span></code></pre></div><h2 id=hadoop安装成功>hadoop安装成功</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>[hadoop@node1 ~]$ hadoop version
+</span></span><span style=display:flex><span>Hadoop 3.3.5
+</span></span><span style=display:flex><span>Source code repository https://github.com/apache/hadoop.git -r 706d88266abcee09ed78fbaa0ad5f74d818ab0e9
+</span></span><span style=display:flex><span>Compiled by stevel on 2023-03-15T15:56Z
+</span></span><span style=display:flex><span>Compiled with protoc 3.7.1
+</span></span><span style=display:flex><span>From source with checksum 6bbd9afcf4838a0eb12a5f189e9bd7
+</span></span><span style=display:flex><span>This command was run using /data/hadoop/app/share/hadoop/common/hadoop-common-3.3.5.jar
+</span></span></code></pre></div><h1 id=-4hadoop配置>### 4、Hadoop配置</h1><p>配置<code>core-site.xml</code>（具体是<code>/data/hadoop/app/etc/hadoop/core-site.xml</code>）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=display:flex><span><span style=color:#f92672>&lt;configuration&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&lt;name&gt;</span>fs.defaultFS<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&lt;value&gt;</span>hdfs://node1:9000<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&lt;name&gt;</span>hadoop.tmp.dir<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>&lt;value&gt;</span>/data/hadoop/temp<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;/configuration&gt;</span>
+</span></span></code></pre></div><ul><li><code>fs.defaultFS</code>：<code>nameNode</code>的<code>HDFS</code>协议的文件系统通信地址</li><li><code>hadoop.tmp.dir</code>：<code>Hadoop</code>集群在工作的时候存储的一些临时文件的目录</li></ul><p>配置<code>hdfs-site.xml</code>（具体是<code>/data/hadoop/app/etc/hadoop/hdfs-site.xml</code>）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=display:flex><span><span style=color:#f92672>&lt;configuration&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>dfs.namenode.name.dir<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>/data/hadoop/dfs/name<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>dfs.datanode.data.dir<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>/data/hadoop/dfs/data<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>dfs.replication<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>3<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>dfs.secondary.http.address<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>node3:50090<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>dfs.http.address<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>192.168.56.200:50070<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;/configuration&gt;</span>
+</span></span></code></pre></div><ul><li><code>dfs.namenode.name.dir</code>：<code>NameNode</code>的数据存放目录</li><li><code>dfs.datanode.data.dir</code>：<code>DataNode</code>的数据存放目录</li><li><code>dfs.replication</code>：<code>HDFS</code>的副本数</li><li><code>dfs.secondary.http.address</code>：<code>SecondaryNameNode</code>节点的<code>HTTP</code>入口地址</li><li><code>dfs.http.address</code>：通过<code>HTTP</code>访问<code>HDFS</code>的<code>Web</code>管理界面的地址</li></ul><p>配置<code>mapred-site.xml</code>（具体是<code>/data/hadoop/app/etc/hadoop/mapred-site.xml</code>）:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=display:flex><span><span style=color:#f92672>&lt;configuration&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>mapreduce.framework.name<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>yarn<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>yarn.app.mapreduce.am.env<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>HADOOP_MAPRED_HOME=${HADOOP_HOME}<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>mapreduce.map.env<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>HADOOP_MAPRED_HOME=${HADOOP_HOME}<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>mapreduce.reduce.env<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>HADOOP_MAPRED_HOME=${HADOOP_HOME}<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;/configuration&gt;</span>
+</span></span></code></pre></div><ul><li><code>mapreduce.framework.name</code>：选用<code>yarn</code>，也就是<code>MR</code>框架使用<code>YARN</code>进行资源调度。</li></ul><p>配置<code>yarn-site.xml</code>（具体是<code>/data/hadoop/app/etc/hadoop/yarn-site.xml</code>）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=display:flex><span><span style=color:#f92672>&lt;configuration&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>yarn.resourcemanager.hostname<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>node3<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;property&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;name&gt;</span>yarn.nodemanager.aux-services<span style=color:#f92672>&lt;/name&gt;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&lt;value&gt;</span>mapreduce_shuffle<span style=color:#f92672>&lt;/value&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;/property&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;/configuration&gt;</span>
+</span></span></code></pre></div><ul><li><code>yarn.resourcemanager.hostname</code>：指定<code>ResourceManager</code>所在的主机名</li><li><code>yarn.nodemanager.aux-services</code>：指定<code>YARN</code>集群为<code>MapReduce</code>程序提供<code>Shuffle</code>服务</li></ul><p>配置<code>workers</code>文件（这个文件在旧版本叫<code>slaves</code>，因为技术政治化运动被改为<code>workers</code>，具体是<code>/data/hadoop/app/etc/hadoop/workers</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>node1
+</span></span><span style=display:flex><span>node2
+</span></span><span style=display:flex><span>node3
+</span></span></code></pre></div><p>至此，核心配置基本完成。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>同步配置到node23
+</span></span><span style=display:flex><span>scp -r /data/hadoop/app hadoop@node2:/data/hadoop
+</span></span><span style=display:flex><span>scp -r /data/hadoop/app hadoop@node3:/data/hadoop
+</span></span></code></pre></div><p>在node1上初始化节点
+<code>hadoop namenode -format</code></p><h3 id=7启动和停止hdfshttpswwwcnblogscomthrowablep14131255html7e590afe58aa8e5928ce5819ce6ada2hdfs>7、启动和停止HDFS<a href=https://www.cnblogs.com/throwable/p/14131255.html#7%E5%90%AF%E5%8A%A8%E5%92%8C%E5%81%9C%E6%AD%A2hdfs>#</a></h3><p>可以在任意一个节点中启动和停止<code>HDFS</code>，为了简单起见还是在<code>hadoop01</code>节点中操作：</p><ul><li>启动：<code>start-dfs.sh</code></li><li>停止：<code>stop-dfs.sh</code></li></ul><p>调用启动命令后，控制台输出如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#f92672>[</span>hadoop@hadoop01 hadoop<span style=color:#f92672>]</span>$ start-dfs.sh 
+</span></span><span style=display:flex><span>Starting namenodes on <span style=color:#f92672>[</span>hadoop01<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>Starting datanodes
+</span></span><span style=display:flex><span>Starting secondary namenodes <span style=color:#f92672>[</span>hadoop03<span style=color:#f92672>]</span>
+</span></span></code></pre></div><h3 id=8启动和停止yarnhttpswwwcnblogscomthrowablep14131255html8e590afe58aa8e5928ce5819ce6ada2yarn>8、启动和停止YARN<a href=https://www.cnblogs.com/throwable/p/14131255.html#8%E5%90%AF%E5%8A%A8%E5%92%8C%E5%81%9C%E6%AD%A2yarn>#</a></h3><p><code>YARN</code>集群的启动命令必须在<code>ResourceManager</code>节点中调用，规划中的对应角色的节点为<code>hadoop03</code>，在该机器执行<code>YARN</code>相关命令：</p><ul><li>启动：<code>start-yarn.sh</code></li><li>停止：<code>stop-yarn.sh</code></li></ul><p>执行启动命令后，控制台输出如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#f92672>[</span>hadoop@hadoop03 data<span style=color:#f92672>]</span>$ start-yarn.sh 
+</span></span><span style=display:flex><span>Starting resourcemanager
+</span></span><span style=display:flex><span>Starting nodemanagers
+</span></span></code></pre></div><h3 id=9查看所有节点的进程状态httpswwwcnblogscomthrowablep14131255html9e69fa5e79c8be68980e69c89e88a82e782b9e79a84e8bf9be7a88be78ab6e68081>9、查看所有节点的进程状态<a href=https://www.cnblogs.com/throwable/p/14131255.html#9%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9%E7%9A%84%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81>#</a></h3><p>分别查看集群中所有节点的进程状态，可以直接使用<code>jps</code>工具，具体结果如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#f92672>[</span>hadoop@hadoop01 hadoop<span style=color:#f92672>]</span>$ jps
+</span></span><span style=display:flex><span><span style=color:#ae81ff>8673</span> NameNode
+</span></span><span style=display:flex><span><span style=color:#ae81ff>8823</span> DataNode
+</span></span><span style=display:flex><span><span style=color:#ae81ff>9383</span> NodeManager
+</span></span><span style=display:flex><span><span style=color:#ae81ff>9498</span> Jps
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span>hadoop@hadoop02 hadoop<span style=color:#f92672>]</span>$ jps
+</span></span><span style=display:flex><span><span style=color:#ae81ff>4305</span> DataNode
+</span></span><span style=display:flex><span><span style=color:#ae81ff>4849</span> Jps
+</span></span><span style=display:flex><span><span style=color:#ae81ff>4734</span> NodeManager
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span>hadoop@hadoop03 data<span style=color:#f92672>]</span>$ jps
+</span></span><span style=display:flex><span><span style=color:#ae81ff>9888</span> Jps
+</span></span><span style=display:flex><span><span style=color:#ae81ff>9554</span> NodeManager
+</span></span><span style=display:flex><span><span style=color:#ae81ff>5011</span> DataNode
+</span></span><span style=display:flex><span><span style=color:#ae81ff>9427</span> ResourceManager
+</span></span><span style=display:flex><span><span style=color:#ae81ff>5125</span> SecondaryNameNode
+</span></span></code></pre></div><p>可见进程是正常运行的。</p><p>![[Snipaste_2024-03-19_10-23-23.png]]
+![[Snipaste_2024-03-19_10-24-26.png]]</p><h1 id=后续软件补充>后续软件补充</h1><ul><li>Spark2.1.0</li><li>HBase1.1.5</li><li>Scala2.11.8</li><li>MySQL</li><li>Kafka_2.11-0.10.2.0</li><li>Flume1.7.0</li><li>sbt</li><li>Maven3.3.9</li><li>MongoDB3.2.17</li><li>Hive2.1.0</li><li>Scala IDE（包含Eclipse4.7.0和Maven、Scala、sbt插件）</li></ul><blockquote><p>只是简单记录，可能某些地方会有小错误，如有发现，联系我修改</p></blockquote></section><div class=post-tags></div></div></div><div id=disqus_thread></div><script type=text/javascript>(function(){if(window.location.hostname=="localhost")return;var t,e=document.createElement("script");e.type="text/javascript",e.async=!0,t="未淼",e.src="//"+t+".disqus.com/embed.js",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(e)})()</script><noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by
+Disqus.</a></noscript></article></main><footer></footer></div></body></html>
