@@ -1,46 +1,159 @@
-<!doctype html><html><head lang=en><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>OSPF是如何计算出路由表来的？什么是SPF算法？ - 未淼 </title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。
+<!DOCTYPE html>
+<html><head lang="en"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>OSPF是如何计算出路由表来的？什么是SPF算法？ - 未淼 </title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="
+OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。
+
+OSPF的特性
+
+[Wiki] Wiki百科中这样写到
+开放式最短路径优先（英语：Open Shortest Path First，缩写为 OSPF）是广泛使用的一种路由协议，它属于链路状态路由协议，具有路由变化收敛速度快、无路由环路、支持变长子网掩码（VLSM）和汇总、层次区域划分等优点。
+
+不难看出OSPF有很多难以拒绝的优点，收敛速度快，树状的拓扑时期不会出现环路问题，很容易划分区域，方便管理等，也许这就是为什么大多数企业都会选择OSPF的原因(对比RIP不要好用太多太多)
+在上一篇文章中，我们讨论了OSPF是如何选举DR，如何建立链接以及如何交换LSA数据库的。如果你还没有看那篇文章，建议先读一读再继续。
+今天主要来看OSPF是如何计算出最短路由的。
+SPF算法如何计算出优先算短路径？
+SPF算法中有一个很重要的点叫Cost(花费),中文翻译过来叫花费，听起来就像去超市买东西花费了很多钱一样，但它有所不同，它更像是你从家门口打车去到某一个地方花了多少钱。
+在树状图中Cost的值代表了一个节点到另一个节点所花费的跃点(Cost)，其实就是你经过了几个路由(节点)。
+为什么是树状图？
+
+如果对STP生成树协议有所了解的话，我们就会知道树状图能有效避免环路的问题，如图，树状图不会有任何一个”三角形“出现，这样的结构能避免环路的问题。
+
+
+回到正题，我们要知道一点每一台路由(节点)都会运行SPF算法来计算出最短路径来，就像图中这四个节点一样，R1会计算出如下信息
+R1&mdash;R2    Cost=1
+但它会计算其他的路径吗，不会。因为SPF不计算间接连接的节点所的Cost值。这或许能解释为什么在配置ospf时我们只会配置相邻的网段而不会配置间接连接的网段。我将四个节点所计算出的信息一一列出
+R1:
+R1&mdash;R2    Cost=1
+R2:
+R2&mdash;R1    Cost=1        R2&mdash;R3    Cost=1
+R3:
+R3&mdash;R2    Cost=1        R3&mdash;R4    Cost=1
+R4:
+R4&mdash;R3    Cost=1
+此时每个节点会将自己计算的信息打包和相邻的节点进行数据库交互，它们交换数据包，就有了完整的最短路径树，如下：
+
+
+R1的路径表：
+
+到达R2的最短路径：R1-&gt;R2，链路成本(Cost)为1
+到达R3的最短路径：R1-&gt;R2-&gt;R3，链路成本为2
+到达R4的最短路径：R1-&gt;R2-&gt;R3-&gt;R4，链路成本为3
+
+
+
+R2的路径表：
+
+到达R1的最短路径：R2-&gt;R1，链路成本为1
+到达R3的最短路径：R2-&gt;R3，链路成本为1
+到达R4的最短路径：R2-&gt;R3-&gt;R4，链路成本为2
+
+
+
+R3的路径表：
+
+到达R1的最短路径：R3-&gt;R2-&gt;R1，链路成本为2
+到达R2的最短路径：R3-&gt;R2，链路成本为1
+到达R4的最短路径：R3-&gt;R4，链路成本为1
+
+
+
+R4的路径表：
+
+到达R1的最短路径：R4-&gt;R3-&gt;R2-&gt;R1，链路成本为3
+到达R2的最短路径：R4-&gt;R3-&gt;R2，链路成本为2
+到达R3的最短路径：R4-&gt;R3，链路成本为1
+
+
+
+
+最短路径树
+完整的最短路径树就是如此生成出来的，有了最短路径树，就像有了一张绝对快速不拖沓的地图。
+用这张地图来计算路由表，计算出类似的信息
+
+目标网络：x.x.x.x/x    （查找最短路径）
+
+下一跳：y.y.y.y      （选择最快的下一跳路由）
+出接口：GigabitEthernet0/1
+
+
+
+SPF（Shortest Path First，最短路径优先）算法，也称为Dijkstra算法，是OSPF用来计算最短路径的核心算法。总结下来一共四大步骤，下面是SPF算法的工作原理和步骤：
+1. 初始步骤
+
+每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。
+路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。
+
+2. 计算Cost值
+
+Cost（花费）：在OSPF中，Cost表示路由器到达目标网络的开销。Cost的值可以根据链路的带宽、延迟等因素进行设置。默认情况下，OSPF根据链路带宽计算Cost值，带宽越高，Cost越低。
+树状图：OSPF使用树状拓扑结构避免环路问题。每个路由器只计算直接相连的链路的Cost值，并根据这些信息逐步构建整个网络的最短路径树。
+
+3. 运行SPF算法
+
+初始节点：从源节点（当前路由器）开始，将其标记为已访问，并初始化其到自身的Cost为0。
+扩展节点：从当前节点开始，访问所有直接相连的节点，计算每个节点的累计Cost值，并选择累计Cost值最小的节点作为下一个访问节点。
+重复计算：重复上述步骤，直到访问所有节点，生成一棵完整的最短路径树。
+
+4. 生成路由表
+
+每个路由器根据生成的最短路径树，更新其路由表。
+路由表包含目标网络、下一跳地址和出接口等信息。
+
+
+最短路径树中的每个节点都有一个数据库，数据库中包含了目标网络的最短路径和下一跳路由的地址信息，路由器根据最短路径树去更新自己的路由表，实现高效率，高速度，优质的通信。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content="http://localhost:1313/posts/2023/12/31/ospf%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E5%87%BA%E8%B7%AF%E7%94%B1%E8%A1%A8%E6%9D%A5%E7%9A%84%E4%BB%80%E4%B9%88%E6%98%AFspf%E7%AE%97%E6%B3%95/">
+  <meta property="og:site_name" content="未淼 ">
+  <meta property="og:title" content="OSPF是如何计算出路由表来的？什么是SPF算法？">
+  <meta property="og:description" content="OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。
 OSPF的特性 [Wiki] Wiki百科中这样写到 开放式最短路径优先（英语：Open Shortest Path First，缩写为 OSPF）是广泛使用的一种路由协议，它属于链路状态路由协议，具有路由变化收敛速度快、无路由环路、支持变长子网掩码（VLSM）和汇总、层次区域划分等优点。
 不难看出OSPF有很多难以拒绝的优点，收敛速度快，树状的拓扑时期不会出现环路问题，很容易划分区域，方便管理等，也许这就是为什么大多数企业都会选择OSPF的原因(对比RIP不要好用太多太多) 在上一篇文章中，我们讨论了OSPF是如何选举DR，如何建立链接以及如何交换LSA数据库的。如果你还没有看那篇文章，建议先读一读再继续。
 今天主要来看OSPF是如何计算出最短路由的。
 SPF算法如何计算出优先算短路径？ SPF算法中有一个很重要的点叫Cost(花费),中文翻译过来叫花费，听起来就像去超市买东西花费了很多钱一样，但它有所不同，它更像是你从家门口打车去到某一个地方花了多少钱。 在树状图中Cost的值代表了一个节点到另一个节点所花费的跃点(Cost)，其实就是你经过了几个路由(节点)。 为什么是树状图？
 如果对STP生成树协议有所了解的话，我们就会知道树状图能有效避免环路的问题，如图，树状图不会有任何一个”三角形“出现，这样的结构能避免环路的问题。
-回到正题，我们要知道一点每一台路由(节点)都会运行SPF算法来计算出最短路径来，就像图中这四个节点一样，R1会计算出如下信息 R1&mdash;R2 Cost=1 但它会计算其他的路径吗，不会。因为SPF不计算间接连接的节点所的Cost值。这或许能解释为什么在配置ospf时我们只会配置相邻的网段而不会配置间接连接的网段。我将四个节点所计算出的信息一一列出 R1: R1&mdash;R2 Cost=1 R2: R2&mdash;R1 Cost=1 R2&mdash;R3 Cost=1 R3: R3&mdash;R2 Cost=1 R3&mdash;R4 Cost=1 R4: R4&mdash;R3 Cost=1
+回到正题，我们要知道一点每一台路由(节点)都会运行SPF算法来计算出最短路径来，就像图中这四个节点一样，R1会计算出如下信息 R1—R2 Cost=1 但它会计算其他的路径吗，不会。因为SPF不计算间接连接的节点所的Cost值。这或许能解释为什么在配置ospf时我们只会配置相邻的网段而不会配置间接连接的网段。我将四个节点所计算出的信息一一列出 R1: R1—R2 Cost=1 R2: R2—R1 Cost=1 R2—R3 Cost=1 R3: R3—R2 Cost=1 R3—R4 Cost=1 R4: R4—R3 Cost=1
 此时每个节点会将自己计算的信息打包和相邻的节点进行数据库交互，它们交换数据包，就有了完整的最短路径树，如下：
 R1的路径表：
-到达R2的最短路径：R1->R2，链路成本(Cost)为1 到达R3的最短路径：R1->R2->R3，链路成本为2 到达R4的最短路径：R1->R2->R3->R4，链路成本为3 R2的路径表：
-到达R1的最短路径：R2->R1，链路成本为1 到达R3的最短路径：R2->R3，链路成本为1 到达R4的最短路径：R2->R3->R4，链路成本为2 R3的路径表：
-到达R1的最短路径：R3->R2->R1，链路成本为2 到达R2的最短路径：R3->R2，链路成本为1 到达R4的最短路径：R3->R4，链路成本为1 R4的路径表：
-到达R1的最短路径：R4->R3->R2->R1，链路成本为3 到达R2的最短路径：R4->R3->R2，链路成本为2 到达R3的最短路径：R4->R3，链路成本为1 最短路径树 完整的最短路径树就是如此生成出来的，有了最短路径树，就像有了一张绝对快速不拖沓的地图。 用这张地图来计算路由表，计算出类似的信息
+到达R2的最短路径：R1-&gt;R2，链路成本(Cost)为1 到达R3的最短路径：R1-&gt;R2-&gt;R3，链路成本为2 到达R4的最短路径：R1-&gt;R2-&gt;R3-&gt;R4，链路成本为3 R2的路径表：
+到达R1的最短路径：R2-&gt;R1，链路成本为1 到达R3的最短路径：R2-&gt;R3，链路成本为1 到达R4的最短路径：R2-&gt;R3-&gt;R4，链路成本为2 R3的路径表：
+到达R1的最短路径：R3-&gt;R2-&gt;R1，链路成本为2 到达R2的最短路径：R3-&gt;R2，链路成本为1 到达R4的最短路径：R3-&gt;R4，链路成本为1 R4的路径表：
+到达R1的最短路径：R4-&gt;R3-&gt;R2-&gt;R1，链路成本为3 到达R2的最短路径：R4-&gt;R3-&gt;R2，链路成本为2 到达R3的最短路径：R4-&gt;R3，链路成本为1 最短路径树 完整的最短路径树就是如此生成出来的，有了最短路径树，就像有了一张绝对快速不拖沓的地图。 用这张地图来计算路由表，计算出类似的信息
 目标网络：x.x.x.x/x （查找最短路径） 下一跳：y.y.y.y （选择最快的下一跳路由） 出接口：GigabitEthernet0/1 SPF（Shortest Path First，最短路径优先）算法，也称为Dijkstra算法，是OSPF用来计算最短路径的核心算法。总结下来一共四大步骤，下面是SPF算法的工作原理和步骤：
-1. 初始步骤 每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。 路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。 2."><meta property="og:image" content><meta property="og:title" content="OSPF是如何计算出路由表来的？什么是SPF算法？"><meta property="og:description" content="OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。
+1. 初始步骤 每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。 路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。 2. 计算Cost值 Cost（花费）：在OSPF中，Cost表示路由器到达目标网络的开销。Cost的值可以根据链路的带宽、延迟等因素进行设置。默认情况下，OSPF根据链路带宽计算Cost值，带宽越高，Cost越低。 树状图：OSPF使用树状拓扑结构避免环路问题。每个路由器只计算直接相连的链路的Cost值，并根据这些信息逐步构建整个网络的最短路径树。 3. 运行SPF算法 初始节点：从源节点（当前路由器）开始，将其标记为已访问，并初始化其到自身的Cost为0。 扩展节点：从当前节点开始，访问所有直接相连的节点，计算每个节点的累计Cost值，并选择累计Cost值最小的节点作为下一个访问节点。 重复计算：重复上述步骤，直到访问所有节点，生成一棵完整的最短路径树。 4. 生成路由表 每个路由器根据生成的最短路径树，更新其路由表。 路由表包含目标网络、下一跳地址和出接口等信息。 最短路径树中的每个节点都有一个数据库，数据库中包含了目标网络的最短路径和下一跳路由的地址信息，路由器根据最短路径树去更新自己的路由表，实现高效率，高速度，优质的通信。">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2023-12-31T01:08:23+08:00">
+    <meta property="article:modified_time" content="2023-12-31T01:08:23+08:00">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="OSPF是如何计算出路由表来的？什么是SPF算法？">
+  <meta name="twitter:description" content="OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。
 OSPF的特性 [Wiki] Wiki百科中这样写到 开放式最短路径优先（英语：Open Shortest Path First，缩写为 OSPF）是广泛使用的一种路由协议，它属于链路状态路由协议，具有路由变化收敛速度快、无路由环路、支持变长子网掩码（VLSM）和汇总、层次区域划分等优点。
 不难看出OSPF有很多难以拒绝的优点，收敛速度快，树状的拓扑时期不会出现环路问题，很容易划分区域，方便管理等，也许这就是为什么大多数企业都会选择OSPF的原因(对比RIP不要好用太多太多) 在上一篇文章中，我们讨论了OSPF是如何选举DR，如何建立链接以及如何交换LSA数据库的。如果你还没有看那篇文章，建议先读一读再继续。
 今天主要来看OSPF是如何计算出最短路由的。
 SPF算法如何计算出优先算短路径？ SPF算法中有一个很重要的点叫Cost(花费),中文翻译过来叫花费，听起来就像去超市买东西花费了很多钱一样，但它有所不同，它更像是你从家门口打车去到某一个地方花了多少钱。 在树状图中Cost的值代表了一个节点到另一个节点所花费的跃点(Cost)，其实就是你经过了几个路由(节点)。 为什么是树状图？
 如果对STP生成树协议有所了解的话，我们就会知道树状图能有效避免环路的问题，如图，树状图不会有任何一个”三角形“出现，这样的结构能避免环路的问题。
-回到正题，我们要知道一点每一台路由(节点)都会运行SPF算法来计算出最短路径来，就像图中这四个节点一样，R1会计算出如下信息 R1&mdash;R2 Cost=1 但它会计算其他的路径吗，不会。因为SPF不计算间接连接的节点所的Cost值。这或许能解释为什么在配置ospf时我们只会配置相邻的网段而不会配置间接连接的网段。我将四个节点所计算出的信息一一列出 R1: R1&mdash;R2 Cost=1 R2: R2&mdash;R1 Cost=1 R2&mdash;R3 Cost=1 R3: R3&mdash;R2 Cost=1 R3&mdash;R4 Cost=1 R4: R4&mdash;R3 Cost=1
+回到正题，我们要知道一点每一台路由(节点)都会运行SPF算法来计算出最短路径来，就像图中这四个节点一样，R1会计算出如下信息 R1—R2 Cost=1 但它会计算其他的路径吗，不会。因为SPF不计算间接连接的节点所的Cost值。这或许能解释为什么在配置ospf时我们只会配置相邻的网段而不会配置间接连接的网段。我将四个节点所计算出的信息一一列出 R1: R1—R2 Cost=1 R2: R2—R1 Cost=1 R2—R3 Cost=1 R3: R3—R2 Cost=1 R3—R4 Cost=1 R4: R4—R3 Cost=1
 此时每个节点会将自己计算的信息打包和相邻的节点进行数据库交互，它们交换数据包，就有了完整的最短路径树，如下：
 R1的路径表：
-到达R2的最短路径：R1->R2，链路成本(Cost)为1 到达R3的最短路径：R1->R2->R3，链路成本为2 到达R4的最短路径：R1->R2->R3->R4，链路成本为3 R2的路径表：
-到达R1的最短路径：R2->R1，链路成本为1 到达R3的最短路径：R2->R3，链路成本为1 到达R4的最短路径：R2->R3->R4，链路成本为2 R3的路径表：
-到达R1的最短路径：R3->R2->R1，链路成本为2 到达R2的最短路径：R3->R2，链路成本为1 到达R4的最短路径：R3->R4，链路成本为1 R4的路径表：
-到达R1的最短路径：R4->R3->R2->R1，链路成本为3 到达R2的最短路径：R4->R3->R2，链路成本为2 到达R3的最短路径：R4->R3，链路成本为1 最短路径树 完整的最短路径树就是如此生成出来的，有了最短路径树，就像有了一张绝对快速不拖沓的地图。 用这张地图来计算路由表，计算出类似的信息
+到达R2的最短路径：R1-&gt;R2，链路成本(Cost)为1 到达R3的最短路径：R1-&gt;R2-&gt;R3，链路成本为2 到达R4的最短路径：R1-&gt;R2-&gt;R3-&gt;R4，链路成本为3 R2的路径表：
+到达R1的最短路径：R2-&gt;R1，链路成本为1 到达R3的最短路径：R2-&gt;R3，链路成本为1 到达R4的最短路径：R2-&gt;R3-&gt;R4，链路成本为2 R3的路径表：
+到达R1的最短路径：R3-&gt;R2-&gt;R1，链路成本为2 到达R2的最短路径：R3-&gt;R2，链路成本为1 到达R4的最短路径：R3-&gt;R4，链路成本为1 R4的路径表：
+到达R1的最短路径：R4-&gt;R3-&gt;R2-&gt;R1，链路成本为3 到达R2的最短路径：R4-&gt;R3-&gt;R2，链路成本为2 到达R3的最短路径：R4-&gt;R3，链路成本为1 最短路径树 完整的最短路径树就是如此生成出来的，有了最短路径树，就像有了一张绝对快速不拖沓的地图。 用这张地图来计算路由表，计算出类似的信息
 目标网络：x.x.x.x/x （查找最短路径） 下一跳：y.y.y.y （选择最快的下一跳路由） 出接口：GigabitEthernet0/1 SPF（Shortest Path First，最短路径优先）算法，也称为Dijkstra算法，是OSPF用来计算最短路径的核心算法。总结下来一共四大步骤，下面是SPF算法的工作原理和步骤：
-1. 初始步骤 每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。 路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。 2."><meta property="og:type" content="article"><meta property="og:url" content="https://erain.fun/posts/2023/12/31/ospf%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E5%87%BA%E8%B7%AF%E7%94%B1%E8%A1%A8%E6%9D%A5%E7%9A%84%E4%BB%80%E4%B9%88%E6%98%AFspf%E7%AE%97%E6%B3%95/"><meta property="article:section" content="posts"><meta property="article:modified_time" content="2023-12-31T01:08:23+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="OSPF是如何计算出路由表来的？什么是SPF算法？"><meta name=twitter:description content="OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。
-OSPF的特性 [Wiki] Wiki百科中这样写到 开放式最短路径优先（英语：Open Shortest Path First，缩写为 OSPF）是广泛使用的一种路由协议，它属于链路状态路由协议，具有路由变化收敛速度快、无路由环路、支持变长子网掩码（VLSM）和汇总、层次区域划分等优点。
-不难看出OSPF有很多难以拒绝的优点，收敛速度快，树状的拓扑时期不会出现环路问题，很容易划分区域，方便管理等，也许这就是为什么大多数企业都会选择OSPF的原因(对比RIP不要好用太多太多) 在上一篇文章中，我们讨论了OSPF是如何选举DR，如何建立链接以及如何交换LSA数据库的。如果你还没有看那篇文章，建议先读一读再继续。
-今天主要来看OSPF是如何计算出最短路由的。
-SPF算法如何计算出优先算短路径？ SPF算法中有一个很重要的点叫Cost(花费),中文翻译过来叫花费，听起来就像去超市买东西花费了很多钱一样，但它有所不同，它更像是你从家门口打车去到某一个地方花了多少钱。 在树状图中Cost的值代表了一个节点到另一个节点所花费的跃点(Cost)，其实就是你经过了几个路由(节点)。 为什么是树状图？
-如果对STP生成树协议有所了解的话，我们就会知道树状图能有效避免环路的问题，如图，树状图不会有任何一个”三角形“出现，这样的结构能避免环路的问题。
-回到正题，我们要知道一点每一台路由(节点)都会运行SPF算法来计算出最短路径来，就像图中这四个节点一样，R1会计算出如下信息 R1&mdash;R2 Cost=1 但它会计算其他的路径吗，不会。因为SPF不计算间接连接的节点所的Cost值。这或许能解释为什么在配置ospf时我们只会配置相邻的网段而不会配置间接连接的网段。我将四个节点所计算出的信息一一列出 R1: R1&mdash;R2 Cost=1 R2: R2&mdash;R1 Cost=1 R2&mdash;R3 Cost=1 R3: R3&mdash;R2 Cost=1 R3&mdash;R4 Cost=1 R4: R4&mdash;R3 Cost=1
-此时每个节点会将自己计算的信息打包和相邻的节点进行数据库交互，它们交换数据包，就有了完整的最短路径树，如下：
-R1的路径表：
-到达R2的最短路径：R1->R2，链路成本(Cost)为1 到达R3的最短路径：R1->R2->R3，链路成本为2 到达R4的最短路径：R1->R2->R3->R4，链路成本为3 R2的路径表：
-到达R1的最短路径：R2->R1，链路成本为1 到达R3的最短路径：R2->R3，链路成本为1 到达R4的最短路径：R2->R3->R4，链路成本为2 R3的路径表：
-到达R1的最短路径：R3->R2->R1，链路成本为2 到达R2的最短路径：R3->R2，链路成本为1 到达R4的最短路径：R3->R4，链路成本为1 R4的路径表：
-到达R1的最短路径：R4->R3->R2->R1，链路成本为3 到达R2的最短路径：R4->R3->R2，链路成本为2 到达R3的最短路径：R4->R3，链路成本为1 最短路径树 完整的最短路径树就是如此生成出来的，有了最短路径树，就像有了一张绝对快速不拖沓的地图。 用这张地图来计算路由表，计算出类似的信息
-目标网络：x.x.x.x/x （查找最短路径） 下一跳：y.y.y.y （选择最快的下一跳路由） 出接口：GigabitEthernet0/1 SPF（Shortest Path First，最短路径优先）算法，也称为Dijkstra算法，是OSPF用来计算最短路径的核心算法。总结下来一共四大步骤，下面是SPF算法的工作原理和步骤：
-1. 初始步骤 每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。 路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。 2."><link href=https://erain.fun/css/fonts.fc4f5a86e8e498b54fe94f415531b7bee28ca405d2160b9e55715b497c716193.css rel=stylesheet><link rel=stylesheet type=text/css media=screen href=https://erain.fun/css/main.33535ad1c7d1e61eae52b59547ac79afb3639df98fc2cc22dc2ae9f5a063c72c.css><script type=text/javascript src=https://erain.fun/js/MathJax.js></script><script type=text/x-mathjax-config>
+1. 初始步骤 每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。 路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。 2. 计算Cost值 Cost（花费）：在OSPF中，Cost表示路由器到达目标网络的开销。Cost的值可以根据链路的带宽、延迟等因素进行设置。默认情况下，OSPF根据链路带宽计算Cost值，带宽越高，Cost越低。 树状图：OSPF使用树状拓扑结构避免环路问题。每个路由器只计算直接相连的链路的Cost值，并根据这些信息逐步构建整个网络的最短路径树。 3. 运行SPF算法 初始节点：从源节点（当前路由器）开始，将其标记为已访问，并初始化其到自身的Cost为0。 扩展节点：从当前节点开始，访问所有直接相连的节点，计算每个节点的累计Cost值，并选择累计Cost值最小的节点作为下一个访问节点。 重复计算：重复上述步骤，直到访问所有节点，生成一棵完整的最短路径树。 4. 生成路由表 每个路由器根据生成的最短路径树，更新其路由表。 路由表包含目标网络、下一跳地址和出接口等信息。 最短路径树中的每个节点都有一个数据库，数据库中包含了目标网络的最短路径和下一跳路由的地址信息，路由器根据最短路径树去更新自己的路由表，实现高效率，高速度，优质的通信。">
+
+        <link href="http://localhost:1313/css/fonts.fc4f5a86e8e498b54fe94f415531b7bee28ca405d2160b9e55715b497c716193.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:1313/css/main.33535ad1c7d1e61eae52b59547ac79afb3639df98fc2cc22dc2ae9f5a063c72c.css" /><script type="text/javascript"
+		src="http://localhost:1313/js/MathJax.js"></script>
+		
+		<script type="text/x-mathjax-config">
 		MathJax.Hub.Config({
 			tex2jax: {
 				inlineMath: [['$','$'], ['\\(','\\)']],
@@ -52,23 +165,177 @@ R1的路径表：
 						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
 			}
 		});
-		</script><link rel=stylesheet href=https://erain.fun/katex/katex.min.css><script defer src=https://erain.fun/katex/katex.min.js></script><script defer src=https://erain.fun/katex/auto-render.min.js onload=renderMathInElement(document.body)></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script><link rel=stylesheet type=text/css href=https://erain.fun/css/first.354eb93defa843f69983dc6df53d6af8dc2bf3d3cd5c8970c6c4f1ca724da3ef.css></head><body><div class=content><header><div class=main><a href=https://erain.fun/>未淼</a></div><nav><a href=/>Tools</a>
-<a href=/posts>Posts</a>
-<a href=/tags>Tags</a></nav></header><main><article><div class=post-container><div class=post-content><div class=title><h1 class=title>OSPF是如何计算出路由表来的？什么是SPF算法？</h1><div class=meta>Posted on Dec 31, 2023</div></div><section class=body><blockquote><p>OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。</p></blockquote><h1 id=ospf的特性>OSPF的特性</h1><blockquote><p>[Wiki] Wiki百科中这样写到
-<strong>开放式最短路径优先</strong>（英语：Open Shortest Path First，缩写为 OSPF）是广泛使用的一种路由协议，它属于链路状态路由协议，具有路由变化收敛速度快、无路由环路、支持变长子网掩码（VLSM）和汇总、层次区域划分等优点。</p></blockquote><p>不难看出OSPF有很多难以拒绝的优点，收敛速度快，树状的拓扑时期不会出现环路问题，很容易划分区域，方便管理等，也许这就是为什么大多数企业都会选择OSPF的原因(对比RIP不要好用太多太多)
-在上一篇文章中，我们讨论了OSPF是如何选举DR，如何建立链接以及如何交换LSA数据库的。如果你还没有看那篇文章，建议先读一读再继续。</p><p>今天主要来看OSPF是如何计算出最短路由的。</p><h1 id=spf算法如何计算出优先算短路径>SPF算法如何计算出优先算短路径？</h1><p>SPF算法中有一个很重要的点叫Cost(花费),中文翻译过来叫花费，听起来就像去超市买东西花费了很多钱一样，但它有所不同，它更像是你从家门口打车去到某一个地方花了多少钱。
+		</script><link rel="stylesheet" href="http://localhost:1313/katex/katex.min.css ">
+		<script defer src="http://localhost:1313/katex/katex.min.js"></script>
+		<script defer src="http://localhost:1313/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+		</script>
+		
+		
+		<link rel="stylesheet" type="text/css" href="http://localhost:1313/css/first.354eb93defa843f69983dc6df53d6af8dc2bf3d3cd5c8970c6c4f1ca724da3ef.css">
+		
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="http://localhost:1313/">未淼 </a>
+	</div>
+	<nav>
+		
+		<a href="/">Tools</a>
+		
+		<a href="/posts">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		
+	</nav>
+
+</header>
+
+<main>
+  <article>
+    <div class="post-container">
+      
+      <div class="post-content">
+        <div class="title">
+          <h1 class="title">OSPF是如何计算出路由表来的？什么是SPF算法？</h1>
+          <div class="meta">Posted on Dec 31, 2023</div>
+        </div>
+        
+        <section class="body">
+          <blockquote>
+<p>OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。</p>
+</blockquote>
+<h1 id="ospf的特性">OSPF的特性</h1>
+<blockquote>
+<p>[Wiki] Wiki百科中这样写到
+<strong>开放式最短路径优先</strong>（英语：Open Shortest Path First，缩写为 OSPF）是广泛使用的一种路由协议，它属于链路状态路由协议，具有路由变化收敛速度快、无路由环路、支持变长子网掩码（VLSM）和汇总、层次区域划分等优点。</p>
+</blockquote>
+<p>不难看出OSPF有很多难以拒绝的优点，收敛速度快，树状的拓扑时期不会出现环路问题，很容易划分区域，方便管理等，也许这就是为什么大多数企业都会选择OSPF的原因(对比RIP不要好用太多太多)
+在上一篇文章中，我们讨论了OSPF是如何选举DR，如何建立链接以及如何交换LSA数据库的。如果你还没有看那篇文章，建议先读一读再继续。</p>
+<p>今天主要来看OSPF是如何计算出最短路由的。</p>
+<h1 id="spf算法如何计算出优先算短路径">SPF算法如何计算出优先算短路径？</h1>
+<p>SPF算法中有一个很重要的点叫Cost(花费),中文翻译过来叫花费，听起来就像去超市买东西花费了很多钱一样，但它有所不同，它更像是你从家门口打车去到某一个地方花了多少钱。
 在树状图中Cost的值代表了一个节点到另一个节点所花费的跃点(Cost)，其实就是你经过了几个路由(节点)。
-<em>为什么是树状图？</em></p><blockquote><p>如果对STP生成树协议有所了解的话，我们就会知道树状图能有效避免环路的问题，如图，树状图不会有任何一个”三角形“出现，这样的结构能避免环路的问题。</p></blockquote><p><img src=https://raw.githubusercontent.com/eRain03/cuttotail/main/2.png alt></p><p>回到正题，我们要知道一点每一台路由(节点)都会运行SPF算法来计算出最短路径来，就像图中这四个节点一样，R1会计算出如下信息
-<em><strong>R1&mdash;R2 Cost=1</strong></em>
+<em>为什么是树状图？</em></p>
+<blockquote>
+<p>如果对STP生成树协议有所了解的话，我们就会知道树状图能有效避免环路的问题，如图，树状图不会有任何一个”三角形“出现，这样的结构能避免环路的问题。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/eRain03/cuttotail/main/2.png" alt=""></p>
+<p>回到正题，我们要知道一点每一台路由(节点)都会运行SPF算法来计算出最短路径来，就像图中这四个节点一样，R1会计算出如下信息
+<em><strong>R1&mdash;R2    Cost=1</strong></em>
 但它会计算其他的路径吗，不会。因为SPF不计算间接连接的节点所的Cost值。这或许能解释为什么在配置ospf时我们只会配置相邻的网段而不会配置间接连接的网段。我将四个节点所计算出的信息一一列出
 <em><strong>R1:</strong></em>
-<em><strong>R1&mdash;R2 Cost=1</strong></em>
+<em><strong>R1&mdash;R2    Cost=1</strong></em>
 <em><strong>R2:</strong></em>
-<em><strong>R2&mdash;R1 Cost=1 R2&mdash;R3 Cost=1</strong></em>
+<em><strong>R2&mdash;R1    Cost=1        R2&mdash;R3    Cost=1</strong></em>
 <em><strong>R3:</strong></em>
-<em><strong>R3&mdash;R2 Cost=1 R3&mdash;R4 Cost=1</strong></em>
+<em><strong>R3&mdash;R2    Cost=1        R3&mdash;R4    Cost=1</strong></em>
 <em><strong>R4:</strong></em>
-<em><strong>R4&mdash;R3 Cost=1</strong></em></p><p>此时每个节点会将自己计算的信息打包和相邻的节点进行数据库交互，它们交换数据包，就有了完整的最短路径树，如下：</p><ul><li><p>R1的路径表：</p><ul><li>到达R2的最短路径：R1->R2，链路成本(Cost)为1</li><li>到达R3的最短路径：R1->R2->R3，链路成本为2</li><li>到达R4的最短路径：R1->R2->R3->R4，链路成本为3</li></ul></li><li><p>R2的路径表：</p><ul><li>到达R1的最短路径：R2->R1，链路成本为1</li><li>到达R3的最短路径：R2->R3，链路成本为1</li><li>到达R4的最短路径：R2->R3->R4，链路成本为2</li></ul></li><li><p>R3的路径表：</p><ul><li>到达R1的最短路径：R3->R2->R1，链路成本为2</li><li>到达R2的最短路径：R3->R2，链路成本为1</li><li>到达R4的最短路径：R3->R4，链路成本为1</li></ul></li><li><p>R4的路径表：</p><ul><li>到达R1的最短路径：R4->R3->R2->R1，链路成本为3</li><li>到达R2的最短路径：R4->R3->R2，链路成本为2</li><li>到达R3的最短路径：R4->R3，链路成本为1</li></ul></li></ul><p><img src=https://raw.githubusercontent.com/eRain03/cuttotail/main/1.png alt></p><h2 id=最短路径树>最短路径树</h2><p>完整的最短路径树就是如此生成出来的，有了最短路径树，就像有了一张绝对快速不拖沓的地图。
-用这张地图来计算路由表，计算出类似的信息</p><ul><li>目标网络：x.x.x.x/x （查找最短路径）<ul><li>下一跳：y.y.y.y （选择最快的下一跳路由）</li><li>出接口：GigabitEthernet0/1</li></ul></li></ul><p>SPF（Shortest Path First，最短路径优先）算法，也称为Dijkstra算法，是OSPF用来计算最短路径的核心算法。总结下来一共四大步骤，下面是SPF算法的工作原理和步骤：</p><h3 id=1-初始步骤>1. 初始步骤</h3><ul><li>每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。</li><li>路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。</li></ul><h3 id=2-计算cost值>2. 计算Cost值</h3><ul><li><strong>Cost（花费）</strong>：在OSPF中，Cost表示路由器到达目标网络的开销。Cost的值可以根据链路的带宽、延迟等因素进行设置。默认情况下，OSPF根据链路带宽计算Cost值，带宽越高，Cost越低。</li><li><strong>树状图</strong>：OSPF使用树状拓扑结构避免环路问题。每个路由器只计算直接相连的链路的Cost值，并根据这些信息逐步构建整个网络的最短路径树。</li></ul><h3 id=3-运行spf算法>3. 运行SPF算法</h3><ul><li><strong>初始节点</strong>：从源节点（当前路由器）开始，将其标记为已访问，并初始化其到自身的Cost为0。</li><li><strong>扩展节点</strong>：从当前节点开始，访问所有直接相连的节点，计算每个节点的累计Cost值，并选择累计Cost值最小的节点作为下一个访问节点。</li><li><strong>重复计算</strong>：重复上述步骤，直到访问所有节点，生成一棵完整的最短路径树。</li></ul><h3 id=4-生成路由表>4. 生成路由表</h3><ul><li>每个路由器根据生成的最短路径树，更新其路由表。</li><li>路由表包含目标网络、下一跳地址和出接口等信息。</li></ul><blockquote><p>最短路径树中的每个节点都有一个数据库，数据库中包含了目标网络的最短路径和下一跳路由的地址信息，路由器根据最短路径树去更新自己的路由表，实现高效率，高速度，优质的通信。</p></blockquote><p>参考wiki百科；Jan Ho大佬的总结
+<em><strong>R4&mdash;R3    Cost=1</strong></em></p>
+<p>此时每个节点会将自己计算的信息打包和相邻的节点进行数据库交互，它们交换数据包，就有了完整的最短路径树，如下：</p>
+<ul>
+<li>
+<p>R1的路径表：</p>
+<ul>
+<li>到达R2的最短路径：R1-&gt;R2，链路成本(Cost)为1</li>
+<li>到达R3的最短路径：R1-&gt;R2-&gt;R3，链路成本为2</li>
+<li>到达R4的最短路径：R1-&gt;R2-&gt;R3-&gt;R4，链路成本为3</li>
+</ul>
+</li>
+<li>
+<p>R2的路径表：</p>
+<ul>
+<li>到达R1的最短路径：R2-&gt;R1，链路成本为1</li>
+<li>到达R3的最短路径：R2-&gt;R3，链路成本为1</li>
+<li>到达R4的最短路径：R2-&gt;R3-&gt;R4，链路成本为2</li>
+</ul>
+</li>
+<li>
+<p>R3的路径表：</p>
+<ul>
+<li>到达R1的最短路径：R3-&gt;R2-&gt;R1，链路成本为2</li>
+<li>到达R2的最短路径：R3-&gt;R2，链路成本为1</li>
+<li>到达R4的最短路径：R3-&gt;R4，链路成本为1</li>
+</ul>
+</li>
+<li>
+<p>R4的路径表：</p>
+<ul>
+<li>到达R1的最短路径：R4-&gt;R3-&gt;R2-&gt;R1，链路成本为3</li>
+<li>到达R2的最短路径：R4-&gt;R3-&gt;R2，链路成本为2</li>
+<li>到达R3的最短路径：R4-&gt;R3，链路成本为1</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/eRain03/cuttotail/main/1.png" alt=""></p>
+<h2 id="最短路径树">最短路径树</h2>
+<p>完整的最短路径树就是如此生成出来的，有了最短路径树，就像有了一张绝对快速不拖沓的地图。
+用这张地图来计算路由表，计算出类似的信息</p>
+<ul>
+<li>目标网络：x.x.x.x/x    （查找最短路径）
+<ul>
+<li>下一跳：y.y.y.y      （选择最快的下一跳路由）</li>
+<li>出接口：GigabitEthernet0/1</li>
+</ul>
+</li>
+</ul>
+<p>SPF（Shortest Path First，最短路径优先）算法，也称为Dijkstra算法，是OSPF用来计算最短路径的核心算法。总结下来一共四大步骤，下面是SPF算法的工作原理和步骤：</p>
+<h3 id="1-初始步骤">1. 初始步骤</h3>
+<ul>
+<li>每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。</li>
+<li>路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。</li>
+</ul>
+<h3 id="2-计算cost值">2. 计算Cost值</h3>
+<ul>
+<li><strong>Cost（花费）</strong>：在OSPF中，Cost表示路由器到达目标网络的开销。Cost的值可以根据链路的带宽、延迟等因素进行设置。默认情况下，OSPF根据链路带宽计算Cost值，带宽越高，Cost越低。</li>
+<li><strong>树状图</strong>：OSPF使用树状拓扑结构避免环路问题。每个路由器只计算直接相连的链路的Cost值，并根据这些信息逐步构建整个网络的最短路径树。</li>
+</ul>
+<h3 id="3-运行spf算法">3. 运行SPF算法</h3>
+<ul>
+<li><strong>初始节点</strong>：从源节点（当前路由器）开始，将其标记为已访问，并初始化其到自身的Cost为0。</li>
+<li><strong>扩展节点</strong>：从当前节点开始，访问所有直接相连的节点，计算每个节点的累计Cost值，并选择累计Cost值最小的节点作为下一个访问节点。</li>
+<li><strong>重复计算</strong>：重复上述步骤，直到访问所有节点，生成一棵完整的最短路径树。</li>
+</ul>
+<h3 id="4-生成路由表">4. 生成路由表</h3>
+<ul>
+<li>每个路由器根据生成的最短路径树，更新其路由表。</li>
+<li>路由表包含目标网络、下一跳地址和出接口等信息。</li>
+</ul>
+<blockquote>
+<p>最短路径树中的每个节点都有一个数据库，数据库中包含了目标网络的最短路径和下一跳路由的地址信息，路由器根据最短路径树去更新自己的路由表，实现高效率，高速度，优质的通信。</p>
+</blockquote>
+<p>参考wiki百科；Jan Ho大佬的总结
 [https://en.wikipedia.org/wiki/Open_Shortest_Path_First]
-[https://www.jannet.hk/open-shortest-path-first-ospf-zh-hant]</p></section><div class=post-tags></div></div></div></article></main><footer></footer></div></body></html>
+[https://www.jannet.hk/open-shortest-path-first-ospf-zh-hant]</p>
+
+        </section>
+        <div class="post-tags">
+          
+          
+          
+        </div>
+      </div>
+
+      
+      
+    </div>
+
+    </article>
+</main>
+<footer>
+</footer>
+
+</div>
+    </body>
+</html>
