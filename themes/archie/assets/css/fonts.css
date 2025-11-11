@@ -1,9 +1,8 @@
-/* fira-sans-regular - latin */
-body {
-  font-family: 'LXGW WenKai Lite';
-  font-size: 17px;
-  line-height: 2.4;
+body, html, article, section, div, p, span, h1, h2, h3, h4, h5, h6 {
+  font-family: "LXGW WenKai Lite", "KaiTi", "Kaiti SC", "PT Serif", "Noto Serif SC", serif !important;
+  font-size: 18px;
+  line-height: 2.2;
   word-break: break-word;
-  background: var(--theme); /* 如果没有定义 --theme，可以暂时去掉 */
+  background: var(--theme);
 }
 
