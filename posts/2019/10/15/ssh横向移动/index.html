@@ -1,4 +1,4 @@
-<!doctype html><html><head lang=en><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>SSH横向移动 - 未淼 </title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="直接说方法 ssh -D <本地端口号> -f -C -q -N <用户名>@<SSH服务器地址> -D <本地端口号>：指定一个端口号，会在本地创建一个Socks5端口用于转发，所有通过这个端口号的连接都将被转发到SSH建立连接后的服务器，并由服务器发送到目标地址
+<!doctype html><html><head><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.7.0/style.css></head><head lang=en><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>SSH横向移动 - 未淼 </title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="直接说方法 ssh -D <本地端口号> -f -C -q -N <用户名>@<SSH服务器地址> -D <本地端口号>：指定一个端口号，会在本地创建一个Socks5端口用于转发，所有通过这个端口号的连接都将被转发到SSH建立连接后的服务器，并由服务器发送到目标地址
 -C：启用压缩，通过使用压缩，减少数据传输量，提高传输速度
 -q：使用安静模式，禁止SSH客户端在连接过程中输出任何警告或错误消息，只输出关键信息
 -N：告诉SSH客户端不要执行任何远程命令，在此情况下，只会建立SSH连接并启用端口转发

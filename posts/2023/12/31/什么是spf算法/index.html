@@ -1,4 +1,4 @@
-<!doctype html><html><head lang=en><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>什么是SPF算法 - 未淼 </title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。
+<!doctype html><html><head><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.7.0/style.css></head><head lang=en><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>什么是SPF算法 - 未淼 </title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="OSPF是如何计算出路由表来的？什么是SPF算法？写下在查阅了各种文档和书籍后开始对OSPF的一些理解，做此纪录用于学习和分享。
 OSPF的特性 [Wiki] Wiki百科中这样写到 开放式最短路径优先（英语：Open Shortest Path First，缩写为 OSPF）是广泛使用的一种路由协议，它属于链路状态路由协议，具有路由变化收敛速度快、无路由环路、支持变长子网掩码（VLSM）和汇总、层次区域划分等优点。
 不难看出OSPF有很多难以拒绝的优点，收敛速度快，树状的拓扑时期不会出现环路问题，很容易划分区域，方便管理等，也许这就是为什么大多数企业都会选择OSPF的原因(对比RIP不要好用太多太多) 在上一篇文章中，我们讨论了OSPF是如何选举DR，如何建立链接以及如何交换LSA数据库的。如果你还没有看那篇文章，建议先读一读再继续。
 今天主要来看OSPF是如何计算出最短路由的。
