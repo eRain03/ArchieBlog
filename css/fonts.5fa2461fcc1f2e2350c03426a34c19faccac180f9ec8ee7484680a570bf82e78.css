@@ -5,4 +5,7 @@ body, html, article, section, div, p, span, h1, h2, h3, h4, h5, h6 {
   word-break: break-word;
   background: var(--theme);
 }
+code, pre, kbd, samp {
+  font-family: "JetBrains Mono", monospace !important;
+}
 
