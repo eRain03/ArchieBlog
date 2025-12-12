@@ -40,7 +40,7 @@ R1的路径表：
 到达R1的最短路径：R3->R2->R1，链路成本为2 到达R2的最短路径：R3->R2，链路成本为1 到达R4的最短路径：R3->R4，链路成本为1 R4的路径表：
 到达R1的最短路径：R4->R3->R2->R1，链路成本为3 到达R2的最短路径：R4->R3->R2，链路成本为2 到达R3的最短路径：R4->R3，链路成本为1 最短路径树 完整的最短路径树就是如此生成出来的，有了最短路径树，就像有了一张绝对快速不拖沓的地图。 用这张地图来计算路由表，计算出类似的信息
 目标网络：x.x.x.x/x （查找最短路径） 下一跳：y.y.y.y （选择最快的下一跳路由） 出接口：GigabitEthernet0/1 SPF（Shortest Path First，最短路径优先）算法，也称为Dijkstra算法，是OSPF用来计算最短路径的核心算法。总结下来一共四大步骤，下面是SPF算法的工作原理和步骤：
-1. 初始步骤 每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。 路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。 2."><link href=https://erain.xin/css/fonts.5fa2461fcc1f2e2350c03426a34c19faccac180f9ec8ee7484680a570bf82e78.css rel=stylesheet><link rel=stylesheet type=text/css media=screen href=https://erain.xin/css/main.33535ad1c7d1e61eae52b59547ac79afb3639df98fc2cc22dc2ae9f5a063c72c.css><script type=text/javascript src=https://erain.xin/js/MathJax.js></script><script type=text/x-mathjax-config>
+1. 初始步骤 每个OSPF路由器会创建一个链路状态数据库（LSDB），存储关于网络拓扑的所有信息。 路由器通过发送和接收链路状态广告（LSA）来更新其LSDB，确保所有路由器的LSDB保持一致。 2."><link href=https://erain.xin/css/fonts.f651afbd58622441a5391d9c5d594fc3eba3f1d863b81198f8b4ec303d3abc72.css rel=stylesheet><link rel=stylesheet type=text/css media=screen href=https://erain.xin/css/main.33535ad1c7d1e61eae52b59547ac79afb3639df98fc2cc22dc2ae9f5a063c72c.css><script type=text/javascript src=https://erain.xin/js/MathJax.js></script><script type=text/x-mathjax-config>
 		MathJax.Hub.Config({
 			tex2jax: {
 				inlineMath: [['$','$'], ['\\(','\\)']],
