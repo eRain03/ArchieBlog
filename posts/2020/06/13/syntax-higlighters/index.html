@@ -19,6 +19,11 @@
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span><span style=color:#f92672>+</span><span style=color:#a6e22e>b</span>
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>sum</span>(<span style=color:#ae81ff>4</span>,<span style=color:#ae81ff>5</span>))
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>#</span> <span style=color:#a6e22e>下载</span> <span style=color:#a6e22e>ngrok</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>curl</span> <span style=color:#f92672>-</span><span style=color:#a6e22e>s</span> <span style=color:#a6e22e>https</span><span style=color:#f92672>:</span><span style=color:#75715e>//ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc &gt;/dev/null &amp;&amp; echo &#34;deb https://ngrok-agent.s3.amazonaws.com buster main&#34; | sudo tee /etc/apt/sources.list.d/ngrok.list &amp;&amp; sudo apt update &amp;&amp; sudo apt install ngrok
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>#</span> <span style=color:#a6e22e>映射</span> <span style=color:#ae81ff>8080</span> <span style=color:#a6e22e>端口</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>ngrok</span> <span style=color:#a6e22e>http</span> <span style=color:#ae81ff>8080</span>
 </span></span></code></pre></div><h2 id=go>Go</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
