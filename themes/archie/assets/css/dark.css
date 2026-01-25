@@ -1,0 +1,212 @@
+body {
+  color: white;
+  background-color: #202124;
+}
+
+::-moz-selection {
+  background: blue;
+  color: #fff;
+  text-shadow: none;
+}
+
+::selection {
+  background: red;
+  color: #fff;
+  text-shadow: none;
+}
+
+hr {
+  border-top: 3px dotted blue;
+}
+code {
+  background-color: #3c3c3c; /* 深色模式下的行内代码背景 */
+  color: #ff79c6; /* 深色模式下的行内代码颜色，粉色 */
+  text-decoration: none; /* 去掉 bold，保持简洁 */
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+}
+pre {
+  background-color: #2d2d2d; /* 深色模式下的代码块背景，深灰色 */
+  color: #cccccc; /* 深色模式下的代码块文字颜色，浅灰 */
+  line-height: 1.5;
+  overflow-x: auto;
+  padding: 1.5em;
+  border-radius: 8px;
+  margin: 1.5em 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+pre code {
+  background-color: transparent;
+  color: inherit;
+  font-size: 14px; /* Smaller font size */
+  padding: 0;
+}
+blockquote {
+  border-color: blue;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #ddd;
+}
+h1::before {
+  color: var(--darkMaincolor);
+  content: "# ";
+}
+h2::before {
+  color: var(--darkMaincolor);
+  content: "## ";
+}
+h3::before {
+  color: var(--darkMaincolor);
+  content: "### ";
+}
+h4::before {
+  color: var(--darkMaincolor);
+  content: "#### ";
+}
+h5::before {
+  color: var(--darkMaincolor);
+  content: "##### ";
+}
+h6::before {
+  color: var(--darkMaincolor);
+  content: "###### ";
+}
+
+.toc {
+  background-color: #272822;
+  color: white;
+}
+
+a {
+  border-bottom: 3px solid var(--darkMaincolor);
+  color: inherit;
+}
+a:hover {
+  background-color: var(--darkMaincolor);
+  color: black;
+}
+
+.site-description a {
+  color: #ddd;
+}
+.site-description a:hover {
+  color: black;
+}
+
+.tags a {
+  border-bottom: 3px solid var(--darkMaincolor);
+}
+.tags a:hover {
+  background-color: var(--darkMaincolor);
+  color: black;
+}
+
+.site-title a {
+  color: white;
+  text-decoration: none !important;
+}
+
+.header nav,
+.footer {
+  border-color: #333;
+}
+
+.highlight {
+  background-color: #333;
+}
+.soc:hover {
+  color: black;
+}
+.draft-label {
+  color: var(--darkMaincolor);
+  background-color: blue;
+}
+.highlight pre code[class=language-javaScript]::before,
+.highlight pre code[class="language-js"]::before {
+  content: "js";
+  background: #f7df1e;
+  color: black;
+}
+.highlight pre code[class*='language-yml']::before,
+.highlight pre code[class*='language-yaml']::before {
+  content: 'yaml';
+  background: #f71e6a;
+  color: white;
+}
+.highlight pre code[class*='language-shell']::before,
+.highlight pre code[class*='language-bash']::before,
+.highlight pre code[class*='language-sh']::before {
+  content: 'shell';
+  background: green;
+  color:white
+}
+.highlight pre code[class*='language-json']::before{
+  content: 'json';
+  background: dodgerblue;
+   color: #000000 
+}
+.highlight pre code[class*='language-python']::before,
+.highlight pre code[class*='language-py']::before {
+  content: 'py';
+  background: blue;
+  color: yellow ;
+}
+.highlight pre code[class*='language-css']::before{
+  content: 'css';
+  background: cyan;
+  color: black ;
+}
+.highlight pre code[class*='language-go']::before{
+  content: 'Go';
+  background: cyan;
+  color: royalblue ;
+}
+.highlight pre code[class*='language-md']::before,
+.highlight pre code[class*='language-md']::before{
+  content: 'Markdown';
+  background: royalblue;
+  color: whitesmoke ;
+}
+
+.callout-alert {
+  color: #ffffff;
+  background-color: transparent;
+  border-width: 3px;
+  border-style: solid;
+  border-color: #ff6347;
+}
+
+.callout-custom {
+  color: #ffffff;
+}
+
+.callout-tip {
+  color: #ffffff;
+  background-color: transparent;
+  border-width: 3px;
+  border-style: solid;
+  border-color: dodgerblue;
+}
+
+.callout-warning {
+  color: #ffffff;
+  background-color: transparent;
+  border-width: 3px;
+  border-style: solid;
+  border-color: #ffd700;
+}
+
+/* 图片标注样式 */
+figcaption {
+  color: #aaa; /* 深色模式下的灰色小字 */
+  margin-top: 0; /* 移除顶部间距，紧贴图片 */
+  line-height: 1.2;
+  padding-top: 0.2em; /* 使用 padding 微调距离 */
+}

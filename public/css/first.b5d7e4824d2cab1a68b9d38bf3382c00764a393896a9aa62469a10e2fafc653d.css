@@ -1,0 +1,128 @@
+header {
+  padding-top: 1.5rem; /* 或 30px、40px，按需要调 */
+}
+
+
+a {
+  position: relative;
+  color: inherit;
+  text-decoration: none; /* ← 移除默认下划线 */
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2.2px; /* ← 设置更细的线条 */
+  background-color: var(--maincolor); /* 或你喜欢的颜色 */
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+  bottom: -3px;
+}
+
+a:hover::after {
+  transform: scaleX(0); /* 悬停时收起线条 */
+}
+
+hr {
+  border: 0;
+  border-top: 1px dotted #999;  /* 灰色小点点 */
+  margin: 1.5em 0;
+}
+
+body {
+  background-color: #F5F5F5;
+}
+
+
+/* 全局字体设置为 LXGW WenKai Lite，除了特定排除的元素 */
+body, p, a, li, span, div {
+    font-family: 'LXGW WenKai Lite', sans-serif;
+}
+
+/* 保持文章内容使用 LXGW WenKai Lite */
+.post-content {
+  font-family: 'LXGW WenKai Lite', sans-serif !important;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: calc(1ex / 0.42) 0;
+  text-decoration: underline;
+  text-decoration-color: #d3d3d3;     /* 浅灰色下划线 */
+  text-decoration-thickness: 3px;    /* 下划线粗细 */
+  text-underline-offset: 7px;        /* 下划线距离文字的距离 */
+  color: black;                      /* 黑色字体 */
+  font-weight: normal;               /* 字重正常 */
+}
+
+
+h2::before {
+  content: none !important;
+}
+
+/* 首页最近文章样式调整 */
+
+/* 1. 最近文章标题加黑，大小设为 18px */
+/* 排除 LXGW 字体，使用默认字体或指定其他字体 */
+.recent-posts-title {
+    font-weight: bold;
+    font-size: 21px !important;
+    font-family: 'Roboto Mono', monospace; /* 或者其他你想要的字体，这里恢复为主题默认 */
+}
+
+.more-posts {
+    font-weight: bold;
+    font-size: 21px !important;
+    font-family: 'Roboto Mono', monospace;
+}
+
+
+/* 2. 最近文章列表左对齐，使用黑色小方块 */
+.recent-posts-list {
+    list-style: none;
+    padding-left: 1em;
+}
+
+.recent-posts-list li {
+    position: relative;
+    padding-left: 1.5em;
+    margin-bottom: 0 !important; /* 去掉底部间距 */
+    padding-bottom: 0 !important; /* 去掉底部内边距 */
+    line-height: 1.5 !important; /* 减小行高，原为 1.6em 或更大 */
+}
+
+.recent-posts-list li::before {
+    content: "▪";             /* 黑色小方块符号 */
+    position: absolute;
+    left: 0;
+    color: #000;              /* 黑色 */
+    font-size: 1.2em;         /* 大小从 1.4em 减小到 1.2em */
+    line-height: 1;
+    vertical-align: middle;   /* 垂直居中 */
+    top: 50%;                 /* 垂直居中 */
+    transform: translateY(-50%);
+    margin-top: -1px;         /* 微调垂直位置，使其视觉上更居中 */
+}
+
+/* 3. 最近文章链接字体调整为 18px */
+.recent-posts-list li a {
+    font-size: 18px !important;
+    display: inline-block; /* 确保行高生效 */
+    line-height: 1.5;
+    font-family: 'LXGW WenKai Lite', sans-serif !important; /* 确保链接使用 LXGW */
+}
+
+/* 移除最近文章链接的红色下划线 */
+.recent-posts-list li a::after {
+    content: none !important;
+}
+
+/* 4. 站点描述使用 LXGW WenKai Lite (覆盖之前的行楷设置) */
+.site-description p {
+    font-family: 'LXGW WenKai Lite', sans-serif !important;
+    font-size: 1.25rem;
+}
